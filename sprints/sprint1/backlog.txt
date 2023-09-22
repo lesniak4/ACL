@@ -1,0 +1,6 @@
+Backlog sprint 1 :
+
+Création du labyrinthe
+Déplacer le joueur en suivant la grille dans un labyrinthe codé en dur
+Collecter des pièces pour augmenter le score
+
