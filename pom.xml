@@ -7,6 +7,10 @@
     <artifactId>acl-canadacamp-app</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
     <name>acl-canadacamp-app</name>
     <url>https://github.com/lesniak4/ACL-2023-CanadaCamp</url>
 
