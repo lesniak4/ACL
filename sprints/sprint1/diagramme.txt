@@ -1,0 +1,68 @@
+@startuml
+
+class GameEngineGraphical {
+void run()
+}
+
+
+class Game {
+int niveauActuel
+void chargerNiveau()
+void evolve(Cmd userCmd)
+boolean isFinished()
+}
+
+class GamePainter {
+void draw(BufferedImage image)
+}
+
+enum Cmd {
+LEFT,RIGHT,UP,DOWN,IDLE
+}
+
+class Niveau {
+int long, larg
+float tempsInitial
+float tempsRestant
+void Niveau()
+void deplacerJoueur(Cmd direction)
+boolean estTermine()
+void afficher()
+}
+
+class Joueur {
+int score
+void deplacer()
+void augmenterScore()
+void afficher()
+}
+
+class Mur {
+void afficher()
+}
+
+
+abstract Element  {
+int posX, posY
+Sprite sprite
+void afficher()
+}
+
+class Piece {
+int valeur 
+void afficher()
+}
+
+
+
+
+Niveau -- "*"Element
+Niveau -- "1"Joueur
+GameEngineGraphical -- "1"Game
+GameEngineGraphical -- "1"GamePainter
+Game -- "1"Niveau
+GamePainter -- "1"Niveau
+Element <|-- Joueur
+Element <|-- Mur
+Element <|-- Piece
+@enduml
