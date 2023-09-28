@@ -1,6 +1,6 @@
 Backlog sprint 1 :
 
-Création du labyrinthe
-Déplacer le joueur en suivant la grille dans un labyrinthe codé en dur
+Création du labyrinthe -> Théo
+Déplacer le joueur en suivant la grille dans un labyrinthe codé en dur -> Louis
 Collecter des pièces pour augmenter le score
 Limite de temps pour la fin du jeu
