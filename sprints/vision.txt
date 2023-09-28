@@ -1,0 +1,7 @@
+Vision :
+
+Le joueur se déplace dans un labyrinthe peuplé de pièces et de monstres.
+Son but est de collecter le maximum de pièces dans le temps imparti en évitant les monstres. 
+Le jeu se termine si le joueur se fait tuer par un monstre ou si le temps est écoulé.
+
+
