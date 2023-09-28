@@ -1,6 +1,7 @@
 Liste des fonctionnalités :
 
 Déplacer le joueur en suivant la grille dans un labyrinthe codé en dur
+Le joueur ne voit qu'une partie du labyrinthe
 Collecter des pièces pour augmenter le score
 Récupérer une clé qui ouvre une porte pour passer au niveau suivant
 Présence de monstres qui peuvent attaquer le joueur et le tuer
