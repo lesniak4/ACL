@@ -7,13 +7,18 @@ void run()
 
 class Game {
 int niveauActuel
+int score
 void chargerNiveau()
 void evolve(Cmd userCmd)
 boolean isFinished()
 }
 
-class GamePainter {
+interface IGamePainter {
 void draw(BufferedImage image)
+}
+
+interface IGameController{
+Cmd getCommand()
 }
 
 enum Cmd {
@@ -30,39 +35,41 @@ boolean estTermine()
 void afficher()
 }
 
-class Joueur {
-int score
-void deplacer()
-void augmenterScore()
-void afficher()
-}
-
-class Mur {
-void afficher()
-}
-
-
-abstract Element  {
+class GameObject {
 int posX, posY
+}
+
+interface IComponent{
+void update(GameObject obj)
+}
+
+class PlayerInputComponent{
+void update(GameObject obj)
+}
+
+class MovementComponent{
+float velocity
+void update(GameObject obj)
+}
+
+class GraphicsComponent{
 Sprite sprite
-void afficher()
+void update(GameObject obj)
 }
 
-class Piece {
-int valeur 
-void afficher()
-}
+Niveau -- "*"GameObject
 
-
-
-
-Niveau -- "*"Element
-Niveau -- "1"Joueur
 GameEngineGraphical -- "1"Game
-GameEngineGraphical -- "1"GamePainter
+GameEngineGraphical -- "1"IGamePainter
+GameEngineGraphical -- "1"IGameController 
 Game -- "1"Niveau
-GamePainter -- "1"Niveau
-Element <|-- Joueur
-Element <|-- Mur
-Element <|-- Piece
+
+IComponent <|.. GraphicsComponent
+IComponent <|.. PlayerInputComponent
+IComponent <|.. MovementComponent
+
+GameObject -- "*"IComponent 
+
+IGameController "1"-- PlayerInputComponent
+IGamePainter "1"-- GraphicsComponent 
 @enduml
