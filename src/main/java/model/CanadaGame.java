@@ -14,13 +14,13 @@ import engine.Game;
  *         versions suivantes.
  * 
  */
-public class PacmanGame implements Game {
+public class CanadaGame implements Game {
 
 	/**
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public PacmanGame(String source) {
+	public CanadaGame(String source) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -40,7 +40,7 @@ public class PacmanGame implements Game {
 	 * @param commande
 	 */
 	@Override
-	public void evolve(Cmd commande) {
+	public void evolve(Cmd commande, double dt) {
 		System.out.println("Execute "+commande);
 	}
 

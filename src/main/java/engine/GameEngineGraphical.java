@@ -28,6 +28,8 @@ public class GameEngineGraphical {
 	 */
 	private GraphicalInterface gui;
 
+	private int FPS = 60;
+
 	/**
 	 * construit un moteur
 	 * 
@@ -54,16 +56,51 @@ public class GameEngineGraphical {
 		// creation de l'interface graphique
 		this.gui = new GraphicalInterface(this.gamePainter,this.gameController);
 
+		long lastTime = System.nanoTime();
+		double nanoSecondsPerTick = 1000000000D / FPS;
+
+		int ticks = 0;
+		int frames = 0;
+
+		long lastTimer = System.currentTimeMillis();
+		double dt = 0;
+
 		// boucle de game
 		while (!this.game.isFinished()) {
+
+			long now = System.nanoTime();
+			dt += (now - lastTime) / nanoSecondsPerTick;
+			lastTime = now;
+			boolean shouldRender = true;
+
 			// demande controle utilisateur
 			Cmd c = this.gameController.getCommand();
-			// fait evoluer le game
-			this.game.evolve(c);
-			// affiche le game
-			this.gui.paint();
-			// met en attente
-			Thread.sleep(100);
+
+			while (dt >= 1) {
+				ticks++;
+				// fait evoluer le game
+				this.game.evolve(c, dt);
+				dt -= 1;
+				shouldRender = true;
+			}
+
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+
+			if (shouldRender) {
+				frames++;
+				// affiche le game
+				this.gui.paint();
+			}
+
+			if (System.currentTimeMillis() - lastTimer >= 1000) {
+				lastTimer += 1000;
+				frames = 0;
+				ticks = 0;
+			}
 		}
 	}
 
