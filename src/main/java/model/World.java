@@ -11,18 +11,6 @@ public class World {
 
     private CanadaPainter painter;
 
-    private String worldMap =
-            "0 1 1 1 1 1 1 1 1 1\n" +
-            "0 1 0 1 0 0 0 0 0 1\n" +
-            "0 0 0 0 0 1 1 1 0 1\n" +
-            "1 0 1 1 0 1 0 0 0 1\n" +
-            "1 0 1 0 0 1 1 0 0 1\n" +
-            "1 0 0 0 1 1 1 0 1 1\n" +
-            "1 1 1 0 0 0 0 0 0 1\n" +
-            "1 0 1 1 0 1 1 1 0 1\n" +
-            "1 0 0 0 0 0 0 1 0 1\n" +
-            "1 1 1 1 1 1 1 1 0 0\n";
-
     public World(CanadaPainter painter){
 
         this.painter = painter;
