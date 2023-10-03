@@ -11,8 +11,8 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 
 		// creation du jeu particulier et de son afficheur
-		CanadaGame game = new CanadaGame("helpFilePacman.txt");
 		CanadaPainter painter = new CanadaPainter();
+		CanadaGame game = new CanadaGame("helpFilePacman.txt", painter);
 		CanadaController controller = new CanadaController();
 
 		// classe qui lance le moteur de jeu generique

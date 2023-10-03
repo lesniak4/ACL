@@ -1,4 +1,6 @@
-package model;
+package model.components;
+
+import model.GameObject;
 
 public interface IComponent {
 

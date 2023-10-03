@@ -1,10 +1,13 @@
 package model;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Queue;
 
 import engine.IGamePainter;
+import model.components.GraphicsComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -15,18 +18,19 @@ import engine.IGamePainter;
 public class CanadaPainter implements IGamePainter {
 
 	/**
-	 * la taille des cases
+	 * la taille de la fenêtre
 	 */
-	protected static final int WIDTH = 200;
-	protected static final int HEIGHT = 200;
+	protected static final int WIDTH = 500;
+	protected static final int HEIGHT = 500;
+
+	protected Collection<GraphicsComponent> drawQueue;
 
 	/**
 	 * appelle constructeur parent
-	 * 
-	 * @param game
-	 *            le jeutest a afficher
 	 */
 	public CanadaPainter() {
+
+		this.drawQueue = new ArrayList<>();
 	}
 
 	/**
@@ -35,8 +39,11 @@ public class CanadaPainter implements IGamePainter {
 	@Override
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
-		crayon.setColor(Color.blue);
-		crayon.fillOval(0,0,10,10);
+
+		for(GraphicsComponent g : drawQueue) {
+			crayon.setColor(g.getColor());
+			crayon.fill(g.getShape());
+		}
 	}
 
 	@Override
@@ -47,6 +54,15 @@ public class CanadaPainter implements IGamePainter {
 	@Override
 	public int getHeight() {
 		return HEIGHT;
+	}
+
+	public void addToDrawQueue(GraphicsComponent graphics){
+
+		drawQueue.add(graphics);
+	}
+
+	public void clearDrawQueue(){
+		drawQueue.clear();
 	}
 
 }

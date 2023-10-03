@@ -28,8 +28,6 @@ public class GameEngineGraphical {
 	 */
 	private GraphicalInterface gui;
 
-	private int FPS = 60;
-
 	/**
 	 * construit un moteur
 	 * 
@@ -57,6 +55,7 @@ public class GameEngineGraphical {
 		this.gui = new GraphicalInterface(this.gamePainter,this.gameController);
 
 		long lastTime = System.nanoTime();
+		final int FPS = 60;
 		double nanoSecondsPerTick = 1000000000D / FPS;
 
 		int ticks = 0;
@@ -98,6 +97,7 @@ public class GameEngineGraphical {
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
+				//System.out.println(ticks + " ticks, " + frames + " frames");
 				frames = 0;
 				ticks = 0;
 			}
