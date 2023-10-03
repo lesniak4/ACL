@@ -3,7 +3,7 @@ package model;
 import java.awt.event.KeyEvent;
 
 import engine.Cmd;
-import engine.GameController;
+import engine.IGameController;
 
 
 /**
@@ -12,7 +12,7 @@ import engine.GameController;
  * controleur de type KeyListener
  * 
  */
-public class CanadaController implements GameController {
+public class CanadaController implements IGameController {
 
 	/**
 	 * commande en cours

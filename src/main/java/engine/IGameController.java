@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
  * controleur qui envoie des commandes au jeu 
  * 
  */
-public interface GameController extends KeyListener {
+public interface IGameController extends KeyListener {
 
 	/**
 	 * quand on demande les commandes, le controleur retourne la commande en

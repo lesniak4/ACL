@@ -20,7 +20,7 @@ public class DrawingPanel extends JPanel {
 	/**
 	 * la clase chargee de Dessiner
 	 */
-	private GamePainter painter;
+	private IGamePainter painter;
 
 	/**
 	 * image suivante est l'image cachee sur laquelle dessiner
@@ -47,7 +47,7 @@ public class DrawingPanel extends JPanel {
 	 * @param height
 	 *            hauteur de l'image
 	 */
-	public DrawingPanel(GamePainter painter) {
+	public DrawingPanel(IGamePainter painter) {
 		super();
 		this.width = painter.getWidth();
 		this.height = painter.getHeight();

@@ -11,17 +11,17 @@ public class GameEngineGraphical {
 	/**
 	 * le game a executer
 	 */
-	private Game game;
+	private IGame game;
 
 	/**
 	 * l'afficheur a utiliser pour le rendu
 	 */
-	private GamePainter gamePainter;
+	private IGamePainter gamePainter;
 
 	/**
 	 * le controlleur a utiliser pour recuperer les commandes
 	 */
-	private GameController gameController;
+	private IGameController gameController;
 
 	/**
 	 * l'interface graphique
@@ -41,7 +41,7 @@ public class GameEngineGraphical {
 	 *            controlleur a utiliser
 	 *            
 	 */
-	public GameEngineGraphical(Game game, GamePainter gamePainter, GameController gameController) {
+	public GameEngineGraphical(IGame game, IGamePainter gamePainter, IGameController gameController) {
 		// creation du game
 		this.game = game;
 		this.gamePainter = gamePainter;
@@ -79,7 +79,7 @@ public class GameEngineGraphical {
 			while (dt >= 1) {
 				ticks++;
 				// fait evoluer le game
-				this.game.evolve(c, dt);
+				this.game.evolve(dt);
 				dt -= 1;
 				shouldRender = true;
 			}

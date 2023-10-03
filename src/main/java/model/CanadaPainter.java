@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import engine.GamePainter;
+import engine.IGamePainter;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -12,7 +12,7 @@ import engine.GamePainter;
  * afficheur graphique pour le game
  * 
  */
-public class CanadaPainter implements GamePainter {
+public class CanadaPainter implements IGamePainter {
 
 	/**
 	 * la taille des cases
