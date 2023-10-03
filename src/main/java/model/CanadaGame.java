@@ -10,6 +10,7 @@ import java.util.List;
 import engine.Cmd;
 import engine.IGame;
 import model.components.CircleComponent;
+import model.components.RectangleComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -45,11 +46,12 @@ public class CanadaGame implements IGame {
 
 		this.gameObjects = new ArrayList<>();
 
+		World world = new World(this.painter);
+		gameObjects.addAll(world.buildWorld("/map.txt"));
+
 		// Exemple de création d'objets avec les components
-		GameObject blueCircle = new GameObject(100, 100, new CircleComponent(painter, Color.blue, 10));
-		GameObject redCircle = new GameObject(200, 100, new CircleComponent(painter, Color.red, 10));
-		gameObjects.add(blueCircle);
-		gameObjects.add(redCircle);
+		//GameObject rectangle = new GameObject(0, 0, new RectangleComponent(painter, Color.blue, 50f, 50f));
+		//gameObjects.add(rectangle);
 	}
 
 	/**
