@@ -23,6 +23,8 @@ public class CanadaPhysics implements IGamePhysics {
 
         for (MovementComponent c : toUpdate){
             // On effectue les opérations à faire (collisions, deplacement, ...)
+            GameObject gameObject = c.getGameObject();
+            gameObject.setPosition(gameObject.getX() + c.getVelocityX(), gameObject.getY() + c.getVelocityY());
         }
 
         toUpdate.clear();

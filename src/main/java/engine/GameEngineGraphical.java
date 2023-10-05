@@ -75,9 +75,6 @@ public class GameEngineGraphical {
 			lastTime = now;
 			boolean shouldRender = true;
 
-			// demande controle utilisateur
-			Cmd c = this.gameController.getCommand();
-
 			while (dt >= 1) {
 				ticks++;
 				// fait evoluer le game

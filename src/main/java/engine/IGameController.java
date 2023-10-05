@@ -1,6 +1,7 @@
 package engine;
 
 import java.awt.event.KeyListener;
+import java.util.LinkedList;
 
 /**
  * @author Horatiu Cirstea
@@ -16,6 +17,6 @@ public interface IGameController extends KeyListener {
 	 * 
 	 * @return commande faite par le joueur
 	 */
-	public Cmd getCommand();
+	public LinkedList<Cmd> getCommands();
 
 }

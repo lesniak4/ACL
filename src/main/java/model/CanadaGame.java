@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.Cmd;
+import java.awt.*;
 import engine.IGame;
+import engine.IGameController;
+import model.components.physics.PlayerComponent;
+import model.components.rendering.RectangleComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -25,7 +30,7 @@ public class CanadaGame implements IGame {
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -44,6 +49,11 @@ public class CanadaGame implements IGame {
 
 		World world = new World(this.painter);
 		gameObjects.addAll(world.buildWorld("/map.txt"));
+
+		GameObject playerTile = GameObjectFactory.getInstance().createPlayerTile(20,20,20,20,Color.BLACK, painter);
+		PlayerComponent playerComponent = new PlayerComponent(playerTile, physics, 1f, controller);
+		playerTile.addComponent(playerComponent);
+		gameObjects.add(playerTile);
 	}
 
 	/**
