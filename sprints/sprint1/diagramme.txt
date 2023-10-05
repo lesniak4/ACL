@@ -37,24 +37,41 @@ void afficher()
 
 class GameObject {
 int posX, posY
+void update(double dt)
+void addComponent(Component component)
 }
 
-interface IComponent{
-void update(GameObject obj)
+class GameObjectFactory {
+
+}
+
+abstract class Component{
+void update(double dt)
 }
 
 class PlayerInputComponent{
-void update(GameObject obj)
+void update(double dt)
 }
 
 class MovementComponent{
 float velocity
-void update(GameObject obj)
+void update(double dt)
 }
 
-class GraphicsComponent{
-Sprite sprite
-void update(GameObject obj)
+abstract class GraphicsComponent{
+Shape shape
+Color color
+void update(double dt)
+}
+
+class RectangleComponent{
+float width, height
+void update(double dt)
+}
+
+class CircleComponent{
+float radius
+void update(double dt)
 }
 
 Niveau -- "*"GameObject
@@ -64,12 +81,17 @@ GameEngineGraphical -- "1"IGamePainter
 GameEngineGraphical -- "1"IGameController 
 Game -- "1"Niveau
 
-IComponent <|.. GraphicsComponent
-IComponent <|.. PlayerInputComponent
-IComponent <|.. MovementComponent
+GameObject "1"--"*"Component
+GameObjectFactory -- "1"GameObjectFactory
 
-GameObject -- "*"IComponent 
+Component <|-- GraphicsComponent
+Component <|-- PlayerInputComponent
+Component <|-- MovementComponent
 
 IGameController "1"-- PlayerInputComponent
 IGamePainter "1"-- GraphicsComponent 
+
+GraphicsComponent <|-- RectangleComponent
+GraphicsComponent <|-- CircleComponent
+
 @enduml
