@@ -8,9 +8,9 @@ import java.awt.geom.Ellipse2D;
 
 public class CircleComponent extends GraphicsComponent{
 
-    protected int radius;
+    protected float radius;
 
-    public CircleComponent(GameObject obj, CanadaPainter painter, Color color, int radius) {
+    public CircleComponent(GameObject obj, CanadaPainter painter, Color color, float radius) {
         super(obj, painter, color);
         this.radius = radius;
     }
