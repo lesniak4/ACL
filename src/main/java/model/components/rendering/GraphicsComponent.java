@@ -1,7 +1,8 @@
-package model.components;
+package model.components.rendering;
 
 import model.CanadaPainter;
 import model.GameObject;
+import model.components.Component;
 
 import java.awt.*;
 

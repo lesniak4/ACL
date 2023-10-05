@@ -2,6 +2,7 @@ import model.CanadaPainter;
 import engine.GameEngineGraphical;
 import model.CanadaController;
 import model.CanadaGame;
+import model.CanadaPhysics;
 
 /**
  * lancement du moteur avec le jeu
@@ -12,11 +13,12 @@ public class Main {
 
 		// creation du jeu particulier et de son afficheur
 		CanadaPainter painter = new CanadaPainter();
-		CanadaGame game = new CanadaGame("helpFilePacman.txt", painter);
+		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter);
 		CanadaController controller = new CanadaController();
+		CanadaPhysics physics = new CanadaPhysics();
 
 		// classe qui lance le moteur de jeu generique
-		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller);
+		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller, physics);
 		engine.run();
 	}
 

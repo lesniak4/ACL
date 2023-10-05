@@ -1,10 +1,9 @@
-package model.components;
+package model.components.rendering;
 
 import model.CanadaPainter;
 import model.GameObject;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 public class RectangleComponent extends GraphicsComponent{

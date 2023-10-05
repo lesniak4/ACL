@@ -1,6 +1,6 @@
 package model;
 
-import model.components.RectangleComponent;
+import model.components.rendering.RectangleComponent;
 
 import java.awt.*;
 

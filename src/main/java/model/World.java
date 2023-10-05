@@ -1,7 +1,5 @@
 package model;
 
-import model.components.RectangleComponent;
-
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;

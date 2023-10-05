@@ -23,6 +23,8 @@ public class GameEngineGraphical {
 	 */
 	private IGameController gameController;
 
+	private IGamePhysics gamePhysics;
+
 	/**
 	 * l'interface graphique
 	 */
@@ -39,11 +41,12 @@ public class GameEngineGraphical {
 	 *            controlleur a utiliser
 	 *            
 	 */
-	public GameEngineGraphical(IGame game, IGamePainter gamePainter, IGameController gameController) {
+	public GameEngineGraphical(IGame game, IGamePainter gamePainter, IGameController gameController, IGamePhysics gamePhysics) {
 		// creation du game
 		this.game = game;
 		this.gamePainter = gamePainter;
 		this.gameController = gameController;
+		this.gamePhysics = gamePhysics;
 	}
 
 	/**
@@ -79,6 +82,7 @@ public class GameEngineGraphical {
 				ticks++;
 				// fait evoluer le game
 				this.game.evolve(dt);
+				this.gamePhysics.updatePhysics(dt);
 				dt -= 1;
 				shouldRender = true;
 			}

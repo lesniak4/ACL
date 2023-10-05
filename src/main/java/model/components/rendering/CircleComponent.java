@@ -1,4 +1,4 @@
-package model.components;
+package model.components.rendering;
 
 import model.CanadaPainter;
 import model.GameObject;

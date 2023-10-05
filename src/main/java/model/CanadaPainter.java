@@ -4,10 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Queue;
 
 import engine.IGamePainter;
-import model.components.GraphicsComponent;
+import model.components.rendering.GraphicsComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas

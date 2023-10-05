@@ -1,16 +1,12 @@
 package model;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.Cmd;
 import engine.IGame;
-import model.components.CircleComponent;
-import model.components.RectangleComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
