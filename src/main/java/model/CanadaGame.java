@@ -48,10 +48,6 @@ public class CanadaGame implements IGame {
 
 		World world = new World(this.painter);
 		gameObjects.addAll(world.buildWorld("/map.txt"));
-
-		// Exemple de création d'objets avec les components
-		//GameObject rectangle = new GameObject(0, 0, new RectangleComponent(painter, Color.blue, 50f, 50f));
-		//gameObjects.add(rectangle);
 	}
 
 	/**
