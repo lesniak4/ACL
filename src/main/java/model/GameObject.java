@@ -44,4 +44,9 @@ public class GameObject {
     public float getY() {
         return posY;
     }
+
+    public void setPosition(float newX, float newY){
+        this.posX = newX;
+        this.posY = newY;
+    }
 }
