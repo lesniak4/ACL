@@ -10,15 +10,15 @@ public class CircleComponent extends GraphicsComponent{
 
     protected int radius;
 
-    public CircleComponent(CanadaPainter painter, Color color, int radius) {
-        super(painter, color);
+    public CircleComponent(GameObject obj, CanadaPainter painter, Color color, int radius) {
+        super(obj, painter, color);
         this.radius = radius;
     }
 
     @Override
-    public void update(GameObject obj, double dt) {
+    public void update(double dt) {
 
-        this.shape = new Ellipse2D.Float(obj.getX(), obj.getY(), 2*radius, 2*radius);
-        super.update(obj, dt);
+        this.shape = new Ellipse2D.Float(this.gameObject.getX(), this.gameObject.getY(), 2*radius, 2*radius);
+        super.update(dt);
     }
 }

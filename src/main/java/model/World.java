@@ -40,10 +40,10 @@ public class World {
                     for (int i = 0; i < line.length(); i++) {
                         char n = line.charAt(i);
                         if (n == '0') {
-                            tiles.add(new GameObject(col * tileSize, row * tileSize, new RectangleComponent(painter, Color.white, tileSize, tileSize)));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, Color.white, painter));
                             col++;
                         } else if (n == '1') {
-                            tiles.add(new GameObject(col * tileSize, row * tileSize, new RectangleComponent(painter, Color.green, tileSize, tileSize)));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, Color.green, painter));
                             col++;
                         }
                     }

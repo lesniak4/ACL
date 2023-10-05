@@ -12,16 +12,16 @@ public class RectangleComponent extends GraphicsComponent{
     protected float width;
     protected float height;
 
-    public RectangleComponent(CanadaPainter painter, Color color, float width, float height) {
-        super(painter, color);
+    public RectangleComponent(GameObject obj, CanadaPainter painter, Color color, float width, float height) {
+        super(obj, painter, color);
         this.width = width;
         this.height = height;
     }
 
     @Override
-    public void update(GameObject obj, double dt) {
+    public void update(double dt) {
 
-        this.shape = new Rectangle2D.Float(obj.getX(), obj.getY(), width, height);
-        super.update(obj, dt);
+        this.shape = new Rectangle2D.Float(this.gameObject.getX(), this.gameObject.getY(), width, height);
+        super.update(dt);
     }
 }
