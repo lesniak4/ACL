@@ -1,6 +1,5 @@
 package model;
 
-import model.components.physics.PlayerComponent;
 import model.components.rendering.RectangleComponent;
 
 import java.awt.*;

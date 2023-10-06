@@ -21,10 +21,12 @@ public class CanadaPhysics implements IGamePhysics {
     @Override
     public void updatePhysics(double dt) {
 
-        for (MovementComponent c : toUpdate){
+        for (MovementComponent m : toUpdate){
             // On effectue les opérations à faire (collisions, deplacement, ...)
-            GameObject gameObject = c.getGameObject();
-            gameObject.setPosition(gameObject.getX() + c.getVelocityX(), gameObject.getY() + c.getVelocityY());
+            GameObject gameObject = m.getGameObject();
+            gameObject.setPosition(gameObject.getX() + m.getVelocityX(), gameObject.getY() + m.getVelocityY());
+
+            m.resetVelocity();
         }
 
         toUpdate.clear();

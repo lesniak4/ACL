@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.Cmd;
 import java.awt.*;
 import engine.IGame;
 import engine.IGameController;
-import model.components.physics.PlayerComponent;
-import model.components.rendering.RectangleComponent;
+import model.components.physics.ColliderComponent;
+import model.components.physics.MovementComponent;
+import model.components.physics.PlayerInputComponent;
+import model.components.physics.RectangleComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -51,8 +52,10 @@ public class CanadaGame implements IGame {
 		gameObjects.addAll(world.buildWorld("/map.txt"));
 
 		GameObject playerTile = GameObjectFactory.getInstance().createPlayerTile(20,20,20,20,Color.BLACK, painter);
-		PlayerComponent playerComponent = new PlayerComponent(playerTile, physics, 1f, controller);
-		playerTile.addComponent(playerComponent);
+		PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
+		playerTile.addComponent(playerInputComponent);
+		playerTile.addComponent(new RectangleComponent(playerTile, physics, 20, 20));
+		playerTile.addComponent(new MovementComponent(playerTile, physics, 1, playerInputComponent));
 		gameObjects.add(playerTile);
 	}
 

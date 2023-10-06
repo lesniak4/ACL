@@ -1,7 +1,10 @@
 package model;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Set;
 
 import engine.Cmd;
 import engine.IGameController;
@@ -15,21 +18,19 @@ import engine.IGameController;
  */
 public class CanadaController implements IGameController {
 
-	/**
-	 * commande en cours
-	 */
-	private LinkedList<Cmd> commandesEnCours;
+	private static final int Q = 0;
+	private static final int Z = 1;
+	private static final int D = 2;
+	private static final int S = 3;
 
-	private Cmd lastPressed;
-	private Cmd lastReleased;
-	
+	private Boolean[] keyPressed;
+
+
 	/**
 	 * construction du controleur par defaut le controleur n'a pas de commande
 	 */
 	public CanadaController() {
-		this.commandesEnCours = new LinkedList<>();
-		this.lastPressed = Cmd.IDLE;
-		this.lastReleased = Cmd.IDLE;
+		this.keyPressed = new Boolean[]{false,false,false,false};
 	}
 
 	/**
@@ -39,7 +40,18 @@ public class CanadaController implements IGameController {
 	 * @return commande faite par le joueur
 	 */
 	public LinkedList<Cmd> getCommands() {
-		return commandesEnCours;
+		LinkedList<Cmd> commandList = new LinkedList();
+
+		if(keyPressed[Q])
+			commandList.add(Cmd.LEFT);
+		if(keyPressed[Z])
+			commandList.add(Cmd.UP);
+		if(keyPressed[D])
+			commandList.add(Cmd.RIGHT);
+		if(keyPressed[S])
+			commandList.add(Cmd.DOWN);
+
+		return commandList;
 	}
 
 	@Override
@@ -50,35 +62,21 @@ public class CanadaController implements IGameController {
 		char key = Character.toUpperCase(e.getKeyChar());
 		switch(key) {
 			case 'Q': // si on appuie sur 'q'
-				if(lastPressed != Cmd.LEFT) {
-					this.commandesEnCours.add(Cmd.LEFT);
-					lastPressed = Cmd.LEFT;
-				}
+				this.keyPressed[Q] = true;
 				break;
 			case 'Z': // si on appuie sur 'z'
-				if(lastPressed != Cmd.UP) {
-					this.commandesEnCours.add(Cmd.UP);
-					lastPressed = Cmd.UP;
-				}
+				this.keyPressed[Z] = true;
 				break;
 			case 'D': // si on appuie sur 'd'
-				if(lastPressed != Cmd.RIGHT) {
-					this.commandesEnCours.add(Cmd.RIGHT);
-					lastPressed = Cmd.RIGHT;
-				}
+				this.keyPressed[D] = true;
 				break;
 			case 'S': // si on appuie sur 's'
-				if(lastPressed != Cmd.DOWN) {
-					this.commandesEnCours.add(Cmd.DOWN);
-					lastPressed = Cmd.DOWN;
-				}
+				this.keyPressed[S] = true;
 				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
 		}
 	}
-
-
 
 	@Override
 	/**
@@ -88,28 +86,16 @@ public class CanadaController implements IGameController {
 		char key = Character.toUpperCase(e.getKeyChar());
 		switch(key) {
 			case 'Q': // si on relâche 'q'
-				if(lastReleased != Cmd.STOP_LEFT) {
-					this.commandesEnCours.add(Cmd.STOP_LEFT);
-					lastReleased = Cmd.STOP_LEFT;
-				}
+				this.keyPressed[Q] = false;
 				break;
 			case 'Z': // si on relâche 'z'
-				if(lastReleased != Cmd.STOP_UP) {
-					this.commandesEnCours.add(Cmd.STOP_UP);
-					lastReleased = Cmd.STOP_UP;
-				}
+				this.keyPressed[Z] = false;
 				break;
 			case 'D': // si on relâche 'd'
-				if(lastReleased != Cmd.STOP_RIGHT) {
-					this.commandesEnCours.add(Cmd.STOP_RIGHT);
-					lastReleased = Cmd.STOP_RIGHT;
-				}
+				this.keyPressed[D] = false;
 				break;
 			case 'S': // si on relâche 's'
-				if(lastReleased != Cmd.STOP_DOWN) {
-					this.commandesEnCours.add(Cmd.STOP_DOWN);
-					lastReleased = Cmd.STOP_DOWN;
-				}
+				this.keyPressed[S] = false;
 				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
