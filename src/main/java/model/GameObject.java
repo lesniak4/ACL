@@ -2,16 +2,14 @@ package model;
 
 import model.components.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class GameObject {
 
     private float posX;
     private float posY;
 
-    private List<Component> components;
+    private Map<Class<? extends Component>, Component> components;
 
     public GameObject(){
 
@@ -23,18 +21,18 @@ public class GameObject {
         this.posX = x;
         this.posY = y;
 
-        this.components = new ArrayList<>();
+        this.components = new LinkedHashMap<>();
     }
 
     public void update(double dt){
 
-        for(Component c : components){
+        for(Component c : components.values()){
             c.update(dt);
         }
     }
 
     public void addComponent(Component component){
-        this.components.add(component);
+        this.components.put(component.getClass(), component);
     }
 
     public float getX() {
@@ -43,6 +41,15 @@ public class GameObject {
 
     public float getY() {
         return posY;
+    }
+
+    public <T extends Component> T getComponent(Class<T> componentClass){
+        Component c = this.components.get(componentClass);
+        if(c != null){
+            return componentClass.cast(c);
+        }else{
+            return null;
+        }
     }
 
     public void setPosition(float newX, float newY){
