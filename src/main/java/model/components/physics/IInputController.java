@@ -3,6 +3,7 @@ package model.components.physics;
 import engine.Cmd;
 
 import java.util.LinkedList;
+import java.util.Set;
 
 public interface IInputController {
     /**
@@ -11,5 +12,5 @@ public interface IInputController {
      *
      * @return commande faite par le joueur
      */
-    public LinkedList<Cmd> getCommands();
+    public Set<Cmd> getCommands();
 }

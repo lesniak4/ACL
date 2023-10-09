@@ -6,12 +6,12 @@ import model.GameObject;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public class RectangleComponent extends GraphicsComponent{
+public class RectangleRendererComponent extends GraphicsComponent{
 
     protected float width;
     protected float height;
 
-    public RectangleComponent(GameObject obj, CanadaPainter painter, Color color, float width, float height) {
+    public RectangleRendererComponent(GameObject obj, CanadaPainter painter, Color color, float width, float height) {
         super(obj, painter, color);
         this.width = width;
         this.height = height;

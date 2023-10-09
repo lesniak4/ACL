@@ -6,13 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.*;
 import engine.IGame;
-import engine.IGameController;
-import model.components.physics.ColliderComponent;
-import model.components.physics.MovementComponent;
-import model.components.physics.PlayerInputComponent;
-import model.components.physics.RectangleComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -31,7 +25,7 @@ public class CanadaGame implements IGame {
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -51,20 +45,17 @@ public class CanadaGame implements IGame {
 		World world = new World(this.painter);
 		gameObjects.addAll(world.buildWorld("/map.txt"));
 
-		GameObject playerTile = GameObjectFactory.getInstance().createPlayerTile(20,20,20,20,Color.BLACK, painter);
-		PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
-		playerTile.addComponent(playerInputComponent);
-		playerTile.addComponent(new RectangleComponent(playerTile, physics, 20, 20));
-		playerTile.addComponent(new MovementComponent(playerTile, physics, 1, playerInputComponent));
-		gameObjects.add(playerTile);
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(20,20, painter, controller, physics);
+		gameObjects.add(player);
 	}
 
 	/**
 	 * faire evoluer le jeu
 	 *
+	 * @param dt
 	 */
 	@Override
-	public void evolve(double dt) {
+	public void evolve(float dt) {
 
 		painter.clearDrawQueue();
 		for(GameObject obj : gameObjects){

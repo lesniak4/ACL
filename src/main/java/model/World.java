@@ -38,10 +38,10 @@ public class World {
                     for (int i = 0; i < line.length(); i++) {
                         char n = line.charAt(i);
                         if (n == '0') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, Color.white, painter));
+                            tiles.add(GameObjectFactory.getInstance().createPathTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
                             col++;
                         } else if (n == '1') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, Color.green, painter));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
                             col++;
                         }
                     }

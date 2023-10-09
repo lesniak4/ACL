@@ -8,6 +8,7 @@ import model.components.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class MovementComponent extends Component {
 
@@ -18,7 +19,7 @@ public class MovementComponent extends Component {
     protected float velocityX;
     protected float velocityY;
 
-    public MovementComponent(GameObject obj, CanadaPhysics physics, float movementSpeed, IInputController controller) {
+    public MovementComponent(GameObject obj, float movementSpeed, CanadaPhysics physics, IInputController controller) {
         super(obj);
         this.physics = physics;
         this.controller = controller;
@@ -28,29 +29,22 @@ public class MovementComponent extends Component {
     @Override
     public void update(double dt) {
         if(this.gameObject != null){
-            LinkedList<Cmd> commands = controller.getCommands();
+            Set<Cmd> commands = controller.getCommands();
 
-            while (!commands.isEmpty()) {
-                Cmd command = commands.removeFirst();
-
-                switch (command) {
-                    case UP:
-                        this.velocityY -= movementSpeed * (float)dt;
-                        break;
-                    case DOWN:
-                        this.velocityY += movementSpeed * (float)dt;
-                        break;
-                    case LEFT:
-                        this.velocityX -= movementSpeed * (float)dt;
-                        break;
-                    case RIGHT:
-                        this.velocityX += movementSpeed * (float)dt;
-                        break;
-                    default:
-                        break;
+            if(!commands.isEmpty()) {
+                for (Cmd command : commands) {
+                    if (command == Cmd.UP) {
+                        this.velocityY -= movementSpeed;
+                    } else if (command == Cmd.DOWN) {
+                        this.velocityY += movementSpeed;
+                    } else if (command == Cmd.LEFT) {
+                        this.velocityX -= movementSpeed;
+                    } else if (command == Cmd.RIGHT) {
+                        this.velocityX += movementSpeed;
+                    }
                 }
+                physics.addToUpdate(this);
             }
-            physics.addToUpdate(this);
         }
     }
 

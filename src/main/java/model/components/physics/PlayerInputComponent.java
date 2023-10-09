@@ -7,6 +7,7 @@ import model.GameObject;
 import model.components.Component;
 
 import java.util.LinkedList;
+import java.util.Set;
 
 public class PlayerInputComponent extends Component implements IInputController {
 
@@ -18,7 +19,7 @@ public class PlayerInputComponent extends Component implements IInputController 
     }
 
     @Override
-    public LinkedList<Cmd> getCommands() {
+    public Set<Cmd> getCommands() {
         return controller.getCommands();
     }
 

@@ -1,6 +1,9 @@
 package model;
 
-import model.components.rendering.RectangleComponent;
+import model.components.physics.MovementComponent;
+import model.components.physics.PlayerInputComponent;
+import model.components.physics.RectangleColliderComponent;
+import model.components.rendering.RectangleRendererComponent;
 
 import java.awt.*;
 
@@ -16,18 +19,31 @@ public class GameObjectFactory {
 
     }
 
-    public GameObject createWallTile(float posX, float posY, float width, float height, Color color, CanadaPainter painter){
+    public GameObject createWallTile(float posX, float posY, float width, float height, CanadaPainter painter){
 
         GameObject wallTile = new GameObject(posX, posY);
-        wallTile.addComponent(new RectangleComponent(wallTile, painter, color, width, height));
+        wallTile.addComponent(new RectangleRendererComponent(wallTile, painter, Color.green, width, height));
 
         return wallTile;
     }
 
-    public GameObject createPlayerTile(float posX, float posY, float width, float height, Color color, CanadaPainter painter){
+    public GameObject createPathTile(float posX, float posY, float width, float height, CanadaPainter painter){
+
+        GameObject pathTile = new GameObject(posX, posY);
+        pathTile.addComponent(new RectangleRendererComponent(pathTile, painter, Color.white, width, height));
+
+        return pathTile;
+    }
+
+    public GameObject createPlayerObject(float posX, float posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
 
         GameObject playerTile = new GameObject(posX, posY);
-        playerTile.addComponent(new RectangleComponent(playerTile, painter, color, width, height));
+        playerTile.addComponent(new RectangleRendererComponent(playerTile, painter, Color.BLACK,20,20));
+
+        PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
+        playerTile.addComponent(playerInputComponent);
+        playerTile.addComponent(new MovementComponent(playerTile, 1f, physics, playerInputComponent));
+        playerTile.addComponent(new RectangleColliderComponent(playerTile, physics, 20, 20));
 
         return playerTile;
     }

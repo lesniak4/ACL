@@ -6,11 +6,11 @@ import model.GameObject;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class CircleComponent extends GraphicsComponent{
+public class CircleRendererComponent extends GraphicsComponent{
 
     protected float radius;
 
-    public CircleComponent(GameObject obj, CanadaPainter painter, Color color, float radius) {
+    public CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, float radius) {
         super(obj, painter, color);
         this.radius = radius;
     }

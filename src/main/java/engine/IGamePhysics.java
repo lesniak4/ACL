@@ -2,5 +2,5 @@ package engine;
 
 public interface IGamePhysics {
 
-    public void updatePhysics(double dt);
+    public void updatePhysics(float dt);
 }

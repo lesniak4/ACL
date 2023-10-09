@@ -65,7 +65,7 @@ public class GameEngineGraphical {
 		int frames = 0;
 
 		long lastTimer = System.currentTimeMillis();
-		double dt = 0;
+		float dt = 0;
 
 		// boucle de game
 		while (!this.game.isFinished()) {

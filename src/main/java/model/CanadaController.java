@@ -1,10 +1,7 @@
 package model;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 import engine.Cmd;
 import engine.IGameController;
@@ -18,19 +15,13 @@ import engine.IGameController;
  */
 public class CanadaController implements IGameController {
 
-	private static final int Q = 0;
-	private static final int Z = 1;
-	private static final int D = 2;
-	private static final int S = 3;
-
-	private Boolean[] keyPressed;
-
+	private Set<Cmd> keysPressed;
 
 	/**
 	 * construction du controleur par defaut le controleur n'a pas de commande
 	 */
 	public CanadaController() {
-		this.keyPressed = new Boolean[]{false,false,false,false};
+		this.keysPressed = new HashSet<>();
 	}
 
 	/**
@@ -39,19 +30,8 @@ public class CanadaController implements IGameController {
 	 *
 	 * @return commande faite par le joueur
 	 */
-	public LinkedList<Cmd> getCommands() {
-		LinkedList<Cmd> commandList = new LinkedList();
-
-		if(keyPressed[Q])
-			commandList.add(Cmd.LEFT);
-		if(keyPressed[Z])
-			commandList.add(Cmd.UP);
-		if(keyPressed[D])
-			commandList.add(Cmd.RIGHT);
-		if(keyPressed[S])
-			commandList.add(Cmd.DOWN);
-
-		return commandList;
+	public Set<Cmd> getCommands() {
+		return this.keysPressed;
 	}
 
 	@Override
@@ -59,19 +39,19 @@ public class CanadaController implements IGameController {
 	 * met a jour les commandes en fonctions des touches appuyees
 	 */
 	public void keyPressed(KeyEvent e) {
-		char key = Character.toUpperCase(e.getKeyChar());
+		int key = e.getKeyCode();
 		switch(key) {
-			case 'Q': // si on appuie sur 'q'
-				this.keyPressed[Q] = true;
+			case KeyEvent.VK_Q: // si on appuie sur 'q'
+				keysPressed.add(Cmd.LEFT);
 				break;
-			case 'Z': // si on appuie sur 'z'
-				this.keyPressed[Z] = true;
+			case KeyEvent.VK_Z: // si on appuie sur 'z'
+				keysPressed.add(Cmd.UP);
 				break;
-			case 'D': // si on appuie sur 'd'
-				this.keyPressed[D] = true;
+			case KeyEvent.VK_D: // si on appuie sur 'd'
+				keysPressed.add(Cmd.RIGHT);
 				break;
-			case 'S': // si on appuie sur 's'
-				this.keyPressed[S] = true;
+			case KeyEvent.VK_S: // si on appuie sur 's'
+				keysPressed.add(Cmd.DOWN);
 				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
@@ -83,19 +63,19 @@ public class CanadaController implements IGameController {
 	 * met a jour les commandes en fonctions des touches relachées
 	 */
 	public void keyReleased(KeyEvent e) {
-		char key = Character.toUpperCase(e.getKeyChar());
+		int key = e.getKeyCode();
 		switch(key) {
-			case 'Q': // si on relâche 'q'
-				this.keyPressed[Q] = false;
+			case KeyEvent.VK_Q: // si on appuie sur 'q'
+				keysPressed.remove(Cmd.LEFT);
 				break;
-			case 'Z': // si on relâche 'z'
-				this.keyPressed[Z] = false;
+			case KeyEvent.VK_Z: // si on appuie sur 'z'
+				keysPressed.remove(Cmd.UP);
 				break;
-			case 'D': // si on relâche 'd'
-				this.keyPressed[D] = false;
+			case KeyEvent.VK_D: // si on appuie sur 'd'
+				keysPressed.remove(Cmd.RIGHT);
 				break;
-			case 'S': // si on relâche 's'
-				this.keyPressed[S] = false;
+			case KeyEvent.VK_S: // si on appuie sur 's'
+				keysPressed.remove(Cmd.DOWN);
 				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
