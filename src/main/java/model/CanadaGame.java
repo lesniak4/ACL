@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.IGame;
+import model.world.HexLayout;
+import model.world.HexOrientation;
+import model.world.World;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -43,7 +46,7 @@ public class CanadaGame implements IGame {
 		this.gameObjects = new ArrayList<>();
 
 		World world = new World(this.painter);
-		gameObjects.addAll(world.buildWorld("/map.txt"));
+		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(20,20, painter, controller, physics);
 		gameObjects.add(player);
@@ -55,7 +58,7 @@ public class CanadaGame implements IGame {
 	 * @param dt
 	 */
 	@Override
-	public void evolve(float dt) {
+	public void evolve(double dt) {
 
 		painter.clearDrawQueue();
 		for(GameObject obj : gameObjects){

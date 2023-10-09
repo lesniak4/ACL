@@ -3,7 +3,10 @@ package model;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.physics.RectangleColliderComponent;
+import model.components.rendering.HexRendererComponent;
 import model.components.rendering.RectangleRendererComponent;
+import model.world.Hex;
+import model.world.HexLayout;
 
 import java.awt.*;
 
@@ -19,26 +22,28 @@ public class GameObjectFactory {
 
     }
 
-    public GameObject createWallTile(float posX, float posY, float width, float height, CanadaPainter painter){
+    public GameObject createWallTile(Hex hex, HexLayout layout, CanadaPainter painter){
 
-        GameObject wallTile = new GameObject(posX, posY);
-        wallTile.addComponent(new RectangleRendererComponent(wallTile, painter, Color.green, width, height));
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject wallTile = new GameObject(pos.X(), pos.Y());
+        wallTile.addComponent(new HexRendererComponent(wallTile, painter, Color.green, hex, layout));
 
         return wallTile;
     }
 
-    public GameObject createPathTile(float posX, float posY, float width, float height, CanadaPainter painter){
+    public GameObject createPathTile(Hex hex, HexLayout layout, CanadaPainter painter){
 
-        GameObject pathTile = new GameObject(posX, posY);
-        pathTile.addComponent(new RectangleRendererComponent(pathTile, painter, Color.white, width, height));
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject pathTile = new GameObject(pos.X(), pos.Y());
+        pathTile.addComponent(new HexRendererComponent(pathTile, painter, Color.white, hex, layout));
 
         return pathTile;
     }
 
-    public GameObject createPlayerObject(float posX, float posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
+    public GameObject createPlayerObject(double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
 
         GameObject playerTile = new GameObject(posX, posY);
-        playerTile.addComponent(new RectangleRendererComponent(playerTile, painter, Color.BLACK,20,20));
+        playerTile.addComponent(new RectangleRendererComponent(playerTile, painter, Color.BLACK,15,15));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
         playerTile.addComponent(playerInputComponent);

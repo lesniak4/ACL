@@ -1,4 +1,9 @@
-package model;
+package model.world;
+
+import model.CanadaPainter;
+import model.GameObject;
+import model.GameObjectFactory;
+import model.Vector2;
 
 import java.awt.*;
 import java.io.*;
@@ -7,6 +12,9 @@ import java.util.ArrayList;
 
 public class World {
 
+    private final int EVEN = 1;
+    private final int ODD = -1;
+
     private CanadaPainter painter;
 
     public World(CanadaPainter painter){
@@ -14,7 +22,7 @@ public class World {
         this.painter = painter;
     }
 
-    public ArrayList<GameObject> buildWorld(String source){
+    public ArrayList<GameObject> buildWorld(String source, HexOrientation orientation){
 
         ArrayList<GameObject> tiles = new ArrayList<>();
 
@@ -31,17 +39,20 @@ public class World {
             String line = buffer.readLine();
 
             if(line != null) {
-                float tileSize = CanadaPainter.WIDTH / line.trim().replaceAll("\\s+","").length();
+                int worldSize = line.trim().replaceAll("\\s+","").length();
+                float tileSize = painter.getWidth() / (float)(Math.sqrt(3f)*worldSize);
+                HexLayout layout = new HexLayout(orientation, new Vector2(tileSize, tileSize), new Vector2(tileSize, tileSize));
 
                 // Lecture du fichier
                 do {
                     for (int i = 0; i < line.length(); i++) {
                         char n = line.charAt(i);
+                        Hex hex = gridToHexCoord(EVEN, col, row);
                         if (n == '0') {
-                            tiles.add(GameObjectFactory.getInstance().createPathTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
+                            tiles.add(GameObjectFactory.getInstance().createPathTile(hex, layout, painter));
                             col++;
                         } else if (n == '1') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(hex, layout, painter));
                             col++;
                         }
                     }
@@ -54,5 +65,11 @@ public class World {
             System.out.println(e.getMessage());
         }
         return tiles;
+    }
+
+    private Hex gridToHexCoord(int offset, int col, int row) {
+        int q = col - ((row + offset * (row & 1)) / 2);
+        int r = row;
+        return new Hex(q, r);
     }
 }

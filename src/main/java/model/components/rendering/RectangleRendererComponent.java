@@ -8,10 +8,10 @@ import java.awt.geom.Rectangle2D;
 
 public class RectangleRendererComponent extends GraphicsComponent{
 
-    protected float width;
-    protected float height;
+    protected double width;
+    protected double height;
 
-    public RectangleRendererComponent(GameObject obj, CanadaPainter painter, Color color, float width, float height) {
+    public RectangleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double width, double height) {
         super(obj, painter, color);
         this.width = width;
         this.height = height;
@@ -20,7 +20,7 @@ public class RectangleRendererComponent extends GraphicsComponent{
     @Override
     public void update(double dt) {
 
-        this.shape = new Rectangle2D.Float(this.gameObject.getX(), this.gameObject.getY(), width, height);
+        this.shape = new Rectangle2D.Double(this.gameObject.getX(), this.gameObject.getY(), width, height);
         super.update(dt);
     }
 }

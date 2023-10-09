@@ -8,9 +8,9 @@ import java.awt.geom.Ellipse2D;
 
 public class CircleRendererComponent extends GraphicsComponent{
 
-    protected float radius;
+    protected double radius;
 
-    public CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, float radius) {
+    public CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double radius) {
         super(obj, painter, color);
         this.radius = radius;
     }
@@ -18,7 +18,7 @@ public class CircleRendererComponent extends GraphicsComponent{
     @Override
     public void update(double dt) {
 
-        this.shape = new Ellipse2D.Float(this.gameObject.getX(), this.gameObject.getY(), 2*radius, 2*radius);
+        this.shape = new Ellipse2D.Double(this.gameObject.getX(), this.gameObject.getY(), 2*radius, 2*radius);
         super.update(dt);
     }
 }

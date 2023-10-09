@@ -6,8 +6,7 @@ import java.util.*;
 
 public class GameObject {
 
-    private float posX;
-    private float posY;
+    private Vector2 position;
 
     private Map<Class<? extends Component>, Component> components;
 
@@ -16,10 +15,9 @@ public class GameObject {
         this(0f, 0f);
     }
 
-    public GameObject(float x, float y){
+    public GameObject(double x, double y){
 
-        this.posX = x;
-        this.posY = y;
+        this.position = new Vector2(x, y);
 
         this.components = new LinkedHashMap<>();
     }
@@ -35,12 +33,12 @@ public class GameObject {
         this.components.put(component.getClass(), component);
     }
 
-    public float getX() {
-        return posX;
+    public double getX() {
+        return position.X();
     }
 
-    public float getY() {
-        return posY;
+    public double getY() {
+        return position.Y();
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass){
@@ -52,8 +50,7 @@ public class GameObject {
         }
     }
 
-    public void setPosition(float newX, float newY){
-        this.posX = newX;
-        this.posY = newY;
+    public void setPosition(double newX, double newY){
+        this.position.set(newX, newY);
     }
 }
