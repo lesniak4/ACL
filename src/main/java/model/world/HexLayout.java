@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class HexLayout
 {
-    public final HexOrientation orientation;
-    public final Vector2 size;
-    public final Vector2 origin;
+    private final HexOrientation orientation;
+    private final Vector2 size;
+    private final Vector2 origin;
 
     static public HexOrientation pointy = new HexOrientation(Math.sqrt(3.0), Math.sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, Math.sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
     static public HexOrientation flat = new HexOrientation(3.0 / 2.0, 0.0, Math.sqrt(3.0) / 2.0, Math.sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, Math.sqrt(3.0) / 3.0, 0.0);
@@ -20,6 +20,9 @@ public class HexLayout
         this.origin = origin;
     }
 
+    public Vector2 getSize(){
+        return this.size;
+    }
 
     public Vector2 hexToWorldPos(Hex h)
     {

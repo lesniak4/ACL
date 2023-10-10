@@ -23,26 +23,23 @@ public class CanadaPhysics implements IGamePhysics {
         for (MovementComponent m : toUpdate){
             // On effectue les opérations à faire (collisions, deplacement, ...)
             GameObject gameObject = m.getGameObject();
-            double newX = gameObject.getX() + m.getVelocityX() * dt;
-            double newY = gameObject.getY() + m.getVelocityY() * dt;
-            gameObject.setPosition(newX, newY);
 
-            float lastX = gameObject.getX();
-            float lastY = gameObject.getY();
+            double lastX = gameObject.getX();
+            double lastY = gameObject.getY();
 
-            float newX = gameObject.getX() + m.getVelocityX() * dt;
-            float newY = gameObject.getY() + m.getVelocityY() * dt;
+            double newX = lastX + m.getVelocityX() * dt;
+            double newY = lastY + m.getVelocityY() * dt;
 
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
             if(collider != null){
 
-                LinkedList<Pair<Float,Float>> positions = new LinkedList<>();
+                LinkedList<Pair<Double,Double>> positions = new LinkedList<>();
                 positions.addAll(Arrays.asList(new Pair<>(newX, newY), new Pair<>(lastX, newY), new Pair<>(newX, lastY), new Pair<>(lastX, lastY)));
                 boolean collided;
 
                 for(Pair p : positions) {
                     collided = false;
-                    gameObject.setPosition((float)p.left, (float)p.right);
+                    gameObject.setPosition((double)p.left, (double)p.right);
 
                     for (ColliderComponent c : colliders) {
                         if (c != collider && isColliding(collider, c)) { // Il y a collision, on essaye de déplacer au mieux le joueur
@@ -76,14 +73,14 @@ public class CanadaPhysics implements IGamePhysics {
         GameObject go1 = c1.getGameObject();
         GameObject go2 = c2.getGameObject();
 
-        float x1 = go1.getX() + c1.getRadius();
-        float x2 = go2.getX() + c2.getRadius();
+        double x1 = go1.getX();// + c1.getRadius();
+        double x2 = go2.getX();// + c2.getRadius();
 
-        float y1 = go1.getY() + c1.getRadius();
-        float y2 = go2.getY() + c2.getRadius();
+        double y1 = go1.getY();// + c1.getRadius();
+        double y2 = go2.getY();// + c2.getRadius();
 
-        float r1 = c1.getRadius();
-        float r2 = c2.getRadius();
+        double r1 = c1.getRadius();
+        double r2 = c2.getRadius();
 
         return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) <= (r1+r2)*(r1+r2);
     }

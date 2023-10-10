@@ -47,8 +47,6 @@ public class CanadaGame implements IGame {
 		this.gameObjects = new ArrayList<>();
 
 		World world = new World(this.painter, this.physics);
-		gameObjects.addAll(world.buildWorld("/map.txt"));
-		World world = new World(this.painter);
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(20,20, painter, controller, physics);

@@ -3,7 +3,7 @@ package model;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
-import model.components.physics.RectangleColliderComponent;
+import model.components.rendering.CircleRendererComponent;
 import model.components.rendering.HexRendererComponent;
 import model.components.rendering.RectangleRendererComponent;
 import model.world.Hex;
@@ -23,15 +23,12 @@ public class GameObjectFactory {
 
     }
 
-    public GameObject createWallTile(float posX, float posY, float width, float height, CanadaPainter painter, CanadaPhysics physics){
-    public GameObject createWallTile(Hex hex, HexLayout layout, CanadaPainter painter){
+    public GameObject createWallTile(Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject wallTile = new GameObject(pos.X(), pos.Y());
         wallTile.addComponent(new HexRendererComponent(wallTile, painter, Color.green, hex, layout));
-        GameObject wallTile = new GameObject(posX, posY);
-        wallTile.addComponent(new RectangleRendererComponent(wallTile, painter, Color.green, width, height));
-        wallTile.addComponent(new ColliderComponent(wallTile, physics, width/2));
+        wallTile.addComponent(new ColliderComponent(wallTile, physics, layout.getSize().X()));
 
         return wallTile;
     }
@@ -48,12 +45,12 @@ public class GameObjectFactory {
     public GameObject createPlayerObject(double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
 
         GameObject playerTile = new GameObject(posX, posY);
-        playerTile.addComponent(new RectangleRendererComponent(playerTile, painter, Color.BLACK,15,15));
+        playerTile.addComponent(new CircleRendererComponent(playerTile, painter, Color.BLACK,7.5));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
         playerTile.addComponent(playerInputComponent);
         playerTile.addComponent(new MovementComponent(playerTile, 1f, physics, playerInputComponent));
-        playerTile.addComponent(new ColliderComponent(playerTile, physics, 10));
+        playerTile.addComponent(new ColliderComponent(playerTile, physics, 7.5));
 
         return playerTile;
     }

@@ -1,9 +1,6 @@
 package model.world;
 
-import model.CanadaPainter;
-import model.GameObject;
-import model.GameObjectFactory;
-import model.Vector2;
+import model.*;
 
 import java.awt.*;
 import java.io.*;
@@ -54,8 +51,7 @@ public class World {
                             tiles.add(GameObjectFactory.getInstance().createPathTile(hex, layout, painter));
                             col++;
                         } else if (n == '1') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(hex, layout, painter));
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, painter, physics));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(hex, layout, painter, physics));
                             col++;
                         }
                     }

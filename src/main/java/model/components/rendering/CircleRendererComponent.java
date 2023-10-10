@@ -18,7 +18,7 @@ public class CircleRendererComponent extends GraphicsComponent{
     @Override
     public void update(double dt) {
 
-        this.shape = new Ellipse2D.Double(this.gameObject.getX(), this.gameObject.getY(), 2*radius, 2*radius);
+        this.shape = new Ellipse2D.Double(this.gameObject.getX()-radius, this.gameObject.getY()-radius, 2*radius, 2*radius);
         super.update(dt);
     }
 }

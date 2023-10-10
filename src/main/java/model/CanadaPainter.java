@@ -1,11 +1,13 @@
 package model;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import engine.IGamePainter;
+import model.components.physics.ColliderComponent;
 import model.components.rendering.GraphicsComponent;
 
 /**
@@ -42,6 +44,15 @@ public class CanadaPainter implements IGamePainter {
 		for(GraphicsComponent g : drawQueue) {
 			crayon.setColor(g.getColor());
 			crayon.fill(g.getShape());
+
+			// Pour afficher les hitboxes
+			/*
+			ColliderComponent collider = g.getGameObject().getComponent(ColliderComponent.class);
+			if(collider != null){
+				crayon.setColor(Color.red);
+				crayon.draw(new Ellipse2D.Double(g.getGameObject().getX()-collider.getRadius(), g.getGameObject().getY()-collider.getRadius(),collider.getRadius()*2, collider.getRadius()*2));
+			}
+			 */
 		}
 	}
 
