@@ -44,16 +44,18 @@ public class CanadaPainter implements IGamePainter {
 		for(GraphicsComponent g : drawQueue) {
 			crayon.setColor(g.getColor());
 			crayon.fill(g.getShape());
+		}
 
-			// Pour afficher les hitboxes
-			/*
+		// Pour afficher les hitboxes
+		/*
+		for(GraphicsComponent g : drawQueue) {
 			ColliderComponent collider = g.getGameObject().getComponent(ColliderComponent.class);
 			if(collider != null){
 				crayon.setColor(Color.red);
 				crayon.draw(new Ellipse2D.Double(g.getGameObject().getX()-collider.getRadius(), g.getGameObject().getY()-collider.getRadius(),collider.getRadius()*2, collider.getRadius()*2));
 			}
-			 */
 		}
+		 */
 	}
 
 	@Override

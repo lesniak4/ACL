@@ -28,7 +28,7 @@ public class GameObjectFactory {
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject wallTile = new GameObject(pos.X(), pos.Y());
         wallTile.addComponent(new HexRendererComponent(wallTile, painter, Color.green, hex, layout));
-        wallTile.addComponent(new ColliderComponent(wallTile, physics, layout.getSize().X()));
+        wallTile.addComponent(new ColliderComponent(wallTile, physics, layout.getSize().X(), false));
 
         return wallTile;
     }
@@ -45,12 +45,12 @@ public class GameObjectFactory {
     public GameObject createPlayerObject(double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
 
         GameObject playerTile = new GameObject(posX, posY);
-        playerTile.addComponent(new CircleRendererComponent(playerTile, painter, Color.BLACK,7.5));
+        playerTile.addComponent(new CircleRendererComponent(playerTile, painter, Color.BLACK,8));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
         playerTile.addComponent(playerInputComponent);
         playerTile.addComponent(new MovementComponent(playerTile, 1f, physics, playerInputComponent));
-        playerTile.addComponent(new ColliderComponent(playerTile, physics, 7.5));
+        playerTile.addComponent(new ColliderComponent(playerTile, physics, 8, false));
 
         return playerTile;
     }

@@ -24,37 +24,30 @@ public class CanadaPhysics implements IGamePhysics {
             // On effectue les opérations à faire (collisions, deplacement, ...)
             GameObject gameObject = m.getGameObject();
 
-            double lastX = gameObject.getX();
-            double lastY = gameObject.getY();
+            Vector2 lastPos = new Vector2(gameObject.getX(), gameObject.getY());
 
-            double newX = lastX + m.getVelocityX() * dt;
-            double newY = lastY + m.getVelocityY() * dt;
+            Vector2 velocity = new Vector2(m.getVelocityX(), m.getVelocityY());
+            Vector2 newPos = new Vector2(lastPos.X() + velocity.X() * dt, lastPos.Y() + velocity.Y() * dt);
+
+            gameObject.setPosition(newPos);
 
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
             if(collider != null){
 
-                LinkedList<Pair<Double,Double>> positions = new LinkedList<>();
-                positions.addAll(Arrays.asList(new Pair<>(newX, newY), new Pair<>(lastX, newY), new Pair<>(newX, lastY), new Pair<>(lastX, lastY)));
-                boolean collided;
-
-                for(Pair p : positions) {
-                    collided = false;
-                    gameObject.setPosition((double)p.left, (double)p.right);
-
-                    for (ColliderComponent c : colliders) {
-                        if (c != collider && isColliding(collider, c)) { // Il y a collision, on essaye de déplacer au mieux le joueur
-                            collided = true;
+                for(ColliderComponent c : colliders) {
+                    if(c != collider) {
+                        if (areColliding(collider, c)) {
+                            if(!c.isTrigger()) {
+                                newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
+                                gameObject.setPosition(newPos);
+                            }
                             break;
                         }
                     }
-
-                    if(!collided)
-                        break;
                 }
             }
             m.resetVelocity();
         }
-
         toUpdate.clear();
     }
 
@@ -68,33 +61,30 @@ public class CanadaPhysics implements IGamePhysics {
         this.toUpdate.add(movementComponent);
     }
 
-    private boolean isColliding(ColliderComponent c1, ColliderComponent c2){
+    private boolean areColliding(ColliderComponent c1, ColliderComponent c2){
 
         GameObject go1 = c1.getGameObject();
         GameObject go2 = c2.getGameObject();
 
-        double x1 = go1.getX();// + c1.getRadius();
-        double x2 = go2.getX();// + c2.getRadius();
-
-        double y1 = go1.getY();// + c1.getRadius();
-        double y2 = go2.getY();// + c2.getRadius();
-
         double r1 = c1.getRadius();
         double r2 = c2.getRadius();
 
-        return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) <= (r1+r2)*(r1+r2);
+        return Vector2.squaredDistance(go1.getPosition(), go2.getPosition()) <= (r1+r2)*(r1+r2);//(x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) <= (r1+r2)*(r1+r2);
     }
 
+    private Vector2 positionAfterCollision(GameObject toMove, GameObject collider, Vector2 lastPos, Vector2 velocity, double dt){
 
-    private class Pair<L,R> {
+        // On repositionne l'objet par rapport à la tangente au point de collision
+        double length = Vector2.distance(collider.getPosition(), toMove.getPosition());
+        if(length == 0D) length = 1D;
 
-        private final L left;
-        private final R right;
+        Vector2 normal = new Vector2((collider.getX() - toMove.getX()) / length, (collider.getY() - toMove.getY()) / length);
+        Vector2 tanDir = new Vector2(-normal.Y(), normal.X());
+        double dot = Vector2.dot(tanDir, velocity);
 
-        public Pair(L left, R right) {
-            this.left = left;
-            this.right = right;
-        }
+        // On soustrait le vecteur normal sinon il arrive qu'on passe à travers
+        return new Vector2(lastPos.X() + (tanDir.X() * dot - normal.X() * 0.02) * dt,
+                            lastPos.Y() + (tanDir.Y() * dot - normal.Y() * 0.02) * dt);
     }
 
 }

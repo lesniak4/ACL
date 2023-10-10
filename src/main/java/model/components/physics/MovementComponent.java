@@ -15,11 +15,11 @@ public class MovementComponent extends Component {
     protected CanadaPhysics physics;
 
     protected IInputController controller;
-    protected float movementSpeed;
-    protected float velocityX;
-    protected float velocityY;
+    protected double movementSpeed;
+    protected double velocityX;
+    protected double velocityY;
 
-    public MovementComponent(GameObject obj, float movementSpeed, CanadaPhysics physics, IInputController controller) {
+    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, IInputController controller) {
         super(obj);
         this.physics = physics;
         this.controller = controller;
@@ -48,11 +48,11 @@ public class MovementComponent extends Component {
         }
     }
 
-    public float getVelocityX() {
+    public double getVelocityX() {
         return velocityX;
     }
 
-    public float getVelocityY() {
+    public double getVelocityY() {
         return velocityY;
     }
 

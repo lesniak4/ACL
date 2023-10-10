@@ -41,6 +41,8 @@ public class GameObject {
         return position.Y();
     }
 
+    public Vector2 getPosition() { return this.position; }
+
     public <T extends Component> T getComponent(Class<T> componentClass){
         Component c = this.components.get(componentClass);
         if(c != null){
@@ -52,5 +54,9 @@ public class GameObject {
 
     public void setPosition(double newX, double newY){
         this.position.set(newX, newY);
+    }
+
+    public void setPosition(Vector2 newPos){
+        this.position = newPos;
     }
 }
