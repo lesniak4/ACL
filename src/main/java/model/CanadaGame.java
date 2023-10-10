@@ -18,6 +18,7 @@ import engine.IGame;
 public class CanadaGame implements IGame {
 
 	private CanadaPainter painter;
+	private CanadaPhysics physics;
 
 	private List<GameObject> gameObjects;
 
@@ -39,10 +40,10 @@ public class CanadaGame implements IGame {
 		}
 
 		this.painter = painter;
-
+		this.physics = physics;
 		this.gameObjects = new ArrayList<>();
 
-		World world = new World(this.painter);
+		World world = new World(this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/map.txt"));
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(20,20, painter, controller, physics);

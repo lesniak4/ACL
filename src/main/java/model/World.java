@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class World {
 
     private CanadaPainter painter;
+    private CanadaPhysics physics;
 
-    public World(CanadaPainter painter){
+    public World(CanadaPainter painter, CanadaPhysics physics){
 
         this.painter = painter;
+        this.physics = physics;
     }
 
     public ArrayList<GameObject> buildWorld(String source){
@@ -41,7 +43,7 @@ public class World {
                             tiles.add(GameObjectFactory.getInstance().createPathTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
                             col++;
                         } else if (n == '1') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, painter));
+                            tiles.add(GameObjectFactory.getInstance().createWallTile(col * tileSize, row * tileSize, tileSize, tileSize, painter, physics));
                             col++;
                         }
                     }

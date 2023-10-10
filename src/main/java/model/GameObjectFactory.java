@@ -1,8 +1,8 @@
 package model;
 
+import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
-import model.components.physics.RectangleColliderComponent;
 import model.components.rendering.RectangleRendererComponent;
 
 import java.awt.*;
@@ -19,10 +19,11 @@ public class GameObjectFactory {
 
     }
 
-    public GameObject createWallTile(float posX, float posY, float width, float height, CanadaPainter painter){
+    public GameObject createWallTile(float posX, float posY, float width, float height, CanadaPainter painter, CanadaPhysics physics){
 
         GameObject wallTile = new GameObject(posX, posY);
         wallTile.addComponent(new RectangleRendererComponent(wallTile, painter, Color.green, width, height));
+        wallTile.addComponent(new ColliderComponent(wallTile, physics, width/2));
 
         return wallTile;
     }
@@ -43,7 +44,7 @@ public class GameObjectFactory {
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(playerTile, controller);
         playerTile.addComponent(playerInputComponent);
         playerTile.addComponent(new MovementComponent(playerTile, 1f, physics, playerInputComponent));
-        playerTile.addComponent(new RectangleColliderComponent(playerTile, physics, 20, 20));
+        playerTile.addComponent(new ColliderComponent(playerTile, physics, 10));
 
         return playerTile;
     }
