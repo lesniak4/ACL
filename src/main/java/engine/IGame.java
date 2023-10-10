@@ -12,7 +12,7 @@ public interface IGame {
 	 * methode qui contient l'evolution du jeu
 	 * @param dt
 	 */
-	public void evolve(float dt);
+	public void evolve(double dt);
 
 	/**
 	 * @return true si et seulement si le jeu est fini

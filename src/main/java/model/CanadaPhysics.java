@@ -18,11 +18,14 @@ public class CanadaPhysics implements IGamePhysics {
     }
 
     @Override
-    public void updatePhysics(float dt) {
+    public void updatePhysics(double dt) {
 
         for (MovementComponent m : toUpdate){
             // On effectue les opérations à faire (collisions, deplacement, ...)
             GameObject gameObject = m.getGameObject();
+            double newX = gameObject.getX() + m.getVelocityX() * dt;
+            double newY = gameObject.getY() + m.getVelocityY() * dt;
+            gameObject.setPosition(newX, newY);
 
             float lastX = gameObject.getX();
             float lastY = gameObject.getY();
@@ -98,4 +101,3 @@ public class CanadaPhysics implements IGamePhysics {
     }
 
 }
-

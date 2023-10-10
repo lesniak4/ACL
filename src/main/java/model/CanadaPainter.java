@@ -19,8 +19,8 @@ public class CanadaPainter implements IGamePainter {
 	/**
 	 * la taille de la fenêtre
 	 */
-	protected static final int WIDTH = 500;
-	protected static final int HEIGHT = 500;
+	protected static final int WIDTH = 700;
+	protected static final int HEIGHT = (int)(Math.sqrt(3f) * WIDTH * 0.5f );
 
 	protected Collection<GraphicsComponent> drawQueue;
 
