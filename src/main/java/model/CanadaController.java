@@ -34,6 +34,25 @@ public class CanadaController implements IGameController {
 		return this.keysPressed;
 	}
 
+	/**
+	 * Add commands to keyPresses
+	 *
+	 * @param keysPressed commands to add
+	 */
+	public void setKeysPressed(Cmd... keysPressed) {
+		for(Cmd cmd : keysPressed)
+			this.keysPressed.add(cmd);
+	}
+
+	/**
+	 * Remove commands to keyPresses
+	 *
+	 * @param keysPressed commands to remove
+	 */
+	public void removeCommands(Cmd... keysPressed) {
+		for(Cmd cmd : keysPressed)
+			this.keysPressed.remove(cmd);
+	}
 	@Override
 	/**
 	 * met a jour les commandes en fonctions des touches appuyees

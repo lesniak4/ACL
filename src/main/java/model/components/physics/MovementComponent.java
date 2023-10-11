@@ -25,6 +25,13 @@ public class MovementComponent extends Component {
         this.controller = controller;
         this.movementSpeed = movementSpeed;
     }
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
 
     @Override
     public void update(double dt) {
