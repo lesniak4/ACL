@@ -48,11 +48,8 @@ public class ColliderComponent extends Component {
 
         // Check collision avec une pièce
         CoinComponent coin = colliderObj.getComponent(CoinComponent.class);
-        ColliderComponent collider = colliderObj.getComponent(ColliderComponent.class);
-        CircleRendererComponent circle = colliderObj.getComponent(CircleRendererComponent.class);
-        if(player != null && coin != null && circle != null && collider != null){
-            collider.destroyComponent();
-            circle.setInvisible();
+        if(player != null && coin != null){
+            colliderObj.destroyGameObject();
             obj.getGame().incrScore();
             System.out.println("Vous venez de récolter une pièce.");
         }

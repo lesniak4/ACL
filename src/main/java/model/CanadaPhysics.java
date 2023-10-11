@@ -74,7 +74,7 @@ public class CanadaPhysics implements IGamePhysics {
         this.colliders.remove(collider);
     }
 
-    private boolean areColliding(ColliderComponent c1, ColliderComponent c2){
+    public boolean areColliding(ColliderComponent c1, ColliderComponent c2){
 
         GameObject go1 = c1.getGameObject();
         GameObject go2 = c2.getGameObject();
@@ -85,7 +85,7 @@ public class CanadaPhysics implements IGamePhysics {
         return Vector2.squaredDistance(go1.getPosition(), go2.getPosition()) <= (r1+r2)*(r1+r2);//(x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) <= (r1+r2)*(r1+r2);
     }
 
-    private Vector2 positionAfterCollision(GameObject toMove, GameObject collider, Vector2 lastPos, Vector2 velocity, double dt){
+    public Vector2 positionAfterCollision(GameObject toMove, GameObject collider, Vector2 lastPos, Vector2 velocity, double dt){
 
         // On repositionne l'objet par rapport à la tangente au point de collision
         double length = Vector2.distance(collider.getPosition(), toMove.getPosition());
