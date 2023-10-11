@@ -1,0 +1,6 @@
+Retrospective du sprint 1 :
+
+Le début du sprint a été compliqué car nous avons repensé toute notre conception. En effet, après quelques recherches, nous avons finalement opté pour le design pattern component.
+Malgré le début difficile et le fait que nous ayons travaillé à deux, nous avons tout de même réussi à accomplir toutes les tâches planifiées.
+Les tests ont été réaliser en fin de sprint dû à ces complications, par chance les différents bugs avaient déjà été trouvés en amont.
+Les sprints suivants devraient être plus simples maintenant que la base du jeu est réalisée.
