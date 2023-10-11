@@ -1,9 +1,8 @@
 package model;
 
 import engine.Cmd;
-import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,9 +18,9 @@ public class CanadaControllerTest {
 
 
         GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics);
+        MovementComponent m = player.getComponent(MovementComponent.class);
 
         // RIGHT TEST
-        MovementComponent m = player.getComponent(MovementComponent.class);
         controller.setKeysPressed(Cmd.UP, Cmd.DOWN, Cmd.RIGHT);
 
         m.update(1);
