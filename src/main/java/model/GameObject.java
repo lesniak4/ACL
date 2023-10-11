@@ -13,7 +13,7 @@ public class GameObject {
 
     public GameObject(CanadaGame game){
 
-        this(0f, 0f, game);
+        this(0d, 0d, game);
     }
 
     public GameObject(double x, double y, CanadaGame game){

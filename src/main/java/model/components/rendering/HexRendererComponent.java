@@ -16,8 +16,8 @@ public class HexRendererComponent extends GraphicsComponent {
     protected HexLayout layout;
 
 
-    public HexRendererComponent(GameObject obj, CanadaPainter painter, Color color, Hex hex, HexLayout layout) {
-        super(obj, painter, color);
+    public HexRendererComponent(GameObject obj, CanadaPainter painter, Color color, Hex hex, HexLayout layout, boolean isVisible) {
+        super(obj, painter, color, isVisible);
 
         this.hex = hex;
         this.layout = layout;

@@ -2,9 +2,10 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
+import model.components.CoinComponent;
 import model.components.Component;
 import model.components.WorldExitComponent;
-import model.components.rendering.HexRendererComponent;
+import model.components.rendering.CircleRendererComponent;
 
 public class ColliderComponent extends Component {
 
@@ -38,10 +39,22 @@ public class ColliderComponent extends Component {
 
         GameObject obj = getGameObject();
 
+        // Check pour la fin du jeu
         WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
         PlayerInputComponent player = obj.getComponent(PlayerInputComponent.class);
         if(player != null && exit != null){
             obj.getGame().setPlayerWin(true);
+        }
+
+        // Check collision avec une pièce
+        CoinComponent coin = colliderObj.getComponent(CoinComponent.class);
+        ColliderComponent collider = colliderObj.getComponent(ColliderComponent.class);
+        CircleRendererComponent circle = colliderObj.getComponent(CircleRendererComponent.class);
+        if(player != null && coin != null && circle != null && collider != null){
+            collider.destroyComponent();
+            circle.setInvisible();
+            obj.getGame().incrScore();
+            System.out.println("Vous venez de récolter une pièce.");
         }
     }
 

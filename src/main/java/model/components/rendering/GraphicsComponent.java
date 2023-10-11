@@ -12,16 +12,20 @@ public abstract class GraphicsComponent extends Component {
     protected Shape shape;
     protected Color color;
 
-    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color){
+    protected boolean isVisible;
+
+    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color, boolean isVisible){
         super(obj);
         this.painter = painter;
         this.color = color;
+        this.isVisible = isVisible;
     }
 
     @Override
     public void update(double dt) {
 
-        painter.addToDrawQueue(this);
+        if(isVisible)
+            painter.addToDrawQueue(this);
     }
 
     public Shape getShape(){
@@ -31,4 +35,6 @@ public abstract class GraphicsComponent extends Component {
     public Color getColor(){
         return this.color;
     }
+
+    public void setInvisible() { this.isVisible = false; }
 }

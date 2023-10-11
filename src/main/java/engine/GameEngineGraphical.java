@@ -105,9 +105,9 @@ public class GameEngineGraphical {
 		}
 
 		if(this.game.hasPlayerWon()){
-			System.out.println("Vous avez gagné !");
+			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
 		}else{
-			System.out.println("Temps écoulé ! Vous avez perdu !");
+			System.out.println("Temps écoulé ! Vous avez perdu ! Votre score était de : " + game.getScore());
 		}
 	}
 

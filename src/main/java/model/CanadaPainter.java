@@ -40,7 +40,6 @@ public class CanadaPainter implements IGamePainter {
 	@Override
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
-
 		for(GraphicsComponent g : drawQueue) {
 			crayon.setColor(g.getColor());
 			crayon.fill(g.getShape());

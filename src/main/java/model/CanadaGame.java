@@ -28,6 +28,10 @@ public class CanadaGame implements IGame {
 	private double maxTime;
 	private boolean playerWin;
 
+	private int niveauActuel;
+
+	private int score;
+
 	/**
 	 * constructeur avec fichier source pour le help
 	 * 
@@ -52,6 +56,9 @@ public class CanadaGame implements IGame {
 		this.playerWin = false;
 		this.startTime = System.currentTimeMillis();
 		this.maxTime = maxTime;
+
+		this.niveauActuel = 1;
+		this.score = 0;
 
 		World world = new World(this, this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
@@ -79,6 +86,11 @@ public class CanadaGame implements IGame {
 		return this.playerWin;
 	}
 
+	@Override
+	public int getScore() {
+		return this.score;
+	}
+
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
 	}
@@ -86,6 +98,8 @@ public class CanadaGame implements IGame {
 	public void removeGameObject(GameObject obj){
 		gameObjects.remove(obj);
 	}
+
+	public void incrScore(){ this.score++; }
 
 	/**
 	 * verifier si le jeu est fini

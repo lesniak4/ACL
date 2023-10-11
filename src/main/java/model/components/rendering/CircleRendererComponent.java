@@ -10,8 +10,8 @@ public class CircleRendererComponent extends GraphicsComponent{
 
     protected double radius;
 
-    public CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double radius) {
-        super(obj, painter, color);
+    public CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double radius,boolean isVisible) {
+        super(obj, painter, color, isVisible);
         this.radius = radius;
     }
 

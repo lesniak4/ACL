@@ -57,7 +57,7 @@ public class MovementComponent extends Component {
     }
 
     public void resetVelocity(){
-        this.velocityX = 0f;
-        this.velocityY = 0f;
+        this.velocityX = 0d;
+        this.velocityY = 0d;
     }
 }
