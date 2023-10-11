@@ -1,75 +1,285 @@
 @startuml
 
+package "engine"{
+
 class GameEngineGraphical {
+GameEngineGraphical(IGame game, IGamePainter gamePainter, IGameController gameController, IGamePhysics gamePhysics)
 void run()
 }
 
+enum Cmd {
+LEFT,RIGHT,UP,DOWN
+}
 
-class Game {
-int niveauActuel
-int score
-void chargerNiveau()
-void evolve(Cmd userCmd)
+class DrawingPanel{
+- BufferedImage nextImage
+- BufferedImage currentImage
+- int width
+- int height
+
+DrawingPanel(IGamePainter painter)
+void drawGame()
+void paint(Graphics g)
+}
+
+class GraphicalInterface{
+GraphicalInterface(IGamePainter gamePainter, IGameController gameController)
+void paint()
+}
+
+interface IGame{
+void evolve(double dt)
+boolean hasPlayerWon()
+int getScore()
 boolean isFinished()
 }
 
-interface IGamePainter {
-void draw(BufferedImage image)
-}
-
 interface IGameController{
-Cmd getCommand()
+Set<Cmd> getCommands()
 }
 
-enum Cmd {
-LEFT,RIGHT,UP,DOWN,IDLE
+interface IGamePainter{
+void draw(BufferedImage image)
+int getWidth()
+int getHeight()
 }
 
-class Niveau {
-int long, larg
-float tempsInitial
-float tempsRestant
-void Niveau()
-void deplacerJoueur(Cmd direction)
-boolean estTermine()
-void afficher()
+interface IGamePhysics {
+void updatePhysics(double dt);
 }
 
-class GameObject {
-int posX, posY
 }
 
-interface IComponent{
-void update(GameObject obj)
+package "model"{
+
+
+package "components"{
+
+abstract class Component{
+Component(GameObject obj)
+{abstract} void update(double dt)
+void destroyComponent()
+}
+
+class WorldExitComponent{
+WorldExitComponent(GameObject obj)
+void update(double dt)
+}
+
+class CoinComponent{
+CoinComponent(GameObject obj)
+void update(double dt)
+}
+
+package "physics"{
+
+interface IInputController{
+Set<Cmd> getCommands()
 }
 
 class PlayerInputComponent{
-void update(GameObject obj)
+PlayerInputComponent(GameObject obj, IGameController controller)
+void update(double dt)
 }
 
 class MovementComponent{
-float velocity
-void update(GameObject obj)
+# double movementSpeed
+# double velocityX
+# double velocityY
+
+MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, IInputController controller)
+void update(double dt)
+void resetVelocity()
 }
 
-class GraphicsComponent{
-Sprite sprite
-void update(GameObject obj)
+abstract class ColliderComponent{
+- double radius
+- boolean isTrigger
+ColliderComponent(GameObject obj, CanadaPhysics physics, double radius, boolean isTrigger)
+boolean isTrigger()
+void update(double dt)
+void onCollisionEnter(GameObject colliderObj)
 }
 
-Niveau -- "*"GameObject
+}
 
-GameEngineGraphical -- "1"Game
-GameEngineGraphical -- "1"IGamePainter
-GameEngineGraphical -- "1"IGameController 
-Game -- "1"Niveau
+package "rendering"{
 
-IComponent <|.. GraphicsComponent
-IComponent <|.. PlayerInputComponent
-IComponent <|.. MovementComponent
+abstract class GraphicsComponent{
+# Shape shape
+# Color color
+# boolean isVisible
+void update(double dt)
+void setInvisible()
+}
 
-GameObject -- "*"IComponent 
+class RectangleRendererComponent{
+# double width
+# double height
+RectangleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double width, double height, boolean isVisible)
+}
 
-IGameController "1"-- PlayerInputComponent
-IGamePainter "1"-- GraphicsComponent 
+class CircleRendererComponent{
+# double radius
+CircleRendererComponent(GameObject obj, CanadaPainter painter, Color color, double radius,boolean isVisible)
+}
+
+class HexRendererComponent{
+# Hex hex
+# HexLayout layout
+HexRendererComponent(GameObject obj, CanadaPainter painter, Color color, Hex hex, HexLayout layout, boolean isVisible)
+}
+
+
+}
+
+}
+
+package "world"{
+
+class World {
+
+World(CanadaGame game, CanadaPainter painter, CanadaPhysics physics)
+ArrayList<GameObject> buildWorld(String source, HexOrientation orientation)
+- Hex gridToHexCoord(int offset, int col, int row)
+}
+
+}
+
+
+class CanadaController{
+CanadaController()
+Set<Cmd> getCommands()
+void keyPressed(KeyEvent e)
+void keyReleased(KeyEvent e)
+void keyTyped(KeyEvent e)
+}
+
+class CanadaGame {
+- double startTime
+- double maxTime
+- boolean playerWin
+- int niveauActuel
+- int score
+
+CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller, double maxTime)
+void removeGameObject(GameObject obj)
+void incrScore()
+}
+
+class CanadaPainter {
+CanadaPainter()
+void draw(BufferedImage im)
+void addToDrawQueue(GraphicsComponent graphics)
+void clearDrawQueue()
+}
+
+
+class CanadaPhysics{
+CanadaPhysics()
+void updatePhysics(double dt)
+void addCollider(ColliderComponent collider)
+void addToUpdate(MovementComponent movementComponent)
+void removeCollider(ColliderComponent collider)
+- boolean areColliding(ColliderComponent c1, ColliderComponent c2)
+- Vector2 positionAfterCollision(GameObject toMove, GameObject collider, Vector2 lastPos, Vector2 velocity, double dt)
+}
+
+
+class GameObject {
+- Vector2 position
+GameObject(CanadaGame game)
+GameObject(double x, double y, CanadaGame game)
+void update(double dt)
+void addComponent(Component component)
+void destroyGameObject()
+}
+
+class GameObjectFactory {
+{static} GameObjectFactory getInstance()
+- GameObjectFactory()
+
+GameObject createWallTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics)
+GameObject createPathTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter)
+GameObject createCoinTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics)
+GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics)
+GameObject createWorldExitTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics)
+
+}
+
+}
+
+
+
+DrawingPanel -"1" IGamePainter
+
+
+GameEngineGraphical -"1" IGame
+GameEngineGraphical -"1" IGameController
+GameEngineGraphical -"1" IGamePhysics
+GameEngineGraphical -"1" GraphicalInterface
+
+
+ColliderComponent -up-|> Component
+MovementComponent -up-|> Component
+PlayerInputComponent -up-|> Component
+GraphicsComponent -up-|> Component
+
+ColliderComponent --"1" CanadaPhysics
+
+MovementComponent --"1" CanadaPhysics
+MovementComponent --"1" IInputController
+
+PlayerInputComponent --"1" IGameController
+PlayerInputComponent ..> IInputController
+
+
+GraphicsComponent  <|-down- CircleRendererComponent
+GraphicsComponent <|-down- HexRendererComponent
+GraphicsComponent <|-down- RectangleRendererComponent
+
+GraphicsComponent --"1" CanadaPainter
+
+Component <|- CoinComponent
+WorldExitComponent --|> Component
+
+Component --"1" GameObject
+
+World --"1" CanadaGame
+World --"1" CanadaPainter
+World --"1" CanadaPhysics
+
+CanadaController ..> IGameController
+CanadaController --"*" Cmd
+
+CanadaGame ..> IGame
+CanadaGame --"1" CanadaPainter
+CanadaGame --"1" CanadaPhysics
+CanadaGame --"*" GameObject
+
+CanadaPainter ..> IGamePainter
+CanadaPainter --"*" GraphicsComponent
+
+CanadaPhysics ..> IGamePhysics
+CanadaPhysics --"*" ColliderComponent
+CanadaPhysics --"*" MovementComponent
+
+GameObject --"1" CanadaGame
+GameObject --"*" Component
+
+GameObjectFactory --"1" GameObjectFactory
+
+
+DrawingPanel -[hidden]up- GameEngineGraphical
+GameEngineGraphical -[hidden]up- IGamePhysics
+IGamePhysics -[hidden]up- IGameController
+IGameController -[hidden]up- IGamePainter
+IGame -[hidden]up- Cmd
+
+
+engine -[hidden]up- model
+rendering -[hidden]- physics
+physics -[hidden]up- Component
+rendering -[hidden]up- Component
+
 @enduml

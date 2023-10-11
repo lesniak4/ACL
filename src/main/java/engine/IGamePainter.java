@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  * represente la maniere de dessiner sur un JPanel
  * 
  */
-public interface GamePainter {
+public interface IGamePainter {
 
 	/**
 	 * methode dessiner a completer. Elle construit une image correspondant au

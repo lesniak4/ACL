@@ -23,7 +23,7 @@ public class GraphicalInterface  {
 	 * @param gameController l'afficheur a utiliser dans le moteur
 	 * 
 	 */
-	public GraphicalInterface(GamePainter gamePainter, GameController gameController){
+	public GraphicalInterface(IGamePainter gamePainter, IGameController gameController){
 		JFrame f=new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

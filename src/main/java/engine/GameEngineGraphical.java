@@ -11,17 +11,19 @@ public class GameEngineGraphical {
 	/**
 	 * le game a executer
 	 */
-	private Game game;
+	private IGame game;
 
 	/**
 	 * l'afficheur a utiliser pour le rendu
 	 */
-	private GamePainter gamePainter;
+	private IGamePainter gamePainter;
 
 	/**
 	 * le controlleur a utiliser pour recuperer les commandes
 	 */
-	private GameController gameController;
+	private IGameController gameController;
+
+	private IGamePhysics gamePhysics;
 
 	/**
 	 * l'interface graphique
@@ -39,11 +41,12 @@ public class GameEngineGraphical {
 	 *            controlleur a utiliser
 	 *            
 	 */
-	public GameEngineGraphical(Game game, GamePainter gamePainter, GameController gameController) {
+	public GameEngineGraphical(IGame game, IGamePainter gamePainter, IGameController gameController, IGamePhysics gamePhysics) {
 		// creation du game
 		this.game = game;
 		this.gamePainter = gamePainter;
 		this.gameController = gameController;
+		this.gamePhysics = gamePhysics;
 	}
 
 	/**
@@ -54,16 +57,57 @@ public class GameEngineGraphical {
 		// creation de l'interface graphique
 		this.gui = new GraphicalInterface(this.gamePainter,this.gameController);
 
+		long lastTime = System.nanoTime();
+		final int FPS = 60;
+		double nanoSecondsPerTick = 1000000000D / FPS;
+
+		int ticks = 0;
+		int frames = 0;
+
+		long lastTimer = System.currentTimeMillis();
+		float dt = 0;
+
 		// boucle de game
 		while (!this.game.isFinished()) {
-			// demande controle utilisateur
-			Cmd c = this.gameController.getCommand();
-			// fait evoluer le game
-			this.game.evolve(c);
-			// affiche le game
-			this.gui.paint();
-			// met en attente
-			Thread.sleep(100);
+
+			long now = System.nanoTime();
+			dt += (now - lastTime) / nanoSecondsPerTick;
+			lastTime = now;
+			boolean shouldRender = true;
+
+			while (dt >= 1) {
+				ticks++;
+				// fait evoluer le game
+				this.game.evolve(dt);
+				this.gamePhysics.updatePhysics(dt);
+				dt -= 1;
+				shouldRender = true;
+			}
+
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+
+			if (shouldRender) {
+				frames++;
+				// affiche le game
+				this.gui.paint();
+			}
+
+			if (System.currentTimeMillis() - lastTimer >= 1000) {
+				lastTimer += 1000;
+				//System.out.println(ticks + " ticks, " + frames + " frames");
+				frames = 0;
+				ticks = 0;
+			}
+		}
+
+		if(this.game.hasPlayerWon()){
+			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
+		}else{
+			System.out.println("Temps écoulé ! Vous avez perdu ! Votre score était de : " + game.getScore());
 		}
 	}
 

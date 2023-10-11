@@ -1,7 +1,8 @@
-import model.PacmanPainter;
+import model.CanadaPainter;
 import engine.GameEngineGraphical;
-import model.PacmanController;
-import model.PacmanGame;
+import model.CanadaController;
+import model.CanadaGame;
+import model.CanadaPhysics;
 
 /**
  * lancement du moteur avec le jeu
@@ -11,12 +12,13 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 
 		// creation du jeu particulier et de son afficheur
-		PacmanGame game = new PacmanGame("helpFilePacman.txt");
-		PacmanPainter painter = new PacmanPainter();
-		PacmanController controller = new PacmanController();
+		CanadaPainter painter = new CanadaPainter();
+		CanadaController controller = new CanadaController();
+		CanadaPhysics physics = new CanadaPhysics();
+		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter, physics, controller, 30f);
 
 		// classe qui lance le moteur de jeu generique
-		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller);
+		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller, physics);
 		engine.run();
 	}
 

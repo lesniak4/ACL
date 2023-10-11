@@ -1,6 +1,8 @@
 package engine;
 
 import java.awt.event.KeyListener;
+import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * @author Horatiu Cirstea
@@ -8,7 +10,7 @@ import java.awt.event.KeyListener;
  * controleur qui envoie des commandes au jeu 
  * 
  */
-public interface GameController extends KeyListener {
+public interface IGameController extends KeyListener {
 
 	/**
 	 * quand on demande les commandes, le controleur retourne la commande en
@@ -16,6 +18,6 @@ public interface GameController extends KeyListener {
 	 * 
 	 * @return commande faite par le joueur
 	 */
-	public Cmd getCommand();
+	public Set<Cmd> getCommands();
 
 }
