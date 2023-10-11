@@ -3,6 +3,8 @@ package model.components.physics;
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
+import model.components.WorldExitComponent;
+import model.components.rendering.HexRendererComponent;
 
 public class ColliderComponent extends Component {
 
@@ -30,5 +32,22 @@ public class ColliderComponent extends Component {
 
     public boolean isTrigger() {
         return isTrigger;
+    }
+
+    public void onCollisionEnter(GameObject colliderObj){
+
+        GameObject obj = getGameObject();
+
+        WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
+        PlayerInputComponent player = obj.getComponent(PlayerInputComponent.class);
+        if(player != null && exit != null){
+            obj.getGame().setPlayerWin(true);
+        }
+    }
+
+    @Override
+    public void destroyComponent(){
+
+        physics.removeCollider(this);
     }
 }

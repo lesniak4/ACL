@@ -16,4 +16,8 @@ public abstract class Component {
     public GameObject getGameObject(){
         return this.gameObject;
     }
+
+    public void destroyComponent(){
+
+    }
 }

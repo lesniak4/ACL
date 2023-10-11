@@ -24,12 +24,15 @@ public class CanadaGame implements IGame {
 	private CanadaPhysics physics;
 
 	private List<GameObject> gameObjects;
+	private double startTime;
+	private double maxTime;
+	private boolean playerWin;
 
 	/**
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller, double maxTime) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -46,10 +49,14 @@ public class CanadaGame implements IGame {
 		this.physics = physics;
 		this.gameObjects = new ArrayList<>();
 
-		World world = new World(this.painter, this.physics);
+		this.playerWin = false;
+		this.startTime = System.currentTimeMillis();
+		this.maxTime = maxTime;
+
+		World world = new World(this, this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
-		GameObject player = GameObjectFactory.getInstance().createPlayerObject(20,20, painter, controller, physics);
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
 		gameObjects.add(player);
 	}
 
@@ -67,13 +74,31 @@ public class CanadaGame implements IGame {
 		}
 	}
 
+	@Override
+	public boolean hasPlayerWon(){
+		return this.playerWin;
+	}
+
+	public void setPlayerWin(boolean playerWin){
+		this.playerWin = playerWin;
+	}
+
+	public void removeGameObject(GameObject obj){
+		gameObjects.remove(obj);
+	}
+
 	/**
 	 * verifier si le jeu est fini
 	 */
 	@Override
 	public boolean isFinished() {
-		// le jeu n'est jamais fini
-		return false;
+
+		long currentTime = (System.currentTimeMillis() - (long)startTime);
+		long timeRemaining = ((long)maxTime * 1000) - currentTime;
+		if((timeRemaining) % 2000 == 0){
+			System.out.println(timeRemaining / 1000 + " secondes restantes !");
+		}
+		return playerWin || timeRemaining <= 0;
 	}
 
 }

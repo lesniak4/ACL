@@ -12,11 +12,13 @@ public class World {
     private final int EVEN = 1;
     private final int ODD = -1;
 
+    private CanadaGame game;
     private CanadaPainter painter;
     private CanadaPhysics physics;
 
-    public World(CanadaPainter painter, CanadaPhysics physics){
+    public World(CanadaGame game, CanadaPainter painter, CanadaPhysics physics){
 
+        this.game = game;
         this.painter = painter;
         this.physics = physics;
     }
@@ -46,12 +48,15 @@ public class World {
                 do {
                     for (int i = 0; i < line.length(); i++) {
                         char n = line.charAt(i);
-                        Hex hex = gridToHexCoord(EVEN, col, row);
-                        if (n == '0') {
-                            tiles.add(GameObjectFactory.getInstance().createPathTile(hex, layout, painter));
-                            col++;
-                        } else if (n == '1') {
-                            tiles.add(GameObjectFactory.getInstance().createWallTile(hex, layout, painter, physics));
+                        if(n != ' ') {
+                            Hex hex = gridToHexCoord(EVEN, col, row);
+                            if (n == '0') {
+                                tiles.add(GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                            } else if (n == '1') {
+                                tiles.add(GameObjectFactory.getInstance().createWallTile(game,hex, layout, painter, physics));
+                            } else if (n == '2') {
+                                tiles.add(GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
+                            }
                             col++;
                         }
                     }

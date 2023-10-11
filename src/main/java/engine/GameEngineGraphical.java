@@ -103,6 +103,12 @@ public class GameEngineGraphical {
 				ticks = 0;
 			}
 		}
+
+		if(this.game.hasPlayerWon()){
+			System.out.println("Vous avez gagné !");
+		}else{
+			System.out.println("Temps écoulé ! Vous avez perdu !");
+		}
 	}
 
 }

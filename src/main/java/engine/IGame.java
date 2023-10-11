@@ -14,6 +14,7 @@ public interface IGame {
 	 */
 	public void evolve(double dt);
 
+	public boolean hasPlayerWon();
 	/**
 	 * @return true si et seulement si le jeu est fini
 	 */

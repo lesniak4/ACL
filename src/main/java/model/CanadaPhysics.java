@@ -33,15 +33,23 @@ public class CanadaPhysics implements IGamePhysics {
 
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
             if(collider != null){
-
-                for(ColliderComponent c : colliders) {
-                    if(c != collider) {
-                        if (areColliding(collider, c)) {
-                            if(!c.isTrigger()) {
-                                newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
-                                gameObject.setPosition(newPos);
+                ColliderComponent firstCol = null;
+                for(int i = 0; i < 2; i++) {
+                    for (ColliderComponent c : colliders) {
+                        if (c != collider && c != firstCol) {
+                            if (areColliding(collider, c)) {
+                                if (!c.isTrigger()) {
+                                    if(firstCol == null) {
+                                        newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
+                                        gameObject.setPosition(newPos);
+                                        firstCol = c;
+                                    }else{
+                                        gameObject.setPosition(lastPos);
+                                    }
+                                }
+                                collider.onCollisionEnter(c.getGameObject());
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -59,6 +67,11 @@ public class CanadaPhysics implements IGamePhysics {
     public void addToUpdate(MovementComponent movementComponent){
 
         this.toUpdate.add(movementComponent);
+    }
+
+    public void removeCollider(ColliderComponent collider){
+
+        this.colliders.remove(collider);
     }
 
     private boolean areColliding(ColliderComponent c1, ColliderComponent c2){

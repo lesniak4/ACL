@@ -6,17 +6,19 @@ import java.util.*;
 
 public class GameObject {
 
+    private CanadaGame game;
     private Vector2 position;
 
     private Map<Class<? extends Component>, Component> components;
 
-    public GameObject(){
+    public GameObject(CanadaGame game){
 
-        this(0f, 0f);
+        this(0f, 0f, game);
     }
 
-    public GameObject(double x, double y){
+    public GameObject(double x, double y, CanadaGame game){
 
+        this.game = game;
         this.position = new Vector2(x, y);
 
         this.components = new LinkedHashMap<>();
@@ -31,6 +33,10 @@ public class GameObject {
 
     public void addComponent(Component component){
         this.components.put(component.getClass(), component);
+    }
+
+    public CanadaGame getGame(){
+        return this.game;
     }
 
     public double getX() {
@@ -58,5 +64,13 @@ public class GameObject {
 
     public void setPosition(Vector2 newPos){
         this.position = newPos;
+    }
+
+    public void destroyGameObject(){
+
+        for(Component c : components.values()){
+            c.destroyComponent();
+        }
+        game.removeGameObject(this);
     }
 }

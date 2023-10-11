@@ -15,8 +15,7 @@ public class Main {
 		CanadaPainter painter = new CanadaPainter();
 		CanadaController controller = new CanadaController();
 		CanadaPhysics physics = new CanadaPhysics();
-		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter, physics, controller);
-
+		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter, physics, controller, 30f);
 
 		// classe qui lance le moteur de jeu generique
 		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller, physics);
