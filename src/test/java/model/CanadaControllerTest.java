@@ -16,7 +16,6 @@ public class CanadaControllerTest {
         CanadaController controller = new CanadaController();
         CanadaGame game = new CanadaGame("", painter, physics, controller, 999);
 
-
         GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics);
         MovementComponent m = player.getComponent(MovementComponent.class);
 
