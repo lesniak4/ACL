@@ -1,0 +1,14 @@
+Fonctionnalités :
+
+Vue isométrique -> Théo
+Le joueur ne voit qu'une partie du labyrinthe -> Théo
+
+Création de plusieurs types de monstres différenciés par leurs déplacement :
+    - Patrouille
+    - Statique puis poursuit le joueur lorsqu'il s'approche
+ -> Louis
+
+Interactions entre les monstres et le joueur (attaques) -> Arnaud
+Ajout d'un objet que le joueur doit récupérer avant de sortir du labyrinthe pour terminer le niveau et passer au niveau-> Arnaud
+
+
