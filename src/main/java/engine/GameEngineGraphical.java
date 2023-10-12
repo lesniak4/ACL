@@ -73,7 +73,7 @@ public class GameEngineGraphical {
 			long now = System.nanoTime();
 			dt += (now - lastTime) / nanoSecondsPerTick;
 			lastTime = now;
-			boolean shouldRender = true;
+			boolean shouldRender = false;
 
 			while (dt >= 1) {
 				ticks++;
@@ -98,7 +98,7 @@ public class GameEngineGraphical {
 
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				//System.out.println(ticks + " ticks, " + frames + " frames");
+				System.out.println(ticks + " ticks, " + frames + " frames");
 				frames = 0;
 				ticks = 0;
 			}
