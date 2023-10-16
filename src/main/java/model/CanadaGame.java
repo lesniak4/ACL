@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.IGame;
+import engine.IGameController;
 import model.world.HexLayout;
 import model.world.HexOrientation;
 import model.world.World;
@@ -36,7 +37,7 @@ public class CanadaGame implements IGame {
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller, double maxTime) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller, double maxTime) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));

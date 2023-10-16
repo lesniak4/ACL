@@ -1,10 +1,9 @@
 package model;
 
+import engine.IGameController;
 import model.components.WorldExitComponent;
 import model.components.CoinComponent;
-import model.components.physics.ColliderComponent;
-import model.components.physics.MovementComponent;
-import model.components.physics.PlayerInputComponent;
+import model.components.physics.*;
 import model.components.rendering.CircleRendererComponent;
 import model.components.rendering.HexRendererComponent;
 import model.world.Hex;
@@ -54,15 +53,16 @@ public class GameObjectFactory {
         return coinTile;
     }
 
-    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
+    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
 
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CircleRendererComponent(player, painter, Color.BLACK,8, true));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        player.addComponent(new MovementComponent(player, 1f, physics, playerInputComponent));
+        player.addComponent(new PlayerMovementComponent(player, 1f, physics, playerInputComponent));
         player.addComponent(new ColliderComponent(player, physics, 8, false));
+        player.addComponent(new PlayerInteractionComponent(player));
 
         return player;
     }
