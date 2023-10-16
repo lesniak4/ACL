@@ -4,18 +4,21 @@ import model.GameObject;
 
 public class PathfindingComponent extends Component{
 
-    private PathfindingComponent pathfindingComponent;
     private GameObject target;
 
-    public PathfindingComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject target) {
+
+    public PathfindingComponent(GameObject obj) {
         super(obj);
-        this.pathfindingComponent = pathfindingComponent;
+    }
+
+    public void setTarget(GameObject target) {
         this.target = target;
     }
 
-    public PathfindingComponent(GameObject obj, PathfindingComponent pathfindingComponent) {
-        super(obj);
-        this.pathfindingComponent = pathfindingComponent;
+    public void findPath(){
+        if(this.gameObject != null){
+
+        }
     }
 
     @Override

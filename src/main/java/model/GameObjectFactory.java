@@ -1,6 +1,8 @@
 package model;
 
 import engine.IGameController;
+import model.components.AIComponent;
+import model.components.PathfindingComponent;
 import model.components.WorldExitComponent;
 import model.components.CoinComponent;
 import model.components.physics.*;
@@ -65,6 +67,19 @@ public class GameObjectFactory {
         player.addComponent(new PlayerInteractionComponent(player));
 
         return player;
+    }
+
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, CanadaPhysics physics){
+
+        GameObject monster = new GameObject(posX, posY, game);
+        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster);
+
+        monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,8, true));
+        monster.addComponent(new AIComponent(monster,pathfindingComponent));
+        monster.addComponent(new MonsterMovementComponent(monster, 1f, physics, pathfindingComponent));
+        monster.addComponent(new ColliderComponent(monster, physics, 8, false));
+
+        return monster;
     }
 
     public GameObject createWorldExitTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){

@@ -66,6 +66,8 @@ public class CanadaGame implements IGame {
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
 		gameObjects.add(player);
+		GameObject monster = GameObjectFactory.getInstance().createMonsterObject(this, 35,35, painter, physics);
+		gameObjects.add(monster);
 	}
 
 	/**
