@@ -27,6 +27,7 @@ public class CanadaGame implements IGame {
 	private List<GameObject> gameObjects;
 	private double startTime;
 	private double maxTime;
+	private boolean hasKey;
 	private boolean playerWin;
 
 	private int niveauActuel;
@@ -54,6 +55,7 @@ public class CanadaGame implements IGame {
 		this.physics = physics;
 		this.gameObjects = new ArrayList<>();
 
+		this.hasKey = false;
 		this.playerWin = false;
 		this.startTime = System.currentTimeMillis();
 		this.maxTime = maxTime;
@@ -93,6 +95,10 @@ public class CanadaGame implements IGame {
 	public int getScore() {
 		return this.score;
 	}
+
+	public boolean playerOwnsKey() {return this.hasKey;}
+
+	public void setHasKey(boolean hasKey) {this.hasKey = hasKey;}
 
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
