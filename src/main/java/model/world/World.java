@@ -59,6 +59,9 @@ public class World {
                             } else if (n == '3') {
                                 tiles.add(GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 tiles.add(GameObjectFactory.getInstance().createCoinTile(game, hex, layout, painter, physics));
+                            } else if (n == '4') {
+                                tiles.add(GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.add(GameObjectFactory.getInstance().createKeyTile(game, hex, layout, painter, physics));
                             }
                             col++;
                         }

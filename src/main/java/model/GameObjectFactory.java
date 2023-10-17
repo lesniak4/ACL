@@ -1,10 +1,7 @@
 package model;
 
 import engine.IGameController;
-import model.components.AIComponent;
-import model.components.PathfindingComponent;
-import model.components.WorldExitComponent;
-import model.components.CoinComponent;
+import model.components.*;
 import model.components.physics.*;
 import model.components.rendering.CircleRendererComponent;
 import model.components.rendering.HexRendererComponent;
@@ -53,6 +50,18 @@ public class GameObjectFactory {
         coinTile.addComponent(new CoinComponent(coinTile));
 
         return coinTile;
+    }
+
+    public GameObject createKeyTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject keyTile= new GameObject(pos.X(), pos.Y(), game);
+        keyTile.addComponent(new CircleRendererComponent(keyTile, painter, Color.BLUE, 5, true));
+        keyTile.addComponent(new ColliderComponent(keyTile, physics,5, true));
+        keyTile.addComponent(new KeyComponent(keyTile));
+
+
+        return keyTile;
     }
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
