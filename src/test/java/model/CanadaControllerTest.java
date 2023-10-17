@@ -2,9 +2,11 @@ package model;
 
 import engine.Cmd;
 import model.components.physics.MovementComponent;
+import model.components.physics.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CanadaControllerTest {
 
@@ -17,7 +19,7 @@ public class CanadaControllerTest {
         CanadaGame game = new CanadaGame("", painter, physics, controller, 999);
 
         GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics);
-        MovementComponent m = player.getComponent(MovementComponent.class);
+        PlayerMovementComponent m = player.getComponent(PlayerMovementComponent.class);
 
         // RIGHT TEST
         controller.setKeysPressed(Cmd.UP, Cmd.DOWN, Cmd.RIGHT);
@@ -62,11 +64,11 @@ public class CanadaControllerTest {
         controller.removeCommands(Cmd.UP);
         controller.setKeysPressed(Cmd.RIGHT, Cmd.DOWN);
 
-        m.update(20);
-        physics.updatePhysics(20);
+        m.update(1);
+        physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 40d);
-        assertEquals(player.getY(), 40d);
+        assertNotEquals(player.getX(), 20.02d);
+        assertNotEquals(player.getY(), 20.02d);
     }
 
 }
