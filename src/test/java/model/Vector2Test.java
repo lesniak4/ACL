@@ -1,6 +1,7 @@
 package model;
 
 import org.junit.jupiter.api.Test;
+import utils.Vector2;
 
 import static org.junit.jupiter.api.Assertions.*;
 

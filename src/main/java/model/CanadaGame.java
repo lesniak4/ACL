@@ -8,8 +8,8 @@ import java.util.List;
 
 import engine.IGame;
 import model.world.HexLayout;
-import model.world.HexOrientation;
 import model.world.World;
+import utils.Vector2;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -24,6 +24,7 @@ public class CanadaGame implements IGame {
 	private CanadaPhysics physics;
 
 	private List<GameObject> gameObjects;
+	private Vector2 cameraPosition;
 	private double startTime;
 	private double maxTime;
 	private boolean playerWin;
@@ -65,6 +66,7 @@ public class CanadaGame implements IGame {
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
 		gameObjects.add(player);
+		this.setCameraPosition(player.getPosition());
 	}
 
 	/**
@@ -79,6 +81,7 @@ public class CanadaGame implements IGame {
 		for(GameObject obj : gameObjects){
 			obj.update(dt);
 		}
+		painter.setCameraPosition(this.cameraPosition);
 	}
 
 	@Override
@@ -113,6 +116,14 @@ public class CanadaGame implements IGame {
 			System.out.println(timeRemaining / 1000 + " secondes restantes !");
 		}
 		return playerWin || timeRemaining <= 0;
+	}
+
+	public Vector2 getCameraPosition() {
+		return this.cameraPosition;
+	}
+
+	public void setCameraPosition(Vector2 cameraPosition) {
+		this.cameraPosition = cameraPosition;
 	}
 
 }

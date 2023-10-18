@@ -25,8 +25,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20.02d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 19);
 
         // LEFT TEST
         controller.removeCommands(Cmd.DOWN, Cmd.RIGHT, Cmd.UP);
@@ -35,8 +35,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 20);
 
         // DOWN TEST
         controller.removeCommands(Cmd.LEFT);
@@ -45,8 +45,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20.02d);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 20);
 
         // UP TEST
         controller.removeCommands(Cmd.DOWN);
@@ -55,8 +55,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 20);
 
         // DOWN-RIGHT TEST
         controller.removeCommands(Cmd.UP);
@@ -65,8 +65,8 @@ public class CanadaControllerTest {
         m.update(20);
         physics.updatePhysics(20);
 
-        assertEquals(player.getX(), 40d);
-        assertEquals(player.getY(), 40d);
+        assertEquals((int)player.getX(), 40);
+        assertEquals((int)player.getY(), 20);
     }
 
 }

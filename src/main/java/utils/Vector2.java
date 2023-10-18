@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 public class Vector2 {
 
@@ -36,7 +36,18 @@ public class Vector2 {
         return a.x * b.x + a.y * b.y;
     }
 
+    public static Vector2 worldToScreenIso(Vector2 v){
+
+        return new Vector2((v.X() - v.Y()), (v.X() + v.Y()) * 0.5d);
+    }
+
+    public static Vector2 normalize(Vector2 v){
+        double length = Math.sqrt(v.x * v.x + v.y * v.y);
+        return new Vector2(v.x / length, v.y / length);
+    }
+
     public String toString(){
         return "(" + x + "," + y + ")";
     }
+
 }

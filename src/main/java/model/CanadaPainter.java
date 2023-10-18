@@ -1,14 +1,13 @@
 package model;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import engine.IGamePainter;
-import model.components.physics.ColliderComponent;
 import model.components.rendering.GraphicsComponent;
+import utils.Vector2;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -26,6 +25,8 @@ public class CanadaPainter implements IGamePainter {
 
 	protected Collection<GraphicsComponent> drawQueue;
 
+	protected Vector2 cameraPosition;
+
 	/**
 	 * appelle constructeur parent
 	 */
@@ -41,8 +42,16 @@ public class CanadaPainter implements IGamePainter {
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
 		for(GraphicsComponent g : drawQueue) {
-			crayon.setColor(g.getColor());
-			crayon.fill(g.getShape());
+			Vector2 pos = Vector2.worldToScreenIso(new Vector2(g.getGameObject().getPosition().X() - cameraPosition.X(),
+					g.getGameObject().getPosition().Y() - cameraPosition.Y()));
+			if(g.getSprite() != null) {
+				int x = (int) pos.X() - (g.getSprite().getWidth(null) - WIDTH) / 2;
+				int y = (int) pos.Y() - (g.getSprite().getHeight(null) - 64) + HEIGHT / 2;
+				crayon.drawImage(g.getSprite(), x, y, null);
+			}else{
+				crayon.setColor(g.getColor());
+				crayon.fill(g.getShape());
+			}
 		}
 
 		// Pour afficher les hitboxes
@@ -74,6 +83,10 @@ public class CanadaPainter implements IGamePainter {
 
 	public void clearDrawQueue(){
 		drawQueue.clear();
+	}
+
+	public void setCameraPosition(Vector2 cameraPosition){
+		this.cameraPosition = cameraPosition;
 	}
 
 }

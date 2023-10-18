@@ -3,6 +3,7 @@ package model;
 import engine.IGamePhysics;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
+import utils.Vector2;
 
 import java.util.*;
 

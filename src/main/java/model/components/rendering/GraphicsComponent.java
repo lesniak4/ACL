@@ -10,6 +10,7 @@ public abstract class GraphicsComponent extends Component {
 
     protected CanadaPainter painter;
     protected Shape shape;
+    protected Image sprite;
     protected Color color;
 
     protected boolean isVisible;
@@ -30,6 +31,10 @@ public abstract class GraphicsComponent extends Component {
 
     public Shape getShape(){
         return this.shape;
+    }
+
+    public Image getSprite(){
+        return this.sprite;
     }
 
     public Color getColor(){

@@ -5,6 +5,7 @@ import engine.IGameController;
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
+import utils.Vector2;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -41,15 +42,27 @@ public class MovementComponent extends Component {
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.UP) {
-                        this.velocityY -= movementSpeed;
+                        this.velocityX -= 1;
+                        this.velocityY -= 1;
                     } else if (command == Cmd.DOWN) {
-                        this.velocityY += movementSpeed;
+                        this.velocityX += 1;
+                        this.velocityY += 1;
                     } else if (command == Cmd.LEFT) {
-                        this.velocityX -= movementSpeed;
+                        this.velocityX -= 1;
+                        this.velocityY += 1;
                     } else if (command == Cmd.RIGHT) {
-                        this.velocityX += movementSpeed;
+                        this.velocityX += 1;
+                        this.velocityY -= 1;
                     }
                 }
+                /*
+                double length = Math.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY);
+                this.velocityX = (this.velocityX / length) * movementSpeed;
+                this.velocityY = (this.velocityY / length) * movementSpeed;
+                 */
+                Vector2 v = Vector2.normalize(new Vector2(velocityX, velocityY));
+                this.velocityX = v.X();
+                this.velocityY = v.Y();
                 physics.addToUpdate(this);
             }
         }

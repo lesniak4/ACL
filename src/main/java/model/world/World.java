@@ -1,8 +1,8 @@
 package model.world;
 
 import model.*;
+import utils.Vector2;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class World {
 
             if(line != null) {
                 int worldSize = line.trim().replaceAll("\\s+","").length();
-                float tileSize = painter.getWidth() / (float)(Math.sqrt(3f)*worldSize);
+                double tileSize = 91.84d;
                 HexLayout layout = new HexLayout(orientation, new Vector2(tileSize, tileSize), new Vector2(tileSize, tileSize));
 
                 // Lecture du fichier

@@ -2,12 +2,11 @@ package model.components.rendering;
 
 import model.CanadaPainter;
 import model.GameObject;
-import model.Vector2;
+import utils.Vector2;
 import model.world.Hex;
 import model.world.HexLayout;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class HexRendererComponent extends GraphicsComponent {
@@ -29,7 +28,8 @@ public class HexRendererComponent extends GraphicsComponent {
         Polygon p = new Polygon();
         ArrayList<Vector2> corners = layout.polygonCorners(hex);
         for(Vector2 c : corners){
-            p.addPoint((int)c.X(), (int)c.Y());
+            Vector2 screenPos = Vector2.worldToScreenIso(c);
+            p.addPoint((int)screenPos.X(), (int)screenPos.Y());
         }
         this.shape = p;
         super.update(dt);
