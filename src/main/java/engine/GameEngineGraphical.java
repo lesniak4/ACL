@@ -104,7 +104,7 @@ public class GameEngineGraphical {
 			}
 		}
 
-		if(this.game.hasPlayerWon()){
+		if (this.game.hasPlayerWon()) {
 			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
 			this.game.loadNextLevel();
 			this.run();
