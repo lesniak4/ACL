@@ -106,6 +106,8 @@ public class GameEngineGraphical {
 
 		if(this.game.hasPlayerWon()){
 			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
+			this.game.loadNextLevel();
+			this.run();
 		}else{
 			System.out.println("Temps écoulé ! Vous avez perdu ! Votre score était de : " + game.getScore());
 		}

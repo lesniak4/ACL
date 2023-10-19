@@ -9,7 +9,6 @@ import java.util.List;
 import engine.IGame;
 import engine.IGameController;
 import model.world.HexLayout;
-import model.world.HexOrientation;
 import model.world.World;
 
 /**
@@ -23,6 +22,7 @@ public class CanadaGame implements IGame {
 
 	private CanadaPainter painter;
 	private CanadaPhysics physics;
+	private IGameController controller;
 
 	private List<GameObject> gameObjects;
 	private double startTime;
@@ -53,23 +53,17 @@ public class CanadaGame implements IGame {
 
 		this.painter = painter;
 		this.physics = physics;
-		this.gameObjects = new ArrayList<>();
+		this.controller = controller;
 
-		this.hasKey = false;
-		this.playerWin = false;
+		this.gameObjects = new ArrayList<>();
 		this.startTime = System.currentTimeMillis();
 		this.maxTime = maxTime;
 
-		this.niveauActuel = 1;
+		this.niveauActuel = 0;
 		this.score = 0;
 
-		World world = new World(this, this.painter, this.physics);
-		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
+		this.loadNextLevel();
 
-		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
-		gameObjects.add(player);
-		GameObject monster = GameObjectFactory.getInstance().createMonsterObject(this, 35,35, painter, physics);
-		gameObjects.add(monster);
 	}
 
 	/**
@@ -109,6 +103,26 @@ public class CanadaGame implements IGame {
 	}
 
 	public void incrScore(){ this.score++; }
+
+	/**
+	 * charge le niveau suivant
+	 */
+	public void loadNextLevel(){
+		if (!this.gameObjects.isEmpty()) { gameObjects.clear();}
+
+		this.niveauActuel += 1;
+		if (this.niveauActuel!=1) {this.maxTime += 30;}
+		this.hasKey = false;
+		this.playerWin = false;
+
+		World world = new World(this, this.painter, this.physics);
+		gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
+
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
+		gameObjects.add(player);
+		GameObject monster = GameObjectFactory.getInstance().createMonsterObject(this, 35,35, painter, physics);
+		gameObjects.add(monster);
+	}
 
 	/**
 	 * verifier si le jeu est fini
