@@ -3,7 +3,8 @@ package model;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.Comparator;
 
 import engine.IGamePainter;
 import model.components.rendering.GraphicsComponent;
@@ -23,7 +24,7 @@ public class CanadaPainter implements IGamePainter {
 	protected static final int WIDTH = 700;
 	protected static final int HEIGHT = (int)(Math.sqrt(3f) * WIDTH * 0.5f );
 
-	protected Collection<GraphicsComponent> drawQueue;
+	protected List<GraphicsComponent> drawQueue;
 
 	protected Vector2 cameraPosition;
 
@@ -41,9 +42,9 @@ public class CanadaPainter implements IGamePainter {
 	@Override
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
+		//drawQueue.sort(Comparator.comparing(GraphicsComponent::getDepth));
 		for(GraphicsComponent g : drawQueue) {
-			Vector2 pos = Vector2.worldToScreenIso(new Vector2(g.getGameObject().getPosition().X() - cameraPosition.X(),
-					g.getGameObject().getPosition().Y() - cameraPosition.Y()));
+			Vector2 pos = g.getScreenPos();
 			if(g.getSprite() != null) {
 				int x = (int) pos.X() - (g.getSprite().getWidth(null) - WIDTH) / 2;
 				int y = (int) pos.Y() - (g.getSprite().getHeight(null) - 64) + HEIGHT / 2;

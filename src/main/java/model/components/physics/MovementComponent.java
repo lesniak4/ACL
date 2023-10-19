@@ -8,6 +8,7 @@ import model.components.Component;
 import utils.Vector2;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class MovementComponent extends Component {
     @Override
     public void update(double dt) {
         if(this.gameObject != null){
-            Set<Cmd> commands = controller.getCommands();
+            Set<Cmd> commands = new HashSet<>(controller.getCommands());
 
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
@@ -55,11 +56,6 @@ public class MovementComponent extends Component {
                         this.velocityY -= 1;
                     }
                 }
-                /*
-                double length = Math.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY);
-                this.velocityX = (this.velocityX / length) * movementSpeed;
-                this.velocityY = (this.velocityY / length) * movementSpeed;
-                 */
                 Vector2 v = Vector2.normalize(new Vector2(velocityX, velocityY));
                 this.velocityX = v.X();
                 this.velocityY = v.Y();
