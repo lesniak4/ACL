@@ -63,7 +63,6 @@ public class CanadaGame implements IGame {
 		this.score = 0;
 
 		this.loadNextLevel();
-
 	}
 
 	/**
@@ -108,7 +107,12 @@ public class CanadaGame implements IGame {
 	 * charge le niveau suivant
 	 */
 	public void loadNextLevel(){
-		if (!this.gameObjects.isEmpty()) { gameObjects.clear();}
+
+		/* on réinitialise les listes d'objets connus */
+		if (!this.gameObjects.isEmpty()) {
+			gameObjects.clear();
+			this.physics.reset();
+		}
 
 		this.niveauActuel += 1;
 		if (this.niveauActuel!=1) {this.maxTime += 30;}
