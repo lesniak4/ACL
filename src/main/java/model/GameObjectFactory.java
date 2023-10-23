@@ -10,6 +10,8 @@ import model.components.rendering.CircleRendererComponent;
 import model.components.rendering.HexRendererComponent;
 import model.world.Hex;
 import model.world.HexLayout;
+import model.world.World;
+import model.world.WorldGraph;
 
 import java.awt.*;
 
@@ -69,10 +71,11 @@ public class GameObjectFactory {
         return player;
     }
 
-    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, CanadaPhysics physics){
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target){
 
         GameObject monster = new GameObject(posX, posY, game);
-        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster);
+        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
+        pathfindingComponent.setTarget(new Vector2(target.getX(), target.getY()));
 
         monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,8, true));
         monster.addComponent(new AIComponent(monster,pathfindingComponent));

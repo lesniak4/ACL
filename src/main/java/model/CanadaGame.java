@@ -11,6 +11,7 @@ import engine.IGameController;
 import model.world.HexLayout;
 import model.world.HexOrientation;
 import model.world.World;
+import model.world.WorldGraph;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -64,10 +65,12 @@ public class CanadaGame implements IGame {
 		World world = new World(this, this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
+		world.createRandomMonsters(5, gameObjects);
+
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
 		gameObjects.add(player);
-		GameObject monster = GameObjectFactory.getInstance().createMonsterObject(this, 35,35, painter, physics);
-		gameObjects.add(monster);
+
+
 	}
 
 	/**

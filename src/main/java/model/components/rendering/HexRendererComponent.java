@@ -7,7 +7,6 @@ import model.world.Hex;
 import model.world.HexLayout;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class HexRendererComponent extends GraphicsComponent {
@@ -21,6 +20,10 @@ public class HexRendererComponent extends GraphicsComponent {
 
         this.hex = hex;
         this.layout = layout;
+    }
+
+    public Hex getHex() {
+        return hex;
     }
 
     @Override
