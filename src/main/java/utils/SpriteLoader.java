@@ -16,12 +16,14 @@ public class SpriteLoader {
 
     private Image pathSprite;
     private Image wallSprite;
+    private Image playerSprite;
 
     private SpriteLoader(){
 
         try {
             pathSprite = ImageIO.read(getClass().getResource("/sprites/path.png"));
             wallSprite = ImageIO.read(getClass().getResource("/sprites/wall.png"));
+            playerSprite = ImageIO.read(getClass().getResource("/sprites/player.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -34,5 +36,9 @@ public class SpriteLoader {
 
     public Image getWallSprite() {
         return wallSprite;
+    }
+
+    public Image getPlayerSprite() {
+        return playerSprite;
     }
 }

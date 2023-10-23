@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class SpriteRendererComponent extends GraphicsComponent{
 
-    public SpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, Image sprite) {
-        super(obj, painter, color, true);
+    public SpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, Image sprite) {
+        super(obj, painter, color, layer,true);
 
         this.sprite = sprite;
 

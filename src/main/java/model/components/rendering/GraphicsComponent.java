@@ -13,15 +13,17 @@ public abstract class GraphicsComponent extends Component {
     protected Shape shape;
     protected Image sprite;
     protected Color color;
+    protected int layer;
 
     protected boolean isVisible;
     protected Vector2 screenPos;
 
-    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color, boolean isVisible){
+    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color, int layer, boolean isVisible){
         super(obj);
         this.painter = painter;
         this.color = color;
         this.isVisible = isVisible;
+        this.layer = layer;
     }
 
     @Override
@@ -73,7 +75,7 @@ public abstract class GraphicsComponent extends Component {
     }
 
     public double getDepth(){
-        return getGameObject().getX() + getGameObject().getY();
+        return this.layer*10000 + getGameObject().getX() + getGameObject().getY();
     }
 
     public void setInvisible() { this.isVisible = false; }
