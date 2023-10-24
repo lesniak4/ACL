@@ -1,9 +1,9 @@
-package model.world;
+package model.world.monsterState;
 
 import model.components.AIComponent;
 
-public class StateIdle extends State{
-    public StateIdle(AIComponent aiComponent) {
+public class StatePatrol extends State{
+    public StatePatrol(AIComponent aiComponent) {
         super(aiComponent);
     }
 
@@ -13,6 +13,7 @@ public class StateIdle extends State{
 
     @Override
     public void onEnter() {
+        aiComponent.switchDest();
     }
 
     @Override

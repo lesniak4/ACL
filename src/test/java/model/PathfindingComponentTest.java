@@ -85,14 +85,12 @@ public class PathfindingComponentTest {
         Vector2 target = new Vector2(6 * tileSize + 20,3 * tileSize + 20); // position sur la base écran (sera convertie en base hexagone...)
         cp.setTarget(target);
 
-        cp.pathFinding();
-        assertTrue(cp.getPath().isEmpty());
+        assertTrue(cp.pathFinding().isEmpty());
 
         graph.addEdge(node8, node9, true);
 
-        cp.pathFinding();
-        assertFalse(cp.getPath().isEmpty());
-        assertEquals(4, cp.getPath().size());
+        assertFalse(cp.pathFinding().isEmpty());
+        assertEquals(4, cp.pathFinding().size());
 
     }
 }

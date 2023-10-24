@@ -111,10 +111,10 @@ public class World {
         return tiles;
     }
 
-    public void createRandomMonsters(int number, List<GameObject> gameObjects){
+    public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player){
         Random random = new Random();
 
-        ArrayList<GameObject> targets = new ArrayList<>();
+        ArrayList<GameObject> objs = new ArrayList<>();
 
         for(int i = 0 ; i < number; i++) {
 
@@ -124,12 +124,16 @@ public class World {
             }
 
             GameObject targetObj = null;
-            while (targetObj == null || targetObj.getComponent(ColliderComponent.class) != null || obj == targetObj || targets.contains(targetObj)) {
+            while (targetObj == null || targetObj.getComponent(ColliderComponent.class) != null || obj == targetObj || objs.contains(targetObj)) {
                 targetObj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
-            targets.add(targetObj);
-            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, obj.getX(), obj.getY(), painter, this, physics, targetObj));
+            double randomSlidingX = random.nextInt(1) == 0 ? -(random.nextInt((int)tileSize)  * 1/2) : (random.nextInt((int)tileSize)  * 1/2);
+            double randomSlidingY = random.nextInt(1) == 0 ? -(random.nextInt((int)tileSize)  * 1/2) : (random.nextInt((int)tileSize)  * 1/2);
+
+            objs.add(targetObj);
+            objs.add(obj);
+            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, this, physics, targetObj, player));
         }
     }
 

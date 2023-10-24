@@ -1,4 +1,4 @@
-package model.world;
+package model.world.monsterState;
 
 public interface IState {
 

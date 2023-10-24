@@ -71,15 +71,15 @@ public class GameObjectFactory {
         return player;
     }
 
-    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target){
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target, GameObject player){
 
         GameObject monster = new GameObject(posX, posY, game);
         PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
-        pathfindingComponent.setTarget(new Vector2(target.getX(), target.getY()));
+        pathfindingComponent.setTarget(target.getPosition());
 
         monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,8, true));
-        monster.addComponent(new AIComponent(monster,pathfindingComponent));
-        monster.addComponent(new MonsterMovementComponent(monster, 1f, physics, pathfindingComponent));
+        monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
+        monster.addComponent(new MonsterMovementComponent(monster, 0.65f, physics, pathfindingComponent));
         monster.addComponent(new ColliderComponent(monster, physics, 8, false));
 
         return monster;

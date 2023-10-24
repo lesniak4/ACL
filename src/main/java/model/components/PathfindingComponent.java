@@ -14,13 +14,11 @@ public class PathfindingComponent extends Component{
     private World world;
     private WorldGraph worldGraph;
     private boolean isMoving;
-    private LinkedList<Hex> path;
     private Vector2 target;
 
 
     public PathfindingComponent(GameObject obj, World world) {
         super(obj);
-        this.path = new LinkedList<>();
         this.world = world;
         this.worldGraph = world.getGraph();
         this.isMoving = false;
@@ -32,10 +30,6 @@ public class PathfindingComponent extends Component{
 
     public Vector2 getTarget() {
         return target;
-    }
-
-    public LinkedList<Hex> getPath() {
-        return path;
     }
 
     public World getWorld() {
@@ -50,27 +44,26 @@ public class PathfindingComponent extends Component{
         return isMoving;
     }
 
-    public void pathFinding(){
-
-        path.clear();
+    public LinkedList<Hex>  pathFinding(){
 
         if(this.worldGraph == null || this.target == null || this.gameObject == null)
-            return;
+            return new LinkedList<>();
 
         Node dst = getNodeOf(this.target);
         Node src = getNodeOf(this.gameObject);
 
         if(dst == null || src == null)
-            return;
+            return new LinkedList<>();
 
         djikstra(src);
-        findShortestPath(src, dst);
+        return findShortestPath(src, dst);
     }
 
-    public void findShortestPath(Node src, Node dst){
+    public LinkedList<Hex> findShortestPath(Node src, Node dst){
 
+        LinkedList<Hex> path = new LinkedList<>();
         if(dst.getDistance() == Integer.MAX_VALUE)
-            return;
+            return path;
 
         Stack<Node> stack = new Stack<>();
         Node ptr = dst;
@@ -92,6 +85,8 @@ public class PathfindingComponent extends Component{
         while (!stack.isEmpty()) {
             path.add(stack.pop().getHex());
         }
+
+        return  path;
     }
 
     public void djikstra(Node src){

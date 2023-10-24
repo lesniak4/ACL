@@ -3,6 +3,7 @@ package model.components;
 import model.GameObject;
 import model.Vector2;
 import model.world.*;
+import model.world.monsterState.*;
 
 import java.util.Random;
 
@@ -10,91 +11,98 @@ public class AIComponent extends Component{
 
     private PathfindingComponent pathfindingComponent;
     private StateMachine stateMachine;
-
+    private GameObject player;
+    private  State stateIdle;
+    private  State stateMoving;
+    private  State statePatrol;
+    private  State stateChase;
+    private  Vector2 savedTarget;
     private Vector2 initialPos;
 
-    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent) {
+    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player) {
         super(obj);
-
+        this.player = player;
         this.pathfindingComponent = pathfindingComponent;
+
         Random random = new Random();
 
-        switch (random.nextInt(3) ){
+        stateMachine = new StateMachine();
+
+        stateIdle = new StateIdle(this);
+        stateMoving = new StateMoving(this);
+        statePatrol = new StatePatrol(this);
+        stateChase = new StateChase(this);
+
+        // Chase
+        ICondition conditionToChase = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < pathfindingComponent.getWorld().getTileSize() * 1.5; };
+        ICondition conditionStopChasing = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > pathfindingComponent.getWorld().getTileSize() * 1.75 ; };
+        stateMachine.addAnyTransition(stateChase, conditionToChase);
+        stateMachine.addTransition(stateChase, stateMoving, conditionStopChasing);
+
+        // Moving
+        ICondition conditionMove = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) > 1d; };
+        ICondition conditionStopMoving = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 0.9d; };
+        stateMachine.addTransition(stateMoving, stateIdle, conditionStopMoving);
+
+        switch (random.nextInt(3)){
             case 0:
-                createMovingMonster();
+                createMovingMonster(conditionMove);
                 break;
             case 1:
                 createPatrolMonster();
                 break;
             case 2:
-                createStaticMonster();
+                createStaticMonster(conditionMove);
                 break;
             default:
-                createStaticMonster();
+                createStaticMonster(conditionMove);
                 break;
         }
+
+        savedTarget = pathfindingComponent.getTarget();
+        initialPos = getGameObject().getPosition();
+
+        stateMachine.setState(stateIdle);
+
     }
 
-    private void createStaticMonster(){
-
-        stateMachine = new StateMachine();
-        initialPos = new Vector2(this.getGameObject().getPosition().X(), this.getGameObject().getPosition().Y());
-
-        /* Définition de l'automate du monstre  */
-        State etat1 = new StateIdle(this);
-
-        // Etat initial
-        stateMachine.setState(etat1);
+    private void createStaticMonster(ICondition condition){
+        pathfindingComponent.setTarget(gameObject.getPosition());
+        stateMachine.addTransition(stateIdle, stateMoving, condition);
     }
 
-    private void createMovingMonster(){
-
-        stateMachine = new StateMachine();
-        initialPos = new Vector2(this.getGameObject().getPosition().X(), this.getGameObject().getPosition().Y());
-
-        /* Définition de l'automate du monstre  */
-        State etat1 = new StateIdle(this);
-        State etat2 = new StateMoving(this);
-
-        // Conditions de transitions
-        ICondition conditionEtat1to2 = () -> { return pathfindingComponent.getTarget() != null; };
-        ICondition conditionEtat2to1 = () -> { return pathfindingComponent.getTarget() == null || Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 0.5d; };
-
-        // Création des transitions
-        stateMachine.addTransition(etat1, etat2, conditionEtat1to2);
-        stateMachine.addTransition(etat2, etat1, conditionEtat2to1);
-
-        // Etat initial
-        stateMachine.setState(etat1);
+    private void createMovingMonster(ICondition condition){
+        stateMachine.addTransition(stateIdle, stateMoving, condition);
     }
 
     private void createPatrolMonster(){
+        ICondition conditionNext = () -> { return true;};
+        stateMachine.addTransition(stateIdle, statePatrol, conditionNext);
+        ICondition conditionMove = () -> { return pathfindingComponent.getTarget() != null; };
+        stateMachine.addTransition(statePatrol, stateMoving, conditionMove);
+    }
 
-        stateMachine = new StateMachine();
-        initialPos = this.getGameObject().getPosition();
+    public void updateChase(){
+        if(pathfindingComponent.isMoving())
+            this.pathfindingComponent.setTarget(player.getPosition());
+    }
 
-        /* Définition de l'automate du monstre  */
-        State etat1 = new StatePatrol(this);
-        State etat2 = new StatePatrol(this);
+    public void chase(){
+        this.savedTarget = pathfindingComponent.getTarget();
+        this.pathfindingComponent.setTarget(player.getPosition());
+        move();
+    }
 
-
-        // Conditions de transitions
-        ICondition conditionEtatReset = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 0.5d;};
-
-        // Création des transitions
-        stateMachine.addTransition(etat1, etat2, conditionEtatReset);
-        stateMachine.addTransition(etat2, etat1, conditionEtatReset);
-
-        // Etat initial
-        stateMachine.setState(etat1);
+    public void stopChasing(){
+        pathfindingComponent.setTarget(savedTarget);
     }
 
     public void switchDest(){
-        pathfindingComponent.setTarget(new Vector2(initialPos.X(), initialPos.Y()));
-
-        Vector2 posGameObject = this.getGameObject().getPosition();
-        initialPos = new Vector2(posGameObject.X(), posGameObject.Y());
-        this.move();
+        if(Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 1d) {
+            pathfindingComponent.setTarget(initialPos);
+            Vector2 posGameObject = this.getGameObject().getPosition();
+            initialPos = new Vector2(posGameObject.X(), posGameObject.Y());
+        }
     }
 
     public void move(){
@@ -102,7 +110,6 @@ public class AIComponent extends Component{
     }
 
     public void stopMoving(){
-        pathfindingComponent.setTarget(null);
         pathfindingComponent.setMoving(false);
     }
 

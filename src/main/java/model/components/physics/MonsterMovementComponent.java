@@ -20,10 +20,8 @@ public class MonsterMovementComponent extends MovementComponent{
 
     @Override
     public void update(double dt) {
-        if(pathfindingComponent.isMoving() && pathfindingComponent.getTarget() != null){
-
-            pathfindingComponent.pathFinding();
-            LinkedList<Hex> moves =  pathfindingComponent.getPath();
+        if(pathfindingComponent.isMoving()){
+            LinkedList<Hex> moves =  pathfindingComponent.pathFinding();
 
             Vector2 posNextMove;
             if(!moves.isEmpty()) {

@@ -1,6 +1,7 @@
 package model.components.physics;
 
 import model.GameObject;
+import model.components.AIComponent;
 import model.components.CoinComponent;
 import model.components.Component;
 import model.components.WorldExitComponent;
@@ -24,7 +25,6 @@ public class PlayerInteractionComponent extends Component {
             colliderObj.getGame().incrScore();
             System.out.println("Vous venez de récolter une pièce.");
         }
-
     }
 
     @Override

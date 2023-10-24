@@ -1,4 +1,6 @@
-package model.world;
+package model.world.monsterState;
+
+import model.world.ICondition;
 
 import java.util.*;
 
@@ -17,17 +19,18 @@ public class StateMachine {
 
     public void tick(){
         if(currentState != null) {
-            Transition t = getTransition();
-            if (t != null) {
-                setState(t.to);
+            Set<Transition> transitions = getTransition();
+            for(Transition t : transitions){
+                if(t.to != currentState) {
+                    setState(t.to);
+                    break;
+                }
             }
             currentState.tick();
         }
     }
 
    public void setState(IState state){
-        if(state == currentState)
-            return;
         if(currentState != null)
             currentState.onExit();
 
@@ -76,21 +79,23 @@ public class StateMachine {
         }
     }
 
-    private Transition getTransition(){
+    private Set<Transition> getTransition(){
+
+        Set<Transition> transitions = new HashSet<>();
 
         for(Transition t : anyTransitions){
             if(t.icondition.condition()){
-                return t;
+                transitions.add(t);
             }
         }
 
         for(Transition t : currentTransitions){
             if(t.icondition.condition()){
-                return t;
+                transitions.add(t);
             }
         }
 
-        return null;
+        return transitions;
     }
 
 }
