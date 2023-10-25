@@ -48,6 +48,7 @@ public class Vector2 {
 
     public static Vector2 normalize(Vector2 v){
         double length = Math.sqrt(v.x * v.x + v.y * v.y);
+        if(length == 0d) length = 1d;
         return new Vector2(v.x / length, v.y / length);
     }
 

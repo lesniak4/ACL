@@ -44,6 +44,7 @@ public class CanadaPainter implements IGamePainter {
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
 		drawQueue.sort(Comparator.comparing(GraphicsComponent::getDepth));
+
 		for(GraphicsComponent g : drawQueue) {
 			Vector2 pos = g.getScreenPos();
 			if(g.getSprite() != null) {
@@ -91,7 +92,6 @@ public class CanadaPainter implements IGamePainter {
 	}
 
 	public void addToDrawQueue(GraphicsComponent graphics){
-
 		drawQueue.add(graphics);
 	}
 

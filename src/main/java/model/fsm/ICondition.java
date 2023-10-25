@@ -1,4 +1,4 @@
-package model.world;
+package model.fsm;
 
 public interface ICondition {
     public boolean condition();

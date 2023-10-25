@@ -35,8 +35,9 @@ public abstract class GraphicsComponent extends Component {
                 new Vector2(getGameObject().getPosition().X() - camPos.X(),
                             getGameObject().getPosition().Y() - camPos.Y()));
 
-        if(isVisible && isInsideViewport())
+        if(isVisible && isInsideViewport()) {
             painter.addToDrawQueue(this);
+        }
     }
 
     public boolean isInsideViewport() {

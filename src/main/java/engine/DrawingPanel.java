@@ -61,6 +61,7 @@ public class DrawingPanel extends JPanel {
 	 * nouvelle image vide sur laquelle dessiner
 	 */
 	public void drawGame() {
+
 		// generer la nouvelle image
 		this.painter.draw(this.nextImage);
 
@@ -82,8 +83,8 @@ public class DrawingPanel extends JPanel {
 	 * @param g
 	 *            graphics pour dessiner
 	 */
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.drawImage(this.currentImage, 0, 0, getWidth(), getHeight(), 0, 0,
 				getWidth(), getHeight(), null);
 	}

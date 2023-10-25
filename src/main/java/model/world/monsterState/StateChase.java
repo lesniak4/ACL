@@ -1,8 +1,9 @@
 package model.world.monsterState;
 
 import model.components.AIComponent;
+import model.fsm.State;
 
-public class StateChase extends State{
+public class StateChase extends AIState {
     public StateChase(AIComponent aiComponent) {
         super(aiComponent);
     }

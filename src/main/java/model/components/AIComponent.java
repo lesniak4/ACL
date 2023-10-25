@@ -1,8 +1,10 @@
 package model.components;
 
 import model.GameObject;
+import model.fsm.ICondition;
+import model.fsm.State;
+import model.fsm.StateMachine;
 import utils.Vector2;
-import model.world.*;
 import model.world.monsterState.*;
 
 import java.util.Random;

@@ -10,12 +10,14 @@ import java.awt.image.BufferedImage;
 public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
 
     private AnimatedSprite animatedSprite;
+    private int rowIndex;
     private int currentFrame;
 
     public AnimatedSpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, AnimatedSprite sprite) {
         super(obj, painter, color, layer, sprite.getSprite(0));
 
         animatedSprite = sprite;
+        rowIndex = 0;
         currentFrame = 0;
     }
 
@@ -23,8 +25,14 @@ public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
     public void update(double dt) {
 
         this.sprite = animatedSprite.getSprite(currentFrame);
-        currentFrame = (currentFrame + 1) % animatedSprite.getFrameCount();
+        int startFrame = rowIndex * animatedSprite.getCols();
+
+        currentFrame = startFrame + ((currentFrame + 1) % animatedSprite.getCols());
 
         super.update(dt);
+    }
+
+    public void setRowIndex(int row){
+        this.rowIndex = row;
     }
 }

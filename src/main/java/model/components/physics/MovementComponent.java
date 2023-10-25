@@ -38,4 +38,12 @@ public abstract class MovementComponent extends Component {
         this.velocityX = 0d;
         this.velocityY = 0d;
     }
+
+    public boolean isMoving(){
+        return this.velocityX != 0 || this.velocityY != 0;
+    }
+
+    public double getDirectionAngle(){
+        return Math.atan2(this.velocityX, this.velocityY);
+    }
 }

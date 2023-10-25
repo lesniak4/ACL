@@ -1,8 +1,9 @@
 package model.world.monsterState;
 
 import model.components.AIComponent;
+import model.fsm.State;
 
-public class StatePatrol extends State{
+public class StatePatrol extends AIState {
     public StatePatrol(AIComponent aiComponent) {
         super(aiComponent);
     }

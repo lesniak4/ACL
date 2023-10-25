@@ -26,7 +26,7 @@ public class SpriteLoader {
             pathSprite = ImageIO.read(getClass().getResource("/sprites/path.png"));
             wallSprite = ImageIO.read(getClass().getResource("/sprites/wall.png"));
             playerSprite = ImageIO.read(getClass().getResource("/sprites/player.png"));
-            testAnim = ImageIO.read(getClass().getResource("/sprites/spritesheet.png"));
+            testAnim = ImageIO.read(getClass().getResource("/sprites/spritesheet_player.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);

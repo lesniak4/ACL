@@ -1,6 +1,4 @@
-package model.world.monsterState;
-
-import model.world.ICondition;
+package model.fsm;
 
 import java.util.*;
 

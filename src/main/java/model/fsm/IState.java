@@ -1,4 +1,4 @@
-package model.world.monsterState;
+package model.fsm;
 
 public interface IState {
 

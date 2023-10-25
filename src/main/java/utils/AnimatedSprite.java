@@ -7,9 +7,12 @@ public class AnimatedSprite {
 
     private BufferedImage[] sprites;
     private int frameCount;
+    private int rows, cols;
 
     public AnimatedSprite(BufferedImage spriteSheet, int rows, int cols){
 
+        this.rows = rows;
+        this.cols = cols;
         this.frameCount = rows * cols;
         this.sprites = new BufferedImage[frameCount];
 
@@ -29,5 +32,13 @@ public class AnimatedSprite {
 
     public int getFrameCount(){
         return this.frameCount;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
     }
 }

@@ -5,6 +5,7 @@ import model.components.AIComponent;
 import model.components.PathfindingComponent;
 import model.components.WorldExitComponent;
 import model.components.CoinComponent;
+import model.components.animation.CharacterAnimationComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
@@ -70,13 +71,16 @@ public class GameObjectFactory {
 
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
-        player.addComponent(new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, new AnimatedSprite(SpriteLoader.getInstance().getTestAnimSprite(), 2, 6)));
+        AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, new AnimatedSprite(SpriteLoader.getInstance().getTestAnimSprite(), 8, 1));
+        player.addComponent(renderer);
         //player.addComponent(new SpriteRendererComponent(player, painter, Color.WHITE, 1, SpriteLoader.getInstance().getPlayerSprite()));
         //player.addComponent(new CircleRendererComponent(player, painter, Color.RED,1,1, true));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        player.addComponent(new PlayerMovementComponent(player, 1d, physics, playerInputComponent));
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, 1d, physics, playerInputComponent);
+        player.addComponent(movement);
+        player.addComponent(new CharacterAnimationComponent(player, movement, renderer));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player));
 
