@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.IGame;
+import engine.IGameController;
 import model.world.HexLayout;
 import model.world.World;
 import utils.Vector2;
+import model.world.WorldGraph;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -37,7 +39,7 @@ public class CanadaGame implements IGame {
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, CanadaController controller, double maxTime) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller, double maxTime) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -65,6 +67,7 @@ public class CanadaGame implements IGame {
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
 		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
+		world.createRandomMonsters(5, gameObjects, player);
 		gameObjects.add(player);
 		this.setCameraPosition(player.getPosition());
 	}

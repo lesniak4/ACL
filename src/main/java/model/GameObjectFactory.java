@@ -1,16 +1,24 @@
 package model;
 
+import engine.IGameController;
+import model.components.AIComponent;
+import model.components.PathfindingComponent;
 import model.components.WorldExitComponent;
 import model.components.CoinComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.rendering.*;
+import model.components.physics.*;
+import model.components.rendering.CircleRendererComponent;
+import model.components.rendering.HexRendererComponent;
 import model.world.Hex;
 import model.world.HexLayout;
 import utils.AnimatedSprite;
 import utils.SpriteLoader;
 import utils.Vector2;
+import model.world.World;
+import model.world.WorldGraph;
 
 import java.awt.*;
 
@@ -58,7 +66,7 @@ public class GameObjectFactory {
         return coinTile;
     }
 
-    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, CanadaController controller, CanadaPhysics physics){
+    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
 
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
@@ -68,10 +76,25 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        player.addComponent(new MovementComponent(player, 1d, physics, playerInputComponent));
+        player.addComponent(new PlayerMovementComponent(player, 1d, physics, playerInputComponent));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
+        player.addComponent(new PlayerInteractionComponent(player));
 
         return player;
+    }
+
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target, GameObject player){
+
+        GameObject monster = new GameObject(posX, posY, game);
+        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
+        pathfindingComponent.setTarget(target.getPosition());
+
+        monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,8, true));
+        monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
+        monster.addComponent(new MonsterMovementComponent(monster, 0.65f, physics, pathfindingComponent));
+        monster.addComponent(new ColliderComponent(monster, physics, 8, false));
+
+        return monster;
     }
 
     public GameObject createWorldExitTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){

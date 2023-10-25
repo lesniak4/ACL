@@ -22,6 +22,10 @@ public class HexRendererComponent extends GraphicsComponent {
         this.layout = layout;
     }
 
+    public Hex getHex() {
+        return hex;
+    }
+
     @Override
     public void update(double dt) {
 

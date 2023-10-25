@@ -30,6 +30,12 @@ public class CanadaPhysics implements IGamePhysics {
             Vector2 velocity = new Vector2(m.getVelocityX(), m.getVelocityY());
             Vector2 newPos = new Vector2(lastPos.X() + velocity.X() * dt, lastPos.Y() + velocity.Y() * dt);
 
+            // Déplacement diagonaux de même distance que latéraux
+            double distance = Vector2.distance(lastPos, new Vector2(lastPos.X() + velocity.X(), lastPos.Y() + velocity.Y()));
+            if(distance > 1){
+                newPos = new Vector2(lastPos.X() - ((lastPos.X() - newPos.X()) / distance), lastPos.Y() - ((lastPos.Y() - newPos.Y()) / distance));
+            }
+
             gameObject.setPosition(newPos);
 
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);

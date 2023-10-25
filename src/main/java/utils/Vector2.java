@@ -36,6 +36,11 @@ public class Vector2 {
         return a.x * b.x + a.y * b.y;
     }
 
+    @Override
+    public boolean equals(Object o){
+        return (o instanceof Vector2) && Math.abs(((Vector2) o).x - this.x) < 1d && Math.abs(((Vector2) o).y - this.y) < 1d;
+    }
+
     public static Vector2 worldToScreenIso(Vector2 v){
 
         return new Vector2((v.X() - v.Y()), (v.X() + v.Y()) * 0.5d);

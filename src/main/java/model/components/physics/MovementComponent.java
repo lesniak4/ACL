@@ -1,30 +1,21 @@
 package model.components.physics;
 
-import engine.Cmd;
-import engine.IGameController;
+
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
 import utils.Vector2;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
-public class MovementComponent extends Component {
+public abstract class MovementComponent extends Component {
 
     protected CanadaPhysics physics;
-
-    protected IInputController controller;
     protected double movementSpeed;
     protected double velocityX;
     protected double velocityY;
 
-    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, IInputController controller) {
+    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics) {
         super(obj);
         this.physics = physics;
-        this.controller = controller;
         this.movementSpeed = movementSpeed;
     }
     public void setVelocityX(double velocityX) {

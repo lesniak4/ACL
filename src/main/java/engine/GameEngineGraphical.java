@@ -73,7 +73,7 @@ public class GameEngineGraphical {
 			long now = System.nanoTime();
 			dt += (now - lastTime) / nanoSecondsPerTick;
 			lastTime = now;
-			boolean shouldRender = true;
+			boolean shouldRender = false;
 
 			while (dt >= 1) {
 				ticks++;

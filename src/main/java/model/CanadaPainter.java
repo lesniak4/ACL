@@ -9,6 +9,7 @@ import java.util.Comparator;
 import engine.IGamePainter;
 import model.components.rendering.GraphicsComponent;
 import utils.Vector2;
+import model.components.rendering.HexRendererComponent;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -55,6 +56,17 @@ public class CanadaPainter implements IGamePainter {
 			}
 		}
 
+		// Pour afficher les position des hex
+
+		/*
+		for(GraphicsComponent g : drawQueue) {
+			crayon.setColor(Color.BLACK);
+			HexRendererComponent h =  (g instanceof HexRendererComponent ? (HexRendererComponent)g : null);
+			if(h != null)
+				crayon.drawString(h.getHex().getQ() + ";" + h.getHex().getR(), g.getShape().getBounds().x+ 26, g.getShape().getBounds().y+41);
+		}
+		*/
+
 		// Pour afficher les hitboxes
 		/*
 		for(GraphicsComponent g : drawQueue) {
@@ -62,9 +74,10 @@ public class CanadaPainter implements IGamePainter {
 			if(collider != null){
 				crayon.setColor(Color.red);
 				crayon.draw(new Ellipse2D.Double(g.getGameObject().getX()-collider.getRadius(), g.getGameObject().getY()-collider.getRadius(),collider.getRadius()*2, collider.getRadius()*2));
+				crayon.draw(g.getShape());
 			}
 		}
-		 */
+		*/
 	}
 
 	@Override
