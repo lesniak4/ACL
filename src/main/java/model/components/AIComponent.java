@@ -1,7 +1,7 @@
 package model.components;
 
 import model.GameObject;
-import model.Vector2;
+import utils.Vector2;
 import model.world.*;
 import model.world.monsterState.*;
 
@@ -12,11 +12,11 @@ public class AIComponent extends Component{
     private PathfindingComponent pathfindingComponent;
     private StateMachine stateMachine;
     private GameObject player;
-    private  State stateIdle;
-    private  State stateMoving;
-    private  State statePatrol;
-    private  State stateChase;
-    private  Vector2 savedTarget;
+    private State stateIdle;
+    private State stateMoving;
+    private State statePatrol;
+    private State stateChase;
+    private Vector2 savedTarget;
     private Vector2 initialPos;
 
     public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player) {

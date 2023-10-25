@@ -2,7 +2,7 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
-import model.Vector2;
+import utils.Vector2;
 import model.components.PathfindingComponent;
 import model.world.Hex;
 

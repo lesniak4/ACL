@@ -1,7 +1,7 @@
 package model.components;
 
 import model.GameObject;
-import model.Vector2;
+import utils.Vector2;
 import model.world.Hex;
 import model.world.Node;
 import model.world.World;

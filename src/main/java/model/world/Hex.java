@@ -1,6 +1,6 @@
 package model.world;
 
-import model.Vector2;
+import utils.Vector2;
 
 public class Hex {
 

@@ -89,7 +89,7 @@ public class GameObjectFactory {
         PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
         pathfindingComponent.setTarget(target.getPosition());
 
-        monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,8, true));
+        monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,1, 8, true));
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
         monster.addComponent(new MonsterMovementComponent(monster, 0.65f, physics, pathfindingComponent));
         monster.addComponent(new ColliderComponent(monster, physics, 8, false));

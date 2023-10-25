@@ -32,7 +32,6 @@ public class World {
         this.painter = painter;
         this.physics = physics;
         this.hexMap = new HashMap<>();
-        this.tileSize = 0;
         graph = new WorldGraph<>();
     }
 

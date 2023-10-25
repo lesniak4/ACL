@@ -6,6 +6,7 @@ import model.components.PathfindingComponent;
 import model.world.World;
 import model.world.WorldGraph;
 import org.junit.jupiter.api.Test;
+import utils.Vector2;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -18,8 +19,7 @@ public class PathfindingComponentTest {
     public void djisktraTest(){
         World world = new World(null, null,null);
         int WIDTH = 700;
-        double tileSize = WIDTH / (float) (Math.sqrt(3f) * 10);
-        world.setTileSize(tileSize);
+
 
         WorldGraph graph = new WorldGraph();
         Node node1 = new Node(new Hex(0,0));

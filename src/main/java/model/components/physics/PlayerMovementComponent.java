@@ -3,7 +3,9 @@ package model.components.physics;
 import engine.Cmd;
 import model.CanadaPhysics;
 import model.GameObject;
+import utils.Vector2;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerMovementComponent extends MovementComponent{
@@ -17,20 +19,27 @@ public class PlayerMovementComponent extends MovementComponent{
     @Override
     public void update(double dt) {
         if(this.gameObject != null){
-            Set<Cmd> commands = playerInputComponent.getCommands();
+            Set<Cmd> commands = new HashSet<>(playerInputComponent.getCommands());
 
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.UP) {
-                        this.velocityY -= movementSpeed;
+                        this.velocityX -= 1;
+                        this.velocityY -= 1;
                     } else if (command == Cmd.DOWN) {
-                        this.velocityY += movementSpeed;
+                        this.velocityX += 1;
+                        this.velocityY += 1;
                     } else if (command == Cmd.LEFT) {
-                        this.velocityX -= movementSpeed;
+                        this.velocityX -= 1;
+                        this.velocityY += 1;
                     } else if (command == Cmd.RIGHT) {
-                        this.velocityX += movementSpeed;
+                        this.velocityX += 1;
+                        this.velocityY -= 1;
                     }
                 }
+                Vector2 v = Vector2.normalize(new Vector2(velocityX, velocityY));
+                this.velocityX = v.X();
+                this.velocityY = v.Y();
                 physics.addToUpdate(this);
             }
         }
