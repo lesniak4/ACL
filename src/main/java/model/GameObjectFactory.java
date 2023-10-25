@@ -5,12 +5,10 @@ import model.components.CoinComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
-import model.components.rendering.CameraComponent;
-import model.components.rendering.CircleRendererComponent;
-import model.components.rendering.HexRendererComponent;
-import model.components.rendering.SpriteRendererComponent;
+import model.components.rendering.*;
 import model.world.Hex;
 import model.world.HexLayout;
+import utils.AnimatedSprite;
 import utils.SpriteLoader;
 import utils.Vector2;
 
@@ -64,7 +62,8 @@ public class GameObjectFactory {
 
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
-        player.addComponent(new SpriteRendererComponent(player, painter, Color.WHITE, 1, SpriteLoader.getInstance().getPlayerSprite()));
+        player.addComponent(new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, new AnimatedSprite(SpriteLoader.getInstance().getTestAnimSprite(), 2, 6)));
+        //player.addComponent(new SpriteRendererComponent(player, painter, Color.WHITE, 1, SpriteLoader.getInstance().getPlayerSprite()));
         //player.addComponent(new CircleRendererComponent(player, painter, Color.RED,1,1, true));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);

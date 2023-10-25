@@ -4,6 +4,7 @@ import model.GameObjectFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class SpriteLoader {
@@ -14,9 +15,10 @@ public class SpriteLoader {
         return instance;
     }
 
-    private Image pathSprite;
-    private Image wallSprite;
-    private Image playerSprite;
+    private BufferedImage pathSprite;
+    private BufferedImage wallSprite;
+    private BufferedImage playerSprite;
+    private BufferedImage testAnim;
 
     private SpriteLoader(){
 
@@ -24,21 +26,26 @@ public class SpriteLoader {
             pathSprite = ImageIO.read(getClass().getResource("/sprites/path.png"));
             wallSprite = ImageIO.read(getClass().getResource("/sprites/wall.png"));
             playerSprite = ImageIO.read(getClass().getResource("/sprites/player.png"));
+            testAnim = ImageIO.read(getClass().getResource("/sprites/spritesheet.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Image getPathSprite() {
+    public BufferedImage getPathSprite() {
         return pathSprite;
     }
 
-    public Image getWallSprite() {
+    public BufferedImage getWallSprite() {
         return wallSprite;
     }
 
-    public Image getPlayerSprite() {
+    public BufferedImage getPlayerSprite() {
         return playerSprite;
+    }
+
+    public BufferedImage getTestAnimSprite() {
+        return testAnim;
     }
 }

@@ -6,12 +6,13 @@ import model.components.Component;
 import utils.Vector2;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class GraphicsComponent extends Component {
 
     protected CanadaPainter painter;
     protected Shape shape;
-    protected Image sprite;
+    protected BufferedImage sprite;
     protected Color color;
     protected int layer;
 
