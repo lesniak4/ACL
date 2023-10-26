@@ -40,9 +40,6 @@ public class CharacterAnimationComponent extends Component {
     public void update(double dt) {
 
         stateMachine.tick();
-        if(movement.isMoving()) {
-
-        }
     }
 
     public void setCurrentSprite(AnimatedSprite sprite){
