@@ -4,8 +4,11 @@ import model.GameObject;
 import model.fsm.ICondition;
 import model.fsm.State;
 import model.fsm.StateMachine;
+import model.fsm.states.monsters.StateChase;
+import model.fsm.states.monsters.StateIdle;
+import model.fsm.states.monsters.StateMoving;
+import model.fsm.states.monsters.StatePatrol;
 import utils.Vector2;
-import model.world.monsterState.*;
 
 import java.util.Random;
 

@@ -7,7 +7,6 @@ import model.components.WorldExitComponent;
 import model.components.CoinComponent;
 import model.components.animation.CharacterAnimationComponent;
 import model.components.physics.ColliderComponent;
-import model.components.physics.MovementComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.rendering.*;
 import model.components.physics.*;
@@ -19,7 +18,6 @@ import utils.AnimatedSprite;
 import utils.SpriteLoader;
 import utils.Vector2;
 import model.world.World;
-import model.world.WorldGraph;
 
 import java.awt.*;
 
@@ -71,7 +69,7 @@ public class GameObjectFactory {
 
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
-        AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, new AnimatedSprite(SpriteLoader.getInstance().getTestAnimSprite(), 8, 1));
+        AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, SpriteLoader.getInstance().getPlayerIdleSprite(), 0.2d);
         player.addComponent(renderer);
         //player.addComponent(new SpriteRendererComponent(player, painter, Color.WHITE, 1, SpriteLoader.getInstance().getPlayerSprite()));
         //player.addComponent(new CircleRendererComponent(player, painter, Color.RED,1,1, true));
@@ -80,7 +78,7 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerMovementComponent movement = new PlayerMovementComponent(player, 1d, physics, playerInputComponent);
         player.addComponent(movement);
-        player.addComponent(new CharacterAnimationComponent(player, movement, renderer));
+        player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player));
 
