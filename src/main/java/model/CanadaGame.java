@@ -29,6 +29,7 @@ public class CanadaGame implements IGame {
 	private double maxTime;
 	private boolean hasKey;
 	private boolean playerWin;
+	private boolean playerLose;
 
 	private int niveauActuel;
 
@@ -55,6 +56,7 @@ public class CanadaGame implements IGame {
 		this.physics = physics;
 		this.controller = controller;
 
+		this.playerLose = false;
 		this.gameObjects = new ArrayList<>();
 		this.startTime = System.currentTimeMillis();
 		this.maxTime = maxTime;
@@ -85,6 +87,9 @@ public class CanadaGame implements IGame {
 	}
 
 	@Override
+	public boolean hasPlayerLost(){return this.playerLose;}
+
+	@Override
 	public int getScore() {
 		return this.score;
 	}
@@ -96,6 +101,8 @@ public class CanadaGame implements IGame {
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
 	}
+
+	public void setPlayerLose(boolean playerLose) {this.playerLose = playerLose;}
 
 	public void removeGameObject(GameObject obj){
 		gameObjects.remove(obj);
@@ -139,7 +146,7 @@ public class CanadaGame implements IGame {
 		if((timeRemaining) % 2000 == 0){
 			System.out.println(timeRemaining / 1000 + " secondes restantes !");
 		}
-		return playerWin || timeRemaining <= 0;
+		return playerWin || playerLose || timeRemaining <= 0;
 	}
 
 }

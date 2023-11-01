@@ -16,6 +16,8 @@ public interface IGame {
 
 	public boolean hasPlayerWon();
 
+	public boolean hasPlayerLost();
+
 	public int getScore();
 
 	public void loadNextLevel();

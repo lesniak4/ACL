@@ -33,6 +33,12 @@ public class PlayerInteractionComponent extends Component {
             colliderObj.getGame().setHasKey(true);
             System.out.println("Vous avez ramassé la clé!");
         }
+
+        // Check collision avec un ennemi
+        MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
+        if (monster != null) {
+            colliderObj.getGame().setPlayerLose(true);
+        }
     }
 
     @Override
