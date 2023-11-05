@@ -22,8 +22,11 @@ public class CanadaPainter implements IGamePainter {
 	/**
 	 * la taille de la fenêtre
 	 */
-	protected static final int WIDTH = 700;
-	protected static final int HEIGHT = (int)(Math.sqrt(3f) * WIDTH * 0.5f );
+	protected static final int COLS_COUNT = 9;
+	protected static final int ROWS_COUNT = 5;
+
+	protected static final int WIDTH = 1024;//700;
+	protected static final int HEIGHT = 576;//(int)(Math.sqrt(3f) * WIDTH * 0.5f );
 
 	protected List<GraphicsComponent> drawQueue;
 
@@ -43,6 +46,9 @@ public class CanadaPainter implements IGamePainter {
 	@Override
 	public void draw(BufferedImage im) {
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
+		crayon.setColor(Color.decode("#617E4F"));
+		crayon.fillRect(0,0, WIDTH, HEIGHT);
+
 		drawQueue.sort(Comparator.comparing(GraphicsComponent::getDepth));
 
 		for(GraphicsComponent g : drawQueue) {
@@ -50,7 +56,9 @@ public class CanadaPainter implements IGamePainter {
 			if(g.getSprite() != null) {
 				int x = (int) pos.X() - (g.getSprite().getWidth(null) - WIDTH) / 2;
 				int y = (int) pos.Y() - (g.getSprite().getHeight(null) - 64) + HEIGHT / 2;
-				crayon.drawImage(g.getSprite(), x, y, null);
+
+				crayon.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, g.getOpacity()));
+				crayon.drawImage(g.getSprite(), x, y, /*g.getSprite().getWidth(null) / 2, g.getSprite().getHeight(null) / 2,*/ null);
 			}else{
 				crayon.setColor(g.getColor());
 				crayon.fill(g.getShape());

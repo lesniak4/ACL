@@ -1,12 +1,12 @@
 package model.fsm.states.animations;
 
 import model.components.animation.CharacterAnimationComponent;
-import utils.AnimatedSprite;
+import utils.SpriteSheet;
 
 public class WalkingAnimation extends AnimationState{
 
 
-    public WalkingAnimation(CharacterAnimationComponent controller, AnimatedSprite sprite) {
+    public WalkingAnimation(CharacterAnimationComponent controller, SpriteSheet sprite) {
         super(controller, sprite);
     }
 

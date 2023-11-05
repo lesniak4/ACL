@@ -1,11 +1,11 @@
 package model.fsm.states.animations;
 
 import model.components.animation.CharacterAnimationComponent;
-import utils.AnimatedSprite;
+import utils.SpriteSheet;
 
 public class IdleAnimation extends AnimationState{
 
-    public IdleAnimation(CharacterAnimationComponent controller, AnimatedSprite sprite) {
+    public IdleAnimation(CharacterAnimationComponent controller, SpriteSheet sprite) {
         super(controller, sprite);
     }
 

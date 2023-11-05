@@ -38,8 +38,8 @@ public class PlayerMovementComponent extends MovementComponent{
                     }
                 }
                 Vector2 v = Vector2.normalize(new Vector2(velocityX, velocityY));
-                this.velocityX = v.X();
-                this.velocityY = v.Y();
+                this.velocityX = v.X() * movementSpeed;
+                this.velocityY = v.Y() * movementSpeed;
                 physics.addToUpdate(this);
             }
         }

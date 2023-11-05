@@ -1,23 +1,22 @@
 package model.world;
 
 import model.*;
+import model.components.PathNodeComponent;
+import model.components.rendering.BitmaskedSpriteRendererComponent;
 import utils.Vector2;
 import model.components.physics.ColliderComponent;
 import model.components.physics.PlayerInputComponent;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class World {
 
     private final int EVEN = 1;
     private final int ODD = -1;
 
-    private double tileSize = 91.84d;
+    private double tileSize = 92.5d;//91.84d;
 
     private WorldGraph graph;
 
@@ -51,9 +50,17 @@ public class World {
         return tileSize;
     }
 
-    public ArrayList<GameObject> buildWorld(String source, HexOrientation orientation){
+    public Collection<GameObject> buildWorld(String source, HexOrientation orientation){
 
-        ArrayList<GameObject> tiles = new ArrayList<>();
+        HashMap<Hex, GameObject> tiles = new HashMap<>();
+
+        int row = 0;
+        int col = 0;
+
+        int maxRow = row;
+        int maxCol = col;
+
+        HexLayout layout = new HexLayout(orientation, new Vector2(tileSize, tileSize), new Vector2(tileSize, tileSize));
 
         try {
             InputStream stream = getClass().getResourceAsStream(source);
@@ -63,14 +70,10 @@ public class World {
             InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
             BufferedReader buffer = new BufferedReader(reader);
 
-            int row = 0;
-            int col = 0;
             String line = buffer.readLine();
 
             if(line != null) {
                 int worldSize = line.trim().replaceAll("\\s+","").length();
-
-                HexLayout layout = new HexLayout(orientation, new Vector2(tileSize, tileSize), new Vector2(tileSize, tileSize));
 
                 // Lecture du fichier
                 do {
@@ -80,34 +83,77 @@ public class World {
                             Hex hex = Hex.gridToHexCoord(EVEN, col, row);
 
                             if (n == '0') {
-                                tiles.add(GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 hexMap.put(hex, 0);
                             } else if (n == '1') {
-                                tiles.add(GameObjectFactory.getInstance().createWallTile(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createWallTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 1);
                             } else if (n == '2') {
-                                tiles.add(GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 2);
                             } else if (n == '3') {
-                                tiles.add(GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
-                                tiles.add(GameObjectFactory.getInstance().createCoinTile(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.put(hex, GameObjectFactory.getInstance().createCoinTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 3);
                             }
                             col++;
                         }
                     }
+                    maxCol = col;
                     col = 0;
                     row++;
                 } while ((line = buffer.readLine()) != null);
                 buffer.close();
+                maxRow = row;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
+        for (Hex hex : tiles.keySet()){
+            int bitmask = 0;
+            for(int i = 0; i < 4; i++){
+                Hex neighbor = Hex.hexOfNeighbor(hex, i);
+                if(neighbor != null && hexMap.containsKey(neighbor) && isWall(neighbor)){
+                    bitmask += (int)Math.pow(2, i);
+                }
+                BitmaskedSpriteRendererComponent renderer = tiles.get(hex).getComponent(BitmaskedSpriteRendererComponent.class);
+                if(renderer != null){
+                    renderer.setBitmask(bitmask);
+                }
+            }
+        }
+
         buildWorldGraph();
 
-        return tiles;
+
+        for(int i = -4; i < 0; i++){
+            for(int j = -3; j < maxRow+3; j++){
+                Hex hex = Hex.gridToHexCoord(EVEN, i, j);
+                tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
+            }
+        }
+        for(int i = maxCol; i < maxCol+4; i++){
+            for(int j = -4; j < maxRow+4; j++){
+                Hex hex = Hex.gridToHexCoord(EVEN, i, j);
+                tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
+            }
+        }
+        for(int i = 0; i < maxCol; i++){
+            for(int j = -4; j < 0; j++){
+                Hex hex = Hex.gridToHexCoord(EVEN, i, j);
+                tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
+            }
+        }
+        for(int i = 0; i < maxCol-1; i++){
+            for(int j = maxRow; j < maxRow+4; j++){
+                Hex hex = Hex.gridToHexCoord(EVEN, i, j);
+                tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
+            }
+        }
+
+
+        return tiles.values();
     }
 
     public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player){
@@ -118,12 +164,12 @@ public class World {
         for(int i = 0 ; i < number; i++) {
 
             GameObject obj = null;
-            while (obj == null || obj.getComponent(ColliderComponent.class) != null) {
+            while (obj == null || obj.getComponent(PathNodeComponent.class) == null) {
                 obj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
             GameObject targetObj = null;
-            while (targetObj == null || targetObj.getComponent(ColliderComponent.class) != null || obj == targetObj || objs.contains(targetObj)) {
+            while (targetObj == null || targetObj.getComponent(PathNodeComponent.class) == null || obj == targetObj || objs.contains(targetObj)) {
                 targetObj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 

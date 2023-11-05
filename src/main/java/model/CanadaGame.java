@@ -66,7 +66,7 @@ public class CanadaGame implements IGame {
 		World world = new World(this, this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
 
-		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,20,20, painter, controller, physics);
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,180,180, painter, controller, physics);
 		world.createRandomMonsters(5, gameObjects, player);
 		gameObjects.add(player);
 		this.setCameraPosition(player.getPosition());

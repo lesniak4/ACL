@@ -32,7 +32,7 @@ public class Hex {
             return null;
 
         int[][][] evenR_direc_diff = {
-                {{-1, 0}, {0, +1}, {+1, -1}, {+1, 0}, {0, -1}, {-1, +1}},
+                {{-1, +1}, {0, +1}, {+1, 0}, {+1, -1}, {0, -1}, {-1, 0}},
         };
 
         var diff = evenR_direc_diff[0][direction];

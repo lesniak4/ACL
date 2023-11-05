@@ -21,21 +21,19 @@ public class MonsterMovementComponent extends MovementComponent{
     @Override
     public void update(double dt) {
         if(pathfindingComponent.isMoving()){
-            LinkedList<Hex> moves =  pathfindingComponent.pathFinding();
 
             Vector2 posNextMove;
-            if(!moves.isEmpty()) {
-                Hex nextMove = moves.pop();
+            Hex nextMove = pathfindingComponent.pathFinding();
+            if(nextMove != null){
                 posNextMove = Hex.hexToWorldPos(nextMove, pathfindingComponent.getWorld().getTileSize());
-            }else {
+            }else{
                 posNextMove = pathfindingComponent.getTarget();
             }
 
             Vector2 pos = this.getGameObject().getPosition();
-            double dst = Vector2.distance(pos, posNextMove);
-
-            this.velocityX = -((pos.X() - posNextMove.X()) / dst) * movementSpeed;
-            this.velocityY = -((pos.Y() - posNextMove.Y()) / dst) * movementSpeed;
+            Vector2 dir = Vector2.normalize(new Vector2(posNextMove.X() - pos.X(), (posNextMove.Y() - pos.Y())));
+            this.velocityX = dir.X() * movementSpeed;
+            this.velocityY = dir.Y() * movementSpeed;
 
             physics.addToUpdate(this);
         }

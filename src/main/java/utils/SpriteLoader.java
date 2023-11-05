@@ -12,43 +12,55 @@ public class SpriteLoader {
         return instance;
     }
 
-    private BufferedImage pathSprite;
-    private BufferedImage wallSprite;
-    private BufferedImage playerSprite;
-    private AnimatedSprite playerWalking;
-    private AnimatedSprite playerIdle;
+    private SpriteSheet pathSprite;
+    private SpriteSheet wallSprite;
+    private SpriteSheet playerWalking;
+    private SpriteSheet playerIdle;
+    private SpriteSheet monsterIdle;
+    private SpriteSheet monsterWalking;
+    private BufferedImage goldCoinsSprite;
 
     private SpriteLoader(){
 
         try {
-            pathSprite = ImageIO.read(getClass().getResource("/sprites/path.png"));
-            wallSprite = ImageIO.read(getClass().getResource("/sprites/wall.png"));
-            playerSprite = ImageIO.read(getClass().getResource("/sprites/player.png"));
-            playerWalking = new AnimatedSprite(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_walking.png")), 8, 12);
-            playerIdle = new AnimatedSprite(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_idle.png")), 8, 12);
+            pathSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/path.png")), 1, 16);
+            wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/wall.png")), 1, 16);
+            playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_walking.png")), 8, 16);
+            playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_idle.png")), 8, 1);
+            monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_monster_idle.png")), 8, 1);
+            monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_monster_walking.png")), 8, 16);
+            goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/coins.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public BufferedImage getPathSprite() {
+    public SpriteSheet getPathSprite() {
         return pathSprite;
     }
 
-    public BufferedImage getWallSprite() {
+    public SpriteSheet getWallSprite() {
         return wallSprite;
     }
 
-    public BufferedImage getPlayerSprite() {
-        return playerSprite;
-    }
-
-    public AnimatedSprite getPlayerWalkingSprite() {
+    public SpriteSheet getPlayerWalkingSprite() {
         return playerWalking;
     }
 
-    public AnimatedSprite getPlayerIdleSprite() {
+    public SpriteSheet getPlayerIdleSprite() {
         return playerIdle;
+    }
+
+    public SpriteSheet getMonsterIdleSprite() {
+        return monsterIdle;
+    }
+
+    public SpriteSheet getMonsterWalkingSprite() {
+        return monsterWalking;
+    }
+
+    public BufferedImage getGoldCoinsSprite() {
+        return goldCoinsSprite;
     }
 }

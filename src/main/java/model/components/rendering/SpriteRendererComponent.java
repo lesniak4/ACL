@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class SpriteRendererComponent extends GraphicsComponent{
 
-    public SpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, BufferedImage sprite) {
-        super(obj, painter, color, layer,true);
+    public SpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, boolean transparent, BufferedImage sprite) {
+        super(obj, painter, color, layer,true, transparent);
 
         this.sprite = sprite;
 

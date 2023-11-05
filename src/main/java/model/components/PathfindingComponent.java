@@ -44,26 +44,25 @@ public class PathfindingComponent extends Component{
         return isMoving;
     }
 
-    public LinkedList<Hex>  pathFinding(){
+    public Hex  pathFinding(){
 
         if(this.worldGraph == null || this.target == null || this.gameObject == null)
-            return new LinkedList<>();
+            return null;
 
         Node dst = getNodeOf(this.target);
         Node src = getNodeOf(this.gameObject);
 
         if(dst == null || src == null)
-            return new LinkedList<>();
+            return null;
 
         djikstra(src);
         return findShortestPath(src, dst);
     }
 
-    public LinkedList<Hex> findShortestPath(Node src, Node dst){
+    public Hex findShortestPath(Node src, Node dst){
 
-        LinkedList<Hex> path = new LinkedList<>();
         if(dst.getDistance() == Integer.MAX_VALUE)
-            return path;
+            return null;
 
         Stack<Node> stack = new Stack<>();
         Node ptr = dst;
@@ -81,12 +80,10 @@ public class PathfindingComponent extends Component{
             }
             ptr = next;
         }
-
-        while (!stack.isEmpty()) {
-            path.add(stack.pop().getHex());
+        if(!stack.isEmpty()){
+            return stack.pop().getHex();
         }
-
-        return  path;
+        return null;
     }
 
     public void djikstra(Node src){

@@ -2,22 +2,21 @@ package model.components.rendering;
 
 import model.CanadaPainter;
 import model.GameObject;
-import utils.AnimatedSprite;
+import utils.SpriteSheet;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
 
-    private AnimatedSprite animatedSprite;
+    private SpriteSheet spriteSheet;
     private int rowIndex;
     private double currentFrame;
     private double timeScale;
 
-    public AnimatedSpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, AnimatedSprite sprite, double timeScale) {
-        super(obj, painter, color, layer, sprite.getSprite(0));
+    public AnimatedSpriteRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, boolean transparent, SpriteSheet sprite, double timeScale) {
+        super(obj, painter, color, layer, transparent, sprite.getSprite(0));
 
-        this.animatedSprite = sprite;
+        this.spriteSheet = sprite;
         this.timeScale = timeScale;
         rowIndex = 0;
         currentFrame = 0;
@@ -26,10 +25,10 @@ public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
     @Override
     public void update(double dt) {
 
-        this.sprite = animatedSprite.getSprite((int)currentFrame);
-        int startFrame = rowIndex * animatedSprite.getCols();
+        this.sprite = spriteSheet.getSprite((int)currentFrame);
+        int startFrame = rowIndex * spriteSheet.getCols();
 
-        currentFrame = startFrame + ((currentFrame + timeScale) % animatedSprite.getCols());
+        currentFrame = startFrame + ((currentFrame + timeScale) % spriteSheet.getCols());
 
         super.update(dt);
     }
@@ -38,7 +37,7 @@ public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
         this.rowIndex = row;
     }
 
-    public void setSprite(AnimatedSprite sprite){
-        this.animatedSprite = sprite;
+    public void setSprite(SpriteSheet sprite){
+        this.spriteSheet = sprite;
     }
 }

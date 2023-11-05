@@ -15,22 +15,38 @@ public abstract class GraphicsComponent extends Component {
     protected BufferedImage sprite;
     protected Color color;
     protected int layer;
-
+    protected double depth;
+    protected float opacity;
     protected boolean isVisible;
+    protected boolean transparent;
     protected Vector2 screenPos;
 
-    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color, int layer, boolean isVisible){
+    public GraphicsComponent(GameObject obj, CanadaPainter painter, Color color, int layer, boolean isVisible, boolean transparent){
         super(obj);
         this.painter = painter;
         this.color = color;
         this.isVisible = isVisible;
         this.layer = layer;
+        this.depth = this.layer*10000 + getGameObject().getX() + getGameObject().getY();
+        this.opacity = 1f;
+        this.transparent = transparent;
     }
 
     @Override
     public void update(double dt) {
 
+        this.depth = this.layer*10000 + getGameObject().getX() + getGameObject().getY();
+
         Vector2 camPos = getGameObject().getGame().getCameraPosition();
+
+        double dstToCam = Vector2.distance(camPos, getGameObject().getPosition());
+
+        if(transparent && layer == 1 && dstToCam > 5 && dstToCam < 200){
+            this.opacity = 0.2f + ((float)dstToCam / 200f) * 0.8f;
+        }else{
+            this.opacity = 1f;
+        }
+
         this.screenPos = Vector2.worldToScreenIso(
                 new Vector2(getGameObject().getPosition().X() - camPos.X(),
                             getGameObject().getPosition().Y() - camPos.Y()));
@@ -77,7 +93,11 @@ public abstract class GraphicsComponent extends Component {
     }
 
     public double getDepth(){
-        return this.layer*10000 + getGameObject().getX() + getGameObject().getY();
+        return this.depth;
+    }
+
+    public float getOpacity(){
+        return this.opacity;
     }
 
     public void setInvisible() { this.isVisible = false; }

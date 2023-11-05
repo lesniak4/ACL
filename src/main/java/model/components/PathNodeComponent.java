@@ -2,9 +2,9 @@ package model.components;
 
 import model.GameObject;
 
-public class WorldExitComponent extends Component{
+public class PathNodeComponent extends Component{
 
-    public WorldExitComponent(GameObject obj) {
+    public PathNodeComponent(GameObject obj) {
         super(obj);
     }
 

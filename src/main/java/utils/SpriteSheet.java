@@ -1,15 +1,14 @@
 package utils;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class AnimatedSprite {
+public class SpriteSheet {
 
     private BufferedImage[] sprites;
     private int frameCount;
     private int rows, cols;
 
-    public AnimatedSprite(BufferedImage spriteSheet, int rows, int cols){
+    public SpriteSheet(BufferedImage spriteSheet, int rows, int cols){
 
         this.rows = rows;
         this.cols = cols;

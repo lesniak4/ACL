@@ -37,7 +37,7 @@ public class HexTest {
         Hex nHex = Hex.hexOfNeighbor(hex, 0);
         assertNotNull(nHex);
         assertEquals(hex.getQ() - 1 ,nHex.getQ());
-        assertEquals(hex.getR(), nHex.getR());
+        assertEquals(hex.getR() + 1, nHex.getR());
 
         Hex nHex2 = Hex.hexOfNeighbor(hex, 1);
         assertNotNull(nHex2);
@@ -47,22 +47,22 @@ public class HexTest {
         Hex nHex3 = Hex.hexOfNeighbor(hex, 2);
         assertNotNull(nHex3);
         assertEquals(hex.getQ() + 1 ,nHex3.getQ());
-        assertEquals(hex.getR() - 1 , nHex3.getR());
+        assertEquals(hex.getR(), nHex3.getR());
 
         Hex nHex4 = Hex.hexOfNeighbor(hex, 3);
         assertNotNull(nHex4);
         assertEquals(hex.getQ() + 1 ,nHex4.getQ());
-        assertEquals(hex.getR(), nHex4.getR());
+        assertEquals(hex.getR() - 1, nHex4.getR());
 
         Hex nHex5 = Hex.hexOfNeighbor(hex, 4);
         assertNotNull(nHex5);
         assertEquals(hex.getQ(),nHex5.getQ());
-        //assertEquals(hex.getR() + 1, nHex5.getR());
+        assertEquals(hex.getR() - 1, nHex5.getR());
 
         Hex nHex6 = Hex.hexOfNeighbor(hex, 5);
         assertNotNull(nHex6);
         assertEquals(hex.getQ() - 1, nHex6.getQ());
-        assertEquals(hex.getR() + 1, nHex6.getR());
+        assertEquals(hex.getR(), nHex6.getR());
     }
 
     @Test

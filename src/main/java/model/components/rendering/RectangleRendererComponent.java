@@ -12,7 +12,7 @@ public class RectangleRendererComponent extends GraphicsComponent{
     protected double height;
 
     public RectangleRendererComponent(GameObject obj, CanadaPainter painter, Color color, int layer, double width, double height, boolean isVisible) {
-        super(obj, painter, color, layer, isVisible);
+        super(obj, painter, color, layer, isVisible, false);
         this.width = width;
         this.height = height;
     }
