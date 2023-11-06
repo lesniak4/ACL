@@ -24,12 +24,15 @@ public class CanadaGame implements IGame {
 
 	private CanadaPainter painter;
 	private CanadaPhysics physics;
+	private IGameController controller;
 
 	private List<GameObject> gameObjects;
 	private Vector2 cameraPosition;
 	private double startTime;
 	private double maxTime;
+	private boolean hasKey;
 	private boolean playerWin;
+	private boolean playerLose;
 
 	private int niveauActuel;
 
@@ -54,22 +57,17 @@ public class CanadaGame implements IGame {
 
 		this.painter = painter;
 		this.physics = physics;
-		this.gameObjects = new ArrayList<>();
+		this.controller = controller;
 
-		this.playerWin = false;
+		this.playerLose = false;
+		this.gameObjects = new ArrayList<>();
 		this.startTime = System.currentTimeMillis();
 		this.maxTime = maxTime;
 
-		this.niveauActuel = 1;
+		this.niveauActuel = 0;
 		this.score = 0;
 
-		World world = new World(this, this.painter, this.physics);
-		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
-
-		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,180,180, painter, controller, physics);
-		world.createRandomMonsters(5, gameObjects, player);
-		gameObjects.add(player);
-		this.setCameraPosition(player.getPosition());
+		this.loadNextLevel();
 	}
 
 	/**
@@ -93,19 +91,53 @@ public class CanadaGame implements IGame {
 	}
 
 	@Override
+	public boolean hasPlayerLost(){return this.playerLose;}
+
+	@Override
 	public int getScore() {
 		return this.score;
 	}
 
+	public boolean playerOwnsKey() {return this.hasKey;}
+
+	public void setHasKey(boolean hasKey) {this.hasKey = hasKey;}
+
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
 	}
+
+	public void setPlayerLose(boolean playerLose) {this.playerLose = playerLose;}
 
 	public void removeGameObject(GameObject obj){
 		gameObjects.remove(obj);
 	}
 
 	public void incrScore(){ this.score++; }
+
+	/**
+	 * charge le niveau suivant
+	 */
+	public void loadNextLevel(){
+
+		/* on réinitialise les listes d'objets connus */
+		if (!this.gameObjects.isEmpty()) {
+			gameObjects.clear();
+			this.physics.reset();
+		}
+
+		this.niveauActuel += 1;
+		if (this.niveauActuel!=1) {this.maxTime += 30;}
+		this.hasKey = false;
+		this.playerWin = false;
+
+		World world = new World(this, this.painter, this.physics);
+		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
+
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,180,180, painter, controller, physics);
+		world.createRandomMonsters(5, gameObjects, player);
+		gameObjects.add(player);
+		this.setCameraPosition(player.getPosition());
+	}
 
 	/**
 	 * verifier si le jeu est fini
@@ -118,7 +150,7 @@ public class CanadaGame implements IGame {
 		if((timeRemaining) % 2000 == 0){
 			System.out.println(timeRemaining / 1000 + " secondes restantes !");
 		}
-		return playerWin || timeRemaining <= 0;
+		return playerWin || playerLose || timeRemaining <= 0;
 	}
 
 	public Vector2 getCameraPosition() {

@@ -7,6 +7,7 @@ import model.components.physics.ColliderComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.rendering.*;
 import model.components.physics.*;
+import model.components.rendering.CircleRendererComponent;
 import model.components.rendering.HexRendererComponent;
 import model.world.Hex;
 import model.world.HexLayout;
@@ -69,6 +70,18 @@ public class GameObjectFactory {
         coinTile.addComponent(new CoinComponent(coinTile));
 
         return coinTile;
+    }
+
+    public GameObject createKeyTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject keyTile= new GameObject(pos.X(), pos.Y(), game);
+        keyTile.addComponent(new CircleRendererComponent(keyTile, painter, Color.BLUE, 5, true));
+        keyTile.addComponent(new ColliderComponent(keyTile, physics,8, true));
+        keyTile.addComponent(new KeyComponent(keyTile));
+
+
+        return keyTile;
     }
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){

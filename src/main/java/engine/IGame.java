@@ -16,7 +16,12 @@ public interface IGame {
 
 	public boolean hasPlayerWon();
 
+	public boolean hasPlayerLost();
+
 	public int getScore();
+
+	public void loadNextLevel();
+
 	/**
 	 * @return true si et seulement si le jeu est fini
 	 */
