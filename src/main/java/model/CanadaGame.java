@@ -35,6 +35,7 @@ public class CanadaGame implements IGame {
 	private boolean playerLose;
 
 	private int niveauActuel;
+	private final int maxLevel = 2;
 
 	private int score;
 
@@ -125,18 +126,23 @@ public class CanadaGame implements IGame {
 			this.physics.reset();
 		}
 
-		this.niveauActuel += 1;
-		if (this.niveauActuel!=1) {this.maxTime += 30;}
-		this.hasKey = false;
-		this.playerWin = false;
+		this.niveauActuel++;
 
-		World world = new World(this, this.painter, this.physics);
-		gameObjects.addAll(world.buildWorld("/map.txt", HexLayout.pointy));
+		if(this.niveauActuel <= maxLevel) {
+			if (this.niveauActuel != 1) {
+				this.maxTime += 30;
+			}
+			this.hasKey = false;
+			this.playerWin = false;
 
-		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this,180,180, painter, controller, physics);
-		world.createRandomMonsters(5, gameObjects, player);
-		gameObjects.add(player);
-		this.setCameraPosition(player.getPosition());
+			World world = new World(this, this.painter, this.physics);
+			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
+
+			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics);
+			world.createRandomMonsters(5, gameObjects, player);
+			gameObjects.add(player);
+			this.setCameraPosition(player.getPosition());
+		}
 	}
 
 	/**
@@ -150,7 +156,7 @@ public class CanadaGame implements IGame {
 		if((timeRemaining) % 2000 == 0){
 			System.out.println(timeRemaining / 1000 + " secondes restantes !");
 		}
-		return playerWin || playerLose || timeRemaining <= 0;
+		return niveauActuel > maxLevel || playerLose || timeRemaining <= 0;
 	}
 
 	public Vector2 getCameraPosition() {

@@ -16,7 +16,7 @@ public class PlayerInteractionComponent extends Component {
 
         WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
         if(exit != null && colliderObj.getGame().playerOwnsKey()){
-            colliderObj.getGame().setPlayerWin(true);
+            getGameObject().getGame().setPlayerWin(true);
         }
 
         // Check collision avec une pièce

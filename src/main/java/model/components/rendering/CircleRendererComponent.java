@@ -4,6 +4,7 @@ import model.CanadaPainter;
 import model.GameObject;
 import utils.Vector2;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
@@ -24,6 +25,7 @@ public class CircleRendererComponent extends GraphicsComponent{
         Vector2 pos = Vector2.worldToScreenIso(new Vector2(x, y));
 
         this.shape = new Ellipse2D.Double(pos.X() + painter.getWidth() / 2d, pos.Y() + painter.getHeight() / 2d, 2*radius, 2*radius);
+
         super.update(dt);
     }
 }

@@ -102,12 +102,15 @@ public class GameEngineGraphical {
 				frames = 0;
 				ticks = 0;
 			}
+
+			if (this.game.hasPlayerWon()) {
+				System.out.println("Niveau terminé ! Votre score est de : " + game.getScore());
+				this.game.loadNextLevel();
+			}
 		}
 
 		if (this.game.hasPlayerWon()) {
 			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
-			this.game.loadNextLevel();
-			this.run();
 		} else if(this.game.hasPlayerLost()) {
 			System.out.println("Vous avez rencontré un monstre, et avez perdu ! ");
 		}else{

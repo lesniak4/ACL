@@ -76,7 +76,7 @@ public class GameObjectFactory {
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject keyTile= new GameObject(pos.X(), pos.Y(), game);
-        keyTile.addComponent(new CircleRendererComponent(keyTile, painter, Color.BLUE, 5, true));
+        keyTile.addComponent(new CircleRendererComponent(keyTile, painter, Color.BLUE, 1, 5, true));
         keyTile.addComponent(new ColliderComponent(keyTile, physics,8, true));
         keyTile.addComponent(new KeyComponent(keyTile));
 
