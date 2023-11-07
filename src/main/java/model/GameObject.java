@@ -1,6 +1,7 @@
 package model;
 
 import model.components.Component;
+import utils.Vector2;
 
 import java.util.*;
 

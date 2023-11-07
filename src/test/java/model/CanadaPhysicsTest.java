@@ -2,6 +2,7 @@ package model;
 
 import model.components.physics.ColliderComponent;
 import org.junit.jupiter.api.Test;
+import utils.Vector2;
 
 import static org.junit.jupiter.api.Assertions.*;
 

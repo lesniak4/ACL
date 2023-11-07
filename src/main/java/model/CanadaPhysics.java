@@ -3,6 +3,7 @@ package model;
 import engine.IGamePhysics;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
+import utils.Vector2;
 
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class CanadaPhysics implements IGamePhysics {
 
             Vector2 velocity = new Vector2(m.getVelocityX(), m.getVelocityY());
             Vector2 newPos = new Vector2(lastPos.X() + velocity.X() * dt, lastPos.Y() + velocity.Y() * dt);
-
+            
             gameObject.setPosition(newPos);
 
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
@@ -83,6 +84,15 @@ public class CanadaPhysics implements IGamePhysics {
         double r2 = c2.getRadius();
 
         return Vector2.squaredDistance(go1.getPosition(), go2.getPosition()) <= (r1+r2)*(r1+r2);//(x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) <= (r1+r2)*(r1+r2);
+    }
+
+    /**
+     * permet de vider les listes d'objets à prendre en compte
+     * pour les collisions et mises à jour lors d'un changement de niveau
+     */
+    public void reset() {
+        this.colliders.clear();
+        this.toUpdate.clear();
     }
 
     public Vector2 positionAfterCollision(GameObject toMove, GameObject collider, Vector2 lastPos, Vector2 velocity, double dt){

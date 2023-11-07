@@ -1,28 +1,21 @@
 package model.components.physics;
 
-import engine.Cmd;
-import engine.IGameController;
+
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
+import utils.Vector2;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Set;
-
-public class MovementComponent extends Component {
+public abstract class MovementComponent extends Component {
 
     protected CanadaPhysics physics;
-
-    protected IInputController controller;
     protected double movementSpeed;
     protected double velocityX;
     protected double velocityY;
 
-    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, IInputController controller) {
+    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics) {
         super(obj);
         this.physics = physics;
-        this.controller = controller;
         this.movementSpeed = movementSpeed;
     }
     public void setVelocityX(double velocityX) {
@@ -31,28 +24,6 @@ public class MovementComponent extends Component {
 
     public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
-    }
-
-    @Override
-    public void update(double dt) {
-        if(this.gameObject != null){
-            Set<Cmd> commands = controller.getCommands();
-
-            if(!commands.isEmpty()) {
-                for (Cmd command : commands) {
-                    if (command == Cmd.UP) {
-                        this.velocityY -= movementSpeed;
-                    } else if (command == Cmd.DOWN) {
-                        this.velocityY += movementSpeed;
-                    } else if (command == Cmd.LEFT) {
-                        this.velocityX -= movementSpeed;
-                    } else if (command == Cmd.RIGHT) {
-                        this.velocityX += movementSpeed;
-                    }
-                }
-                physics.addToUpdate(this);
-            }
-        }
     }
 
     public double getVelocityX() {
@@ -66,5 +37,13 @@ public class MovementComponent extends Component {
     public void resetVelocity(){
         this.velocityX = 0d;
         this.velocityY = 0d;
+    }
+
+    public boolean isMoving(){
+        return this.velocityX != 0 || this.velocityY != 0;
+    }
+
+    public double getDirectionAngle(){
+        return Math.atan2(this.velocityX, this.velocityY);
     }
 }
