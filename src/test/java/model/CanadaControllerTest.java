@@ -13,7 +13,7 @@ public class CanadaControllerTest {
     @Test
     public void deplacement() {
 
-        /*
+
         CanadaPhysics physics = new CanadaPhysics();
         CanadaPainter painter = new CanadaPainter();
         CanadaController controller = new CanadaController();
@@ -28,8 +28,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals((int)player.getX(), 20);
-        assertEquals((int)player.getY(), 19);
+        assertEquals((int)player.getX(), 21);
+        assertEquals((int)player.getY(), 18);
 
         // LEFT TEST
         controller.removeCommands(Cmd.DOWN, Cmd.RIGHT, Cmd.UP);
@@ -38,8 +38,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals((int)player.getX(), 20);
-        assertEquals((int)player.getY(), 20);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // DOWN TEST
         controller.removeCommands(Cmd.LEFT);
@@ -48,8 +48,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals((int)player.getX(), 20);
-        assertEquals((int)player.getY(), 20);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // UP TEST
         controller.removeCommands(Cmd.DOWN);
@@ -58,8 +58,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals((int)player.getX(), 20);
-        assertEquals((int)player.getY(), 20);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // DOWN-RIGHT TEST
         controller.removeCommands(Cmd.UP);
@@ -68,10 +68,10 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals((int)player.getX(), 40);
-        assertEquals((int)player.getY(), 20);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 19);
 
-         */
+
     }
 
 }

@@ -1,14 +1,18 @@
 package model;
 
 import engine.IGameController;
-import model.components.*;
+import model.components.ai.AIComponent;
+import model.components.ai.PathNodeComponent;
+import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.rendering.*;
 import model.components.physics.*;
-import model.components.rendering.CircleRendererComponent;
-import model.components.rendering.HexRendererComponent;
+import model.components.world.CoinComponent;
+import model.components.world.KeyComponent;
+import model.components.world.WorldExitComponent;
+import model.components.world.WorldSpawnComponent;
 import model.world.Hex;
 import model.world.HexLayout;
 import utils.SpriteLoader;
@@ -61,15 +65,15 @@ public class GameObjectFactory {
         return pathTile;
     }
 
-    public GameObject createCoinTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+    public GameObject createCoinsObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject coinTile = new GameObject(pos.X(), pos.Y(), game);
-        coinTile.addComponent(new SpriteRendererComponent(coinTile, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
-        coinTile.addComponent(new ColliderComponent(coinTile,  physics, 10,true));
-        coinTile.addComponent(new CoinComponent(coinTile));
+        GameObject coins = new GameObject(pos.X(), pos.Y(), game);
+        coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
+        coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
+        coins.addComponent(new CoinComponent(coins));
 
-        return coinTile;
+        return coins;
     }
 
     public GameObject createKeyObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
@@ -77,7 +81,7 @@ public class GameObjectFactory {
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject key = new GameObject(pos.X(), pos.Y(), game);
         key.addComponent(new SpriteRendererComponent(key, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
-        key.addComponent(new ColliderComponent(key, physics,20, true));
+        key.addComponent(new ColliderComponent(key, physics,25, true));
         key.addComponent(new KeyComponent(key));
 
 
@@ -121,6 +125,17 @@ public class GameObjectFactory {
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
 
         return monster;
+    }
+
+    public GameObject createWorldSpawnTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject exitTile = new GameObject(pos.X(), pos.Y(), game);
+        exitTile.addComponent(new BitmaskedSpriteRendererComponent(exitTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
+        exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), false));
+        exitTile.addComponent(new WorldSpawnComponent(exitTile));
+
+        return exitTile;
     }
 
     public GameObject createWorldExitTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){

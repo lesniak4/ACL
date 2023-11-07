@@ -1,6 +1,7 @@
-package model.components;
+package model.components.ai;
 
 import model.GameObject;
+import model.components.Component;
 import utils.Vector2;
 import model.world.Hex;
 import model.world.Node;
@@ -9,7 +10,7 @@ import model.world.WorldGraph;
 
 import java.util.*;
 
-public class PathfindingComponent extends Component{
+public class PathfindingComponent extends Component {
 
     private World world;
     private WorldGraph worldGraph;

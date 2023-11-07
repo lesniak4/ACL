@@ -2,14 +2,11 @@ package model;
 
 import model.world.Hex;
 import model.world.Node;
-import model.components.PathfindingComponent;
+import model.components.ai.PathfindingComponent;
 import model.world.World;
 import model.world.WorldGraph;
 import org.junit.jupiter.api.Test;
 import utils.Vector2;
-
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,6 +1,6 @@
 package model.fsm.states.monsters;
 
-import model.components.AIComponent;
+import model.components.ai.AIComponent;
 import model.fsm.State;
 
 public abstract class AIState extends State {

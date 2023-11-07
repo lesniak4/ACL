@@ -1,6 +1,7 @@
-package model.components;
+package model.components.ai;
 
 import model.GameObject;
+import model.components.Component;
 import model.fsm.ICondition;
 import model.fsm.State;
 import model.fsm.StateMachine;
@@ -12,7 +13,7 @@ import utils.Vector2;
 
 import java.util.Random;
 
-public class AIComponent extends Component{
+public class AIComponent extends Component {
 
     private PathfindingComponent pathfindingComponent;
     private StateMachine stateMachine;

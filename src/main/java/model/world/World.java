@@ -1,11 +1,10 @@
 package model.world;
 
 import model.*;
-import model.components.PathNodeComponent;
+import model.components.ai.PathNodeComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.world.WorldSpawnComponent;
 import utils.Vector2;
-import model.components.physics.ColliderComponent;
-import model.components.physics.PlayerInputComponent;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -88,17 +87,20 @@ public class World {
                             } else if (n == '1') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWallTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 1);
-                            } else if (n == '2') {
-                                tiles.put(hex, GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
-                                hexMap.put(hex, 2);
-                            } else if (n == '3') {
+                            }  else if (n == '2') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
-                                tiles.put(hex, GameObjectFactory.getInstance().createCoinTile(game, hex, layout, painter, physics));
-                                hexMap.put(hex, 3);
-                            } else if(n == '4'){
+                                tiles.put(hex, GameObjectFactory.getInstance().createCoinsObject(game, hex, layout, painter, physics));
+                                hexMap.put(hex, 2);
+                            } else if(n == '3'){
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 tiles.put(hex, GameObjectFactory.getInstance().createKeyObject(game, hex, layout, painter, physics));
-                                hexMap.put(hex, 4);
+                                hexMap.put(hex, 3);
+                            }else if (n == '8') {
+                                tiles.put(hex, GameObjectFactory.getInstance().createWorldSpawnTile(game, hex, layout, painter, physics));
+                                hexMap.put(hex, 8);
+                            }else if (n == '9') {
+                                tiles.put(hex, GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
+                                hexMap.put(hex, 9);
                             }
                             col++;
                         }
@@ -130,25 +132,29 @@ public class World {
 
         buildWorldGraph();
 
-
+        // Création des bordures du monde
+        // Bordure Est
         for(int i = -4; i < 0; i++){
             for(int j = -3; j < maxRow+3; j++){
                 Hex hex = Hex.gridToHexCoord(EVEN, i, j);
                 tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
             }
         }
+        // Bordure Ouest
         for(int i = maxCol; i < maxCol+4; i++){
             for(int j = -4; j < maxRow+4; j++){
                 Hex hex = Hex.gridToHexCoord(EVEN, i, j);
                 tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
             }
         }
-        for(int i = 0; i < maxCol; i++){
+        // Bordure Nord
+        for(int i = 1; i < maxCol; i++){
             for(int j = -4; j < 0; j++){
                 Hex hex = Hex.gridToHexCoord(EVEN, i, j);
                 tiles.put(hex, GameObjectFactory.getInstance().createBorderTile(game, hex, layout, painter, physics));
             }
         }
+        // Bordure Sud
         for(int i = 0; i < maxCol-1; i++){
             for(int j = maxRow; j < maxRow+4; j++){
                 Hex hex = Hex.gridToHexCoord(EVEN, i, j);
@@ -168,17 +174,17 @@ public class World {
         for(int i = 0 ; i < number; i++) {
 
             GameObject obj = null;
-            while (obj == null || obj.getComponent(PathNodeComponent.class) == null) {
+            while (obj == null || obj.getComponent(PathNodeComponent.class) == null || obj.getComponent(WorldSpawnComponent.class) != null) {
                 obj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
             GameObject targetObj = null;
-            while (targetObj == null || targetObj.getComponent(PathNodeComponent.class) == null || obj == targetObj || objs.contains(targetObj)) {
+            while (targetObj == null || targetObj.getComponent(PathNodeComponent.class) == null || obj.getComponent(WorldSpawnComponent.class) != null || obj == targetObj || objs.contains(targetObj)) {
                 targetObj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
-            double randomSlidingX = random.nextInt(1) == 0 ? -(random.nextInt((int)tileSize)  * 1/2) : (random.nextInt((int)tileSize)  * 1/2);
-            double randomSlidingY = random.nextInt(1) == 0 ? -(random.nextInt((int)tileSize)  * 1/2) : (random.nextInt((int)tileSize)  * 1/2);
+            double randomSlidingX = random.nextInt(2) == 0 ? -(random.nextInt((int)tileSize) * 0.5f) : (random.nextInt((int)tileSize)  * 0.5f);
+            double randomSlidingY = random.nextInt(2) == 0 ? -(random.nextInt((int)tileSize) * 0.5f) : (random.nextInt((int)tileSize)  * 0.5f);
 
             objs.add(targetObj);
             objs.add(obj);

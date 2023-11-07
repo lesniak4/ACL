@@ -2,10 +2,7 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
-import model.components.CoinComponent;
 import model.components.Component;
-import model.components.WorldExitComponent;
-import model.components.rendering.CircleRendererComponent;
 
 public class ColliderComponent extends Component {
 

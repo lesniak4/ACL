@@ -3,11 +3,8 @@ package model.components.physics;
 import model.CanadaPhysics;
 import model.GameObject;
 import utils.Vector2;
-import model.components.PathfindingComponent;
+import model.components.ai.PathfindingComponent;
 import model.world.Hex;
-
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 
 public class MonsterMovementComponent extends MovementComponent{
 

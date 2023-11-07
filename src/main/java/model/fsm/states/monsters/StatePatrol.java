@@ -1,6 +1,6 @@
 package model.fsm.states.monsters;
 
-import model.components.AIComponent;
+import model.components.ai.AIComponent;
 
 public class StatePatrol extends AIState {
     public StatePatrol(AIComponent aiComponent) {
@@ -13,10 +13,12 @@ public class StatePatrol extends AIState {
 
     @Override
     public void onEnter() {
+
         aiComponent.switchDest();
     }
 
     @Override
     public void onExit() {
+
     }
 }

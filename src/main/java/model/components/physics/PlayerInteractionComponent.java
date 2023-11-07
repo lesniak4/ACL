@@ -1,11 +1,10 @@
 package model.components.physics;
 
 import model.GameObject;
-import model.components.AIComponent;
-import model.components.CoinComponent;
+import model.components.world.CoinComponent;
 import model.components.Component;
-import model.components.KeyComponent;
-import model.components.WorldExitComponent;
+import model.components.world.KeyComponent;
+import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
     public PlayerInteractionComponent(GameObject obj) {

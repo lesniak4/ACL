@@ -1,6 +1,6 @@
 package model.fsm.states.monsters;
 
-import model.components.AIComponent;
+import model.components.ai.AIComponent;
 
 public class StateMoving extends AIState {
     public StateMoving(AIComponent aiComponent) {
