@@ -4,8 +4,7 @@ package engine;
  * @author Horatiu Cirstea, Vincent Thomas
  *
  */
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -47,6 +46,7 @@ public class DrawingPanel extends JPanel {
 		this.width = painter.getWidth();
 		this.height = painter.getHeight();
 		this.setPreferredSize(new Dimension(this.width, this.height));
+
 		this.painter=painter;
 
 		// cree l'image buffer et son graphics
@@ -61,6 +61,7 @@ public class DrawingPanel extends JPanel {
 	 * nouvelle image vide sur laquelle dessiner
 	 */
 	public void drawGame() {
+
 		// generer la nouvelle image
 		this.painter.draw(this.nextImage);
 
@@ -82,8 +83,8 @@ public class DrawingPanel extends JPanel {
 	 * @param g
 	 *            graphics pour dessiner
 	 */
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.drawImage(this.currentImage, 0, 0, getWidth(), getHeight(), 0, 0,
 				getWidth(), getHeight(), null);
 	}

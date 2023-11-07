@@ -1,0 +1,119 @@
+@startuml
+class GameEngineGraphical {
+void run()
+}
+
+
+class CanadaGame {
+int niveauActuel
+int score
+void evolve(Cmd userCmd)
+boolean isFinished()
+}
+
+class CanadaPainter {
+void draw(BufferedImage image)
+void addToDrawQueue(GraphicsComponent graphics)
+void clearDrawQueue()
+}
+
+class CanadaController{
+Cmd getCommand()
+}
+
+class World {
+ArrayList<GameObject> buildWorld(String source)
+}
+
+class GameObject {
+int posX, posY
+void update(double dt)
+void addComponent(Component component)
+}
+
+abstract class Component{
+void update(double dt)
+}
+
+class PlayerInputComponent{
+void update(double dt)
+}
+
+abstract class MovementComponent{
+float velocity
+void update(double dt)
+}
+
+class PlayerMovementComponent #palegreen{
+void update(double dt)
+}
+
+class MonsterMovementComponent #palegreen{
+void update(double dt)
+}
+
+class ColliderComponent{
+void update(double dt)
+}
+
+class PathfindingComponent #palegreen{
+void update(double dt)
+}
+
+class AIComponent #palegreen{
+void update(double dt)
+}
+
+class PlayerInteractionComponent #palegreen{
+void update(double dt)
+void interactWith(GameObject obj)
+}
+
+abstract class GraphicsComponent{
+Shape shape
+Color color
+void update(double dt)
+}
+
+class RectangleComponent{
+float width, height
+void update(double dt)
+}
+
+class CircleComponent{
+float radius
+void update(double dt)
+}
+
+GameEngineGraphical -- "1"CanadaGame
+GameEngineGraphical -- "1"CanadaPainter
+GameEngineGraphical -- "1"CanadaController
+
+CanadaGame "1"--"*"GameObject
+CanadaGame --"1" CanadaPainter
+World --"1" CanadaPainter
+
+GameObject "1"--"*"Component
+
+Component <|-- GraphicsComponent
+Component <|-- PlayerInputComponent
+Component <|-- MovementComponent
+Component <|-- PathfindingComponent #green
+Component <|-- ColliderComponent
+Component <|-- AIComponent #green
+Component <|-- PlayerInteractionComponent #green
+
+GraphicsComponent <|-- RectangleComponent
+GraphicsComponent <|-- CircleComponent
+
+MovementComponent <|-- PlayerMovementComponent #green
+MovementComponent <|-- MonsterMovementComponent #green
+
+PlayerInputComponent "1"- PlayerMovementComponent #green
+PathfindingComponent "1"- MonsterMovementComponent #green
+AIComponent -"1" PathfindingComponent #green
+GameObject "1 -target"-- PathfindingComponent #green
+
+CanadaController "1"-- PlayerInputComponent
+CanadaPainter "1"--"*" GraphicsComponent
+@enduml

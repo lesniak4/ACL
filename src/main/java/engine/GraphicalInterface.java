@@ -26,6 +26,7 @@ public class GraphicalInterface  {
 	public GraphicalInterface(IGamePainter gamePainter, IGameController gameController){
 		JFrame f=new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setResizable(false);
 		
 		// attacher le panel contenant l'afficheur du game
 		this.panel=new DrawingPanel(gamePainter);

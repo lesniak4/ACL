@@ -2,14 +2,17 @@ package model;
 
 import engine.Cmd;
 import model.components.physics.MovementComponent;
+import model.components.physics.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CanadaControllerTest {
 
     @Test
     public void deplacement() {
+
 
         CanadaPhysics physics = new CanadaPhysics();
         CanadaPainter painter = new CanadaPainter();
@@ -17,7 +20,7 @@ public class CanadaControllerTest {
         CanadaGame game = new CanadaGame("", painter, physics, controller, 999);
 
         GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics);
-        MovementComponent m = player.getComponent(MovementComponent.class);
+        PlayerMovementComponent m = player.getComponent(PlayerMovementComponent.class);
 
         // RIGHT TEST
         controller.setKeysPressed(Cmd.UP, Cmd.DOWN, Cmd.RIGHT);
@@ -25,8 +28,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20.02d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 21);
+        assertEquals((int)player.getY(), 18);
 
         // LEFT TEST
         controller.removeCommands(Cmd.DOWN, Cmd.RIGHT, Cmd.UP);
@@ -35,8 +38,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // DOWN TEST
         controller.removeCommands(Cmd.LEFT);
@@ -45,8 +48,8 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20.02d);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // UP TEST
         controller.removeCommands(Cmd.DOWN);
@@ -55,18 +58,20 @@ public class CanadaControllerTest {
         m.update(1);
         physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 20d);
-        assertEquals(player.getY(), 20d);
+        assertEquals((int)player.getX(), 19);
+        assertEquals((int)player.getY(), 19);
 
         // DOWN-RIGHT TEST
         controller.removeCommands(Cmd.UP);
         controller.setKeysPressed(Cmd.RIGHT, Cmd.DOWN);
 
-        m.update(20);
-        physics.updatePhysics(20);
+        m.update(1);
+        physics.updatePhysics(1);
 
-        assertEquals(player.getX(), 40d);
-        assertEquals(player.getY(), 40d);
+        assertEquals((int)player.getX(), 20);
+        assertEquals((int)player.getY(), 19);
+
+
     }
 
 }

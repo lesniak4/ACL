@@ -1,6 +1,7 @@
-package model.components;
+package model.components.world;
 
 import model.GameObject;
+import model.components.Component;
 
 public class CoinComponent extends Component {
     public CoinComponent(GameObject obj) {
