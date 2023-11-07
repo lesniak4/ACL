@@ -97,7 +97,7 @@ public class World {
                                 hexMap.put(hex, 3);
                             } else if(n == '4'){
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
-                                tiles.put(hex, GameObjectFactory.getInstance().createKeyTile(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createKeyObject(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 4);
                             }
                             col++;

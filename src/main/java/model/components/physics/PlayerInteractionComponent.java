@@ -27,12 +27,12 @@ public class PlayerInteractionComponent extends Component {
             System.out.println("Vous venez de récolter une pièce.");
         }
 
-        // Check collision avec une clé
+        // Check collision avec une hache
         KeyComponent key = colliderObj.getComponent(KeyComponent.class);
         if(key != null){
             colliderObj.destroyGameObject();
             colliderObj.getGame().setHasKey(true);
-            System.out.println("Vous avez ramassé la clé!");
+            System.out.println("Vous avez ramassé la hache !");
         }
 
         // Check collision avec un ennemi

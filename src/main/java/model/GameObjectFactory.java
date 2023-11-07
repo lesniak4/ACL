@@ -66,22 +66,22 @@ public class GameObjectFactory {
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject coinTile = new GameObject(pos.X(), pos.Y(), game);
         coinTile.addComponent(new SpriteRendererComponent(coinTile, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
-        coinTile.addComponent(new ColliderComponent(coinTile,  physics, 8,true));
+        coinTile.addComponent(new ColliderComponent(coinTile,  physics, 10,true));
         coinTile.addComponent(new CoinComponent(coinTile));
 
         return coinTile;
     }
 
-    public GameObject createKeyTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+    public GameObject createKeyObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject keyTile= new GameObject(pos.X(), pos.Y(), game);
-        keyTile.addComponent(new CircleRendererComponent(keyTile, painter, Color.BLUE, 1, 5, true));
-        keyTile.addComponent(new ColliderComponent(keyTile, physics,8, true));
-        keyTile.addComponent(new KeyComponent(keyTile));
+        GameObject key = new GameObject(pos.X(), pos.Y(), game);
+        key.addComponent(new SpriteRendererComponent(key, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
+        key.addComponent(new ColliderComponent(key, physics,20, true));
+        key.addComponent(new KeyComponent(key));
 
 
-        return keyTile;
+        return key;
     }
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
@@ -127,8 +127,9 @@ public class GameObjectFactory {
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject exitTile = new GameObject(pos.X(), pos.Y(), game);
-        exitTile.addComponent(new HexRendererComponent(exitTile, painter, Color.BLUE, 0, hex, layout, true));
-        exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), true));
+        exitTile.addComponent(new BitmaskedSpriteRendererComponent(exitTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
+        exitTile.addComponent(new SpriteRendererComponent(exitTile, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getExitSprite()));
+        exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), false));
         exitTile.addComponent(new WorldExitComponent(exitTile));
 
         return exitTile;
