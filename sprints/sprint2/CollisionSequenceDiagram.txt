@@ -1,0 +1,78 @@
+@startuml
+
+GameEngineGraphical -> GameEngineGraphical : **gameTick**
+GameEngineGraphical -> CanadaPhysics : updatePhysics()
+loop#LightGreen For movementComponent in toUpdate
+
+   CanadaPhysics -> MovementComponent : gameObject = movementComponent.getGameObject()
+
+   CanadaPhysics -> GameObject : collider = gameObject.getComponent(ColliderComponent.class)
+
+   CanadaPhysics->CanadaPhysics : toUpdate
+   CanadaPhysics->CanadaPhysics : colliders
+
+   loop#LightBlue For c in colliders
+
+      CanadaPhysics -> CanadaPhysics : colliding  =  areColliding(collider, c)
+
+      alt#orange colliding
+
+
+
+        CanadaPhysics -> ColliderComponent : goC = collider.getGameObject()
+        CanadaPhysics -> ColliderComponent : collider.onCollisionEnter(goC)
+
+
+        ColliderComponent -> ColliderComponent : obj = getGameObject()
+        ColliderComponent -> GameObject : player1 = obj.getComponent(PlayerInteractionComponent.class)
+        ColliderComponent -> GameObject : player2 = goC.getComponent(PlayerInteractionComponent.class)
+
+        loop#Yellow For player in [player1,player2]
+
+        alt#green player != null
+
+          ColliderComponent -> PlayerInteractionComponent : player.interactWith(obj)
+
+          PlayerInteractionComponent -> GameObject : wec = obj.getComponent(WorldExitComponent.class)
+          alt#Pink wec != null
+              PlayerInteractionComponent -> PlayerInteractionComponent : gameObj = getGameObject()
+              PlayerInteractionComponent -> GameObject : gameObj.destroyGameObject()
+              PlayerInteractionComponent -> GameObject : game = gameObj.getGame()
+              PlayerInteractionComponent -> CanadaGame : hasKey = game.playerOwnsKey()
+              alt#Orange hasKey
+                    PlayerInteractionComponent -> CanadaGame : game.setPlayerWin(true)
+              end
+
+          end
+          PlayerInteractionComponent -> GameObject : cc = obj.getComponent(CoinComponent.class)
+          alt#Pink cc != null
+              PlayerInteractionComponent -> PlayerInteractionComponent : gameObj = getGameObject()
+              PlayerInteractionComponent -> GameObject : gameObj.destroyGameObject()
+              PlayerInteractionComponent -> GameObject : game = gameObj.getGame()
+              PlayerInteractionComponent -> CanadaGame : game.incrScore()
+          end
+          PlayerInteractionComponent -> GameObject : kc = obj.getComponent(KeyComponent.class)
+          alt#Pink kc != null
+              PlayerInteractionComponent -> PlayerInteractionComponent : gameObj = getGameObject()
+              PlayerInteractionComponent -> GameObject : game = gameObj.getGame()
+              PlayerInteractionComponent -> CanadaGame : game.setHasKey(true)
+          end
+          PlayerInteractionComponent -> GameObject : mvc = obj.getComponent(MonsterMovementComponent.class)
+          alt#Pink mvc != null
+              PlayerInteractionComponent -> PlayerInteractionComponent : gameObj = getGameObject()
+              PlayerInteractionComponent -> GameObject : game = gameObj.getGame()
+              PlayerInteractionComponent -> CanadaGame : game.setPlayerLose(true)
+          end
+
+       end
+
+      end
+
+      end
+
+   end
+
+end
+
+
+@enduml

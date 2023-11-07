@@ -1,0 +1,21 @@
+@startuml
+hide empty description
+
+state join <<join>>
+
+StateIdle --> StateMoving : Object is not on target
+StateMoving --> StateIdle : Object is on target
+StateIdle --> StatePatrol
+StatePatrol --> StateMoving : Object has target
+
+StateIdle -> join
+StateMoving -> join
+StatePatrol -> join
+
+join --> StateChase : Object is close to player
+
+StateChase --> StateMoving : Player is far enough from object
+
+StateIdle <-- [*]
+
+@enduml
