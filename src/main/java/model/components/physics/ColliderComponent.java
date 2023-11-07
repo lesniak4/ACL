@@ -42,6 +42,11 @@ public class ColliderComponent extends Component {
 
         if(player != null){
             player.interactWith(colliderObj);
+        }else{
+            player = colliderObj.getComponent(PlayerInteractionComponent.class);
+            if(player != null){
+                player.interactWith(obj);
+            }
         }
 
 
