@@ -1,14 +1,15 @@
 @startuml
 
-GameEngineGraphical -> GameEngineGraphical : **gameTick**
 GameEngineGraphical -> CanadaPhysics : updatePhysics()
+
+CanadaPhysics->CanadaPhysics : toUpdate
+
 loop#LightGreen For movementComponent in toUpdate
 
    CanadaPhysics -> MovementComponent : gameObject = movementComponent.getGameObject()
 
    CanadaPhysics -> GameObject : collider = gameObject.getComponent(ColliderComponent.class)
 
-   CanadaPhysics->CanadaPhysics : toUpdate
    CanadaPhysics->CanadaPhysics : colliders
 
    loop#LightBlue For c in colliders
