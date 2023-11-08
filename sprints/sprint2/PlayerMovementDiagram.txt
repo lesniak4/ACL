@@ -1,0 +1,33 @@
+@startuml
+
+title "Gameloop Player Movement"
+
+rectangle "GameEngineGraphical" as GameEngineGraphical
+rectangle "CanadaGame" as CanadaGame
+rectangle "CanadaPainter" as CanadaPainter
+rectangle "CanadaPhysics" as CanadaPhysics
+rectangle "player : GameObject" as GameObject
+rectangle "PlayerMovementComponent" as PlayerMovementComponent
+rectangle "PlayerInputComponent" as PlayerInputComponent
+rectangle "GraphicsComponent" as GraphicsComponent
+
+GameEngineGraphical -right-> CanadaGame: 1: evolve()
+CanadaGame -right-> CanadaPainter: 1.1: clearDrawQueue()
+CanadaGame -down-> GameObject: 1.2: update()
+
+GameObject -down-> PlayerMovementComponent: 1.2.1: update()
+PlayerMovementComponent -down-> PlayerInputComponent: 1.2.1.1: getCommands()
+PlayerMovementComponent --> PlayerMovementComponent: 1.2.1.2: velocity update
+PlayerMovementComponent -down-> CanadaPhysics: 1.2.1.3: addToUpdate()
+
+GameObject -down-> GraphicsComponent: 1.2.2: update()
+GraphicsComponent --> GraphicsComponent: 1.2.2.1: compute position on screen
+GraphicsComponent --> CanadaPainter: 1.2.2.2: addToDrawQueue()
+
+GameEngineGraphical -right-> CanadaPhysics: 2: updatePhysics()
+CanadaPhysics -up-> GameObject: 2.1: setPosition()
+CanadaPhysics --> CanadaPhysics: 2.2: clear toUpdate list()
+
+GameEngineGraphical -left-> CanadaPainter: 3: draw()
+
+@enduml

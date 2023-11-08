@@ -1,0 +1,128 @@
+@startuml
+title "Fin Sprint2 - Diagramme de classes global (simplifié)"
+
+class GameEngineGraphical {
+void run()
+}
+
+class CanadaGame {
+int niveauActuel
+int score
+void evolve(Cmd userCmd)
+boolean isFinished()
+}
+
+class CanadaPainter {
+void draw(BufferedImage image)
+void addToDrawQueue(GraphicsComponent graphics)
+void clearDrawQueue()
+}
+
+class CanadaController{
+Cmd getCommand()
+}
+
+class World {
+ArrayList<GameObject> buildWorld(String source)
+}
+
+class GameObject {
+Vector2 position
+void update(double dt)
+void addComponent(Component component)
+}
+
+abstract class Component{
+void update(double dt)
+}
+
+package physics{
+
+class PlayerInputComponent{
+void update(double dt)
+}
+
+abstract class MovementComponent{
+float velocity
+void update(double dt)
+}
+
+class PlayerMovementComponent{
+void update(double dt)
+}
+
+class MonsterMovementComponent{
+void update(double dt)
+}
+
+class ColliderComponent{
+void update(double dt)
+}
+
+class PlayerInteractionComponent{
+void update(double dt)
+void interactWith(GameObject obj)
+}
+}
+
+package ai{
+class PathfindingComponent{
+void update(double dt)
+}
+
+class AIComponent{
+void update(double dt)
+}
+}
+
+package rendering {
+abstract class GraphicsComponent{
+Shape shape
+Color color
+void update(double dt)
+}
+
+class SpriteRendererComponent{
+BufferedImage sprite
+void update(double dt)
+}
+}
+
+package fsm{
+class StateMachine{
+void tick()
+}
+}
+
+GameEngineGraphical -- "1"CanadaGame
+GameEngineGraphical -- "1"CanadaPainter
+GameEngineGraphical -- "1"CanadaController
+
+CanadaGame "1"--"*"GameObject
+CanadaGame --"1" CanadaPainter
+World --"1" CanadaPainter
+
+GameObject "1"--"*"Component
+
+Component <|-- GraphicsComponent
+Component <|-- PlayerInputComponent
+Component <|-- MovementComponent
+Component <|-- PathfindingComponent
+Component <|-- ColliderComponent
+Component <|-- AIComponent
+Component <|-- PlayerInteractionComponent
+
+GraphicsComponent <|-- SpriteRendererComponent
+
+MovementComponent <|-- PlayerMovementComponent
+MovementComponent <|-- MonsterMovementComponent
+
+PlayerInputComponent "1"- PlayerMovementComponent
+PathfindingComponent "1"- MonsterMovementComponent
+AIComponent -"1" PathfindingComponent
+AIComponent --"1" StateMachine
+GameObject "1 -target"-- PathfindingComponent
+
+CanadaController "1"-- PlayerInputComponent
+CanadaPainter "1"--"*" GraphicsComponent
+@enduml
