@@ -1,14 +1,15 @@
 Liste des fonctionnalités :
 
 Déplacer le joueur en suivant la grille dans un labyrinthe codé en dur -> Fait
-Le joueur ne voit qu'une partie du labyrinthe
+Le joueur ne voit qu'une partie du labyrinthe -> Fait
 Collecter des pièces pour augmenter le score -> Fait
-Récupérer une clé qui ouvre une porte pour passer au niveau suivant
-Présence de monstres qui peuvent attaquer le joueur et le tuer
-Différents types de monstre (déplacements, vitesse??)
+Récupérer une clé qui ouvre une porte pour passer au niveau suivant -> Fait
+Présence de monstres qui peuvent attaquer le joueur et le tuer -> Fait
+Différents types de monstre (déplacements, vitesse??) -> Fait
 Récupérer un objet qui permet de tuer le monstre au prochain contact
 Cases spéciales : pièges, passages
 Achat de compétences avec les pièces
+Menus (principal, pause, fin du jeu) et interface en jeu
 
 (Labyrinthes générés aléatoirement)
 
