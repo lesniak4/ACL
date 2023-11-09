@@ -5,6 +5,7 @@
 - Toutes les tâches prévues ont été réalisées
 - Le code produit a été testé
 - Conception réalisée en début de sprint et très peu modifiée pendant le sprint
+- Les tâches à réaliser ont pu être effectuées en parallèle dès le début du sprint
 
 ## Points à améliorer
 
