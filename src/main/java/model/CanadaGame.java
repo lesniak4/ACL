@@ -169,7 +169,7 @@ public class CanadaGame implements IGame {
 		gameObjects.remove(obj);
 	}
 
-	public void incrScore(){ this.score++; }
+	public void incrScore(int value){ this.score+=value; }
 
 	public void resetLastPlayerInputs(){
 

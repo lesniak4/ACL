@@ -71,7 +71,7 @@ public class GameObjectFactory {
         GameObject coins = new GameObject(pos.X(), pos.Y(), game);
         coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
         coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
-        coins.addComponent(new CoinComponent(coins));
+        coins.addComponent(new CoinComponent(coins, 5));
 
         return coins;
     }

@@ -22,7 +22,7 @@ public class PlayerInteractionComponent extends Component {
         CoinComponent coin = colliderObj.getComponent(CoinComponent.class);
         if(coin != null){
             colliderObj.destroyGameObject();
-            colliderObj.getGame().incrScore();
+            colliderObj.getGame().incrScore(coin.getValue());
             System.out.println("Vous venez de récolter une pièce.");
         }
 
