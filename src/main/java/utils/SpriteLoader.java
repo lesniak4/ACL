@@ -23,6 +23,7 @@ public class SpriteLoader {
     private BufferedImage exitSprite;
 
     private BufferedImage goldCoinsUI;
+    private BufferedImage axeUI;
 
     private SpriteLoader(){
 
@@ -38,6 +39,7 @@ public class SpriteLoader {
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
 
             goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
+            axeUI = ImageIO.read(getClass().getResource("/sprites/ui/axe_ui.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -82,5 +84,8 @@ public class SpriteLoader {
 
     public BufferedImage getGoldCoinsUI() {
         return goldCoinsUI;
+    }
+    public BufferedImage getAxeUI() {
+        return axeUI;
     }
 }
