@@ -16,7 +16,7 @@ public class MonsterMovementComponent extends MovementComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
         if(pathfindingComponent.isMoving()){
 
             Vector2 posNextMove;

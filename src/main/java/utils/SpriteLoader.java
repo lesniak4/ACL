@@ -22,18 +22,22 @@ public class SpriteLoader {
     private BufferedImage axeSprite;
     private BufferedImage exitSprite;
 
+    private BufferedImage goldCoinsUI;
+
     private SpriteLoader(){
 
         try {
-            pathSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/path.png")), 1, 16);
-            wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/wall.png")), 1, 16);
-            playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_walking.png")), 8, 16);
-            playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_player_idle.png")), 8, 1);
-            monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_monster_idle.png")), 8, 1);
-            monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/spritesheet_monster_walking.png")), 8, 16);
-            goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/coins.png"));
-            axeSprite = ImageIO.read(getClass().getResource("/sprites/axe.png"));
-            exitSprite = ImageIO.read(getClass().getResource("/sprites/exit.png"));
+            pathSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/path.png")), 1, 16);
+            wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/wall.png")), 1, 16);
+            playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_walking.png")), 8, 16);
+            playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_idle.png")), 8, 1);
+            monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_idle.png")), 8, 1);
+            monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
+            goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
+            axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
+            exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
+
+            goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -74,5 +78,9 @@ public class SpriteLoader {
 
     public BufferedImage getExitSprite() {
         return exitSprite;
+    }
+
+    public BufferedImage getGoldCoinsUI() {
+        return goldCoinsUI;
     }
 }

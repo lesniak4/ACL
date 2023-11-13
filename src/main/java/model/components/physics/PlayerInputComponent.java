@@ -22,6 +22,6 @@ public class PlayerInputComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
     }
 }

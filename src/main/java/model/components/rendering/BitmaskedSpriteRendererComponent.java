@@ -5,7 +5,6 @@ import model.GameObject;
 import utils.SpriteSheet;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class BitmaskedSpriteRendererComponent extends SpriteRendererComponent{
 
@@ -24,10 +23,10 @@ public class BitmaskedSpriteRendererComponent extends SpriteRendererComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.sprite = spriteSheet.getSprite(bitmask);
 
-        super.update(dt);
+        super.update();
     }
 }

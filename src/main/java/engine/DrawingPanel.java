@@ -7,7 +7,7 @@ package engine;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class DrawingPanel extends JPanel {
 

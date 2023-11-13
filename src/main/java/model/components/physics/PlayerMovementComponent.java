@@ -17,7 +17,7 @@ public class PlayerMovementComponent extends MovementComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
         if(this.gameObject != null){
             Set<Cmd> commands = new HashSet<>(playerInputComponent.getCommands());
 

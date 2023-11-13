@@ -24,7 +24,7 @@ public class ColliderComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
     }
 

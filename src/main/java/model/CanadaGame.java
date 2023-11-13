@@ -1,17 +1,25 @@
 package model;
 
+import engine.Cmd;
+import engine.IGame;
+import engine.IGameController;
+import engine.UIPanel;
+import model.fsm.ICondition;
+import model.fsm.StateMachine;
+import model.fsm.states.game.EndMenuState;
+import model.fsm.states.game.MainMenuState;
+import model.fsm.states.game.PauseState;
+import model.fsm.states.game.PlayingState;
+import model.world.HexLayout;
+import model.world.World;
+import utils.Vector2;
+import views.InGameView;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import engine.IGame;
-import engine.IGameController;
-import model.world.HexLayout;
-import model.world.World;
-import utils.Vector2;
-import model.world.WorldGraph;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -22,9 +30,20 @@ import model.world.WorldGraph;
  */
 public class CanadaGame implements IGame {
 
+	public enum ButtonId{
+
+		PLAY,
+		EXIT,
+		MAIN_MENU,
+		NONE
+	}
+
 	private CanadaPainter painter;
 	private CanadaPhysics physics;
 	private IGameController controller;
+	private StateMachine stateMachine;
+	private ButtonId lastButtonPressed;
+	private Cmd lastKeyPressed;
 
 	private List<GameObject> gameObjects;
 	private Vector2 cameraPosition;
@@ -60,6 +79,8 @@ public class CanadaGame implements IGame {
 		this.physics = physics;
 		this.controller = controller;
 
+		this.stateMachine = new StateMachine();
+
 		this.playerLose = false;
 		this.gameObjects = new ArrayList<>();
 		this.startTime = System.currentTimeMillis();
@@ -71,19 +92,54 @@ public class CanadaGame implements IGame {
 		this.loadNextLevel();
 	}
 
+	@Override
+	public void init(UIPanel ui) {
+
+		initStateMachine(ui);
+	}
+
+	public void initStateMachine(UIPanel ui) {
+		MainMenuState mainMenu = new MainMenuState(this, ui);
+		PlayingState playing = new PlayingState(this, ui);
+		PauseState pause = new PauseState(this, ui);
+		EndMenuState endMenu = new EndMenuState(this, ui);
+
+		playing.addView(new InGameView(this));
+
+		ICondition clickOnPlayButton = () -> lastButtonPressed == ButtonId.PLAY;
+		ICondition clickOnExitButton = () -> lastButtonPressed == ButtonId.EXIT;
+		ICondition clickOnMainMenuButton = () -> lastButtonPressed == ButtonId.MAIN_MENU;
+		ICondition pressPauseCommand = () -> lastKeyPressed == Cmd.PAUSE;
+		//ICondition gameFinished = () -> isFinished();
+
+		stateMachine.addTransition(mainMenu, playing, clickOnPlayButton);
+		stateMachine.addTransition(playing, pause, pressPauseCommand);
+		stateMachine.addTransition(pause, playing, clickOnPlayButton);
+		stateMachine.addTransition(pause, mainMenu, clickOnMainMenuButton);
+		//stateMachine.addTransition(playing, endMenu, gameFinished);
+		stateMachine.addTransition(endMenu, mainMenu, clickOnMainMenuButton);
+
+		stateMachine.setState(playing);
+	}
+
 	/**
 	 * faire evoluer le jeu
 	 *
-	 * @param dt
 	 */
 	@Override
-	public void evolve(double dt) {
+	public void evolve() {
+
+		stateMachine.tick();
+	}
+
+	public void update(){
 
 		painter.clearDrawQueue();
 		for(GameObject obj : gameObjects){
-			obj.update(dt);
+			obj.update();
 		}
 		painter.setCameraPosition(this.cameraPosition);
+
 	}
 
 	@Override
@@ -114,6 +170,12 @@ public class CanadaGame implements IGame {
 	}
 
 	public void incrScore(){ this.score++; }
+
+	public void resetLastPlayerInputs(){
+
+		lastButtonPressed = ButtonId.NONE;
+		lastKeyPressed = Cmd.NONE;
+	}
 
 	/**
 	 * charge le niveau suivant

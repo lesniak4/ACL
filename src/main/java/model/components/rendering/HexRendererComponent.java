@@ -27,7 +27,7 @@ public class HexRendererComponent extends GraphicsComponent {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         Polygon p = new Polygon();
         ArrayList<Vector2> corners = layout.polygonCorners(hex);
@@ -36,6 +36,6 @@ public class HexRendererComponent extends GraphicsComponent {
             p.addPoint((int)screenPos.X(), (int)screenPos.Y());
         }
         this.shape = p;
-        super.update(dt);
+        super.update();
     }
 }

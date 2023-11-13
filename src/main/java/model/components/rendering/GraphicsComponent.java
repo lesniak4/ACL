@@ -33,7 +33,7 @@ public abstract class GraphicsComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.depth = this.layer*10000 + getGameObject().getX() + getGameObject().getY();
 

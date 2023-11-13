@@ -11,7 +11,7 @@ public class CameraComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.getGameObject().getGame().setCameraPosition(this.getGameObject().getPosition());
     }

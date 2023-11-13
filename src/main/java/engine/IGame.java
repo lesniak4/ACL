@@ -8,11 +8,12 @@ package engine;
  */
 public interface IGame {
 
+	public void init(UIPanel ui);
+
 	/**
 	 * methode qui contient l'evolution du jeu
-	 * @param dt
 	 */
-	public void evolve(double dt);
+	public void evolve();
 
 	public boolean hasPlayerWon();
 

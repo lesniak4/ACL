@@ -25,7 +25,7 @@ public class CanadaControllerTest {
         // RIGHT TEST
         controller.setKeysPressed(Cmd.UP, Cmd.DOWN, Cmd.RIGHT);
 
-        m.update(1);
+        m.update();
         physics.updatePhysics(1);
 
         assertEquals((int)player.getX(), 21);
@@ -35,7 +35,7 @@ public class CanadaControllerTest {
         controller.removeCommands(Cmd.DOWN, Cmd.RIGHT, Cmd.UP);
         controller.setKeysPressed(Cmd.LEFT);
 
-        m.update(1);
+        m.update();
         physics.updatePhysics(1);
 
         assertEquals((int)player.getX(), 19);
@@ -45,7 +45,7 @@ public class CanadaControllerTest {
         controller.removeCommands(Cmd.LEFT);
         controller.setKeysPressed(Cmd.DOWN);
 
-        m.update(1);
+        m.update();
         physics.updatePhysics(1);
 
         assertEquals((int)player.getX(), 19);
@@ -55,7 +55,7 @@ public class CanadaControllerTest {
         controller.removeCommands(Cmd.DOWN);
         controller.setKeysPressed(Cmd.UP);
 
-        m.update(1);
+        m.update();
         physics.updatePhysics(1);
 
         assertEquals((int)player.getX(), 19);
@@ -65,7 +65,7 @@ public class CanadaControllerTest {
         controller.removeCommands(Cmd.UP);
         controller.setKeysPressed(Cmd.RIGHT, Cmd.DOWN);
 
-        m.update(1);
+        m.update();
         physics.updatePhysics(1);
 
         assertEquals((int)player.getX(), 20);

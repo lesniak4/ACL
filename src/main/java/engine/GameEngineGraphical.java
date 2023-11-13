@@ -57,6 +57,9 @@ public class GameEngineGraphical {
 		// creation de l'interface graphique
 		this.gui = new GraphicalInterface(this.gamePainter,this.gameController);
 
+		// initialisation du jeu
+		this.game.init(gui.getUIPanel());
+
 		long lastTime = System.nanoTime();
 		final int FPS = 60;
 		double nanoSecondsPerTick = 1000000000D / FPS;
@@ -78,7 +81,7 @@ public class GameEngineGraphical {
 			while (dt >= 1) {
 				ticks++;
 				// fait evoluer le game
-				this.game.evolve(dt);
+				this.game.evolve();
 				this.gamePhysics.updatePhysics(dt);
 				dt -= 1;
 				shouldRender = true;

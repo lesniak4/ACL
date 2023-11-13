@@ -25,10 +25,10 @@ public class GameObject {
         this.components = new LinkedHashMap<>();
     }
 
-    public void update(double dt){
+    public void update(){
 
         for(Component c : components.values()){
-            c.update(dt);
+            c.update();
         }
     }
 

@@ -11,7 +11,7 @@ public abstract class Component {
         this.gameObject = obj;
     }
 
-    public abstract void update(double dt);
+    public abstract void update();
 
     public GameObject getGameObject(){
         return this.gameObject;

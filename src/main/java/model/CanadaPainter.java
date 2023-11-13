@@ -65,6 +65,7 @@ public class CanadaPainter implements IGamePainter {
 			}
 		}
 
+
 		// Pour afficher les position des hex
 
 		/*
