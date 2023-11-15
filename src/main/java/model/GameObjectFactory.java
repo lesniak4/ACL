@@ -9,10 +9,7 @@ import model.components.physics.ColliderComponent;
 import model.components.physics.PlayerInputComponent;
 import model.components.rendering.*;
 import model.components.physics.*;
-import model.components.world.CoinComponent;
-import model.components.world.KeyComponent;
-import model.components.world.WorldExitComponent;
-import model.components.world.WorldSpawnComponent;
+import model.components.world.*;
 import model.world.Hex;
 import model.world.HexLayout;
 import utils.SpriteLoader;
@@ -86,6 +83,17 @@ public class GameObjectFactory {
 
 
         return key;
+    }
+
+    public GameObject createWeaponObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics) {
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject weapon = new GameObject(pos.X(), pos.Y(), game);
+        weapon.addComponent(new SpriteRendererComponent(weapon, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
+        weapon.addComponent(new ColliderComponent(weapon, physics, 25, true));
+        weapon.addComponent(new WeaponComponent(weapon));
+
+        return weapon;
     }
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){

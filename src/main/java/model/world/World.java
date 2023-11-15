@@ -87,14 +87,17 @@ public class World {
                             } else if (n == '1') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWallTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 1);
-                            }  else if (n == '2') {
+                            } else if (n == '2') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 tiles.put(hex, GameObjectFactory.getInstance().createCoinsObject(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 2);
-                            } else if(n == '3'){
+                            } else if(n == '3') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 tiles.put(hex, GameObjectFactory.getInstance().createKeyObject(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 3);
+                            } else if(n == '4') {
+                                tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.put(hex, GameObjectFactory.getInstance().createWeaponObject(game, hex, layout, painter, physics));
                             }else if (n == '8') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWorldSpawnTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 8);
