@@ -3,6 +3,7 @@ import engine.GameEngineGraphical;
 import model.CanadaController;
 import model.CanadaGame;
 import model.CanadaPhysics;
+import utils.GameConfig;
 
 /**
  * lancement du moteur avec le jeu
@@ -15,7 +16,7 @@ public class Main {
 		CanadaPainter painter = new CanadaPainter();
 		CanadaController controller = new CanadaController();
 		CanadaPhysics physics = new CanadaPhysics();
-		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter, physics, controller, 90f);
+		CanadaGame game = new CanadaGame("helpFileCanadaCamp.txt", painter, physics, controller);
 
 		// classe qui lance le moteur de jeu generique
 		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller, physics);

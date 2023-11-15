@@ -10,7 +10,7 @@ public class MainMenuState extends GameState {
     }
 
     @Override
-    public void tick() {
+    public void tick(float dt) {
 
     }
 

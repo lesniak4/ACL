@@ -8,7 +8,7 @@ public class StateChase extends AIState {
     }
 
     @Override
-    public void tick() {
+    public void tick(float dt) {
         aiComponent.updateChase();
     }
 

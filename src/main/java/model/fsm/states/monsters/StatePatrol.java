@@ -8,7 +8,7 @@ public class StatePatrol extends AIState {
     }
 
     @Override
-    public void tick() {
+    public void tick(float dt) {
     }
 
     @Override

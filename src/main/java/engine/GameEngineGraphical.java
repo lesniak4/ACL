@@ -71,7 +71,7 @@ public class GameEngineGraphical {
 		float dt = 0;
 
 		// boucle de game
-		while (!this.game.isFinished()) {
+		while (true) {
 
 			long now = System.nanoTime();
 			dt += (now - lastTime) / nanoSecondsPerTick;
@@ -80,9 +80,10 @@ public class GameEngineGraphical {
 
 			while (dt >= 1) {
 				ticks++;
+
 				// fait evoluer le game
-				this.game.evolve();
-				this.gamePhysics.updatePhysics(dt);
+				this.game.evolve(dt);
+
 				dt -= 1;
 				shouldRender = true;
 			}
@@ -105,19 +106,6 @@ public class GameEngineGraphical {
 				frames = 0;
 				ticks = 0;
 			}
-
-			if (this.game.hasPlayerWon()) {
-				System.out.println("Niveau terminé ! Votre score est de : " + game.getScore());
-				this.game.loadNextLevel();
-			}
-		}
-
-		if (this.game.hasPlayerWon()) {
-			System.out.println("Vous avez gagné ! Votre score est de : " + game.getScore());
-		} else if(this.game.hasPlayerLost()) {
-			System.out.println("Vous avez rencontré un monstre, et avez perdu ! ");
-		}else{
-			System.out.println("Temps écoulé ! Vous avez perdu ! Votre score était de : " + game.getScore());
 		}
 	}
 

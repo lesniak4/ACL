@@ -3,9 +3,9 @@ package model.fsm.states.game;
 import engine.UIPanel;
 import model.CanadaGame;
 
-public class EndMenuState extends GameState{
+public class ExitState extends GameState{
 
-    public EndMenuState(CanadaGame game, UIPanel ui) {
+    public ExitState(CanadaGame game, UIPanel ui) {
         super(game, ui);
     }
 
@@ -17,7 +17,7 @@ public class EndMenuState extends GameState{
     @Override
     public void onEnter() {
         super.onEnter();
-        notifyViews();
+        System.exit(0);
     }
 
     @Override

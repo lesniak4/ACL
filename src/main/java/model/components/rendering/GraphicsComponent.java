@@ -3,6 +3,7 @@ package model.components.rendering;
 import model.CanadaPainter;
 import model.GameObject;
 import model.components.Component;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.awt.*;
@@ -58,8 +59,10 @@ public abstract class GraphicsComponent extends Component {
 
     public boolean isInsideViewport() {
 
-        double xLimit = painter.getWidth() * 0.5d;
-        double yLimit = painter.getHeight() * 0.5d;
+        GameConfig gc = GameConfig.getInstance();
+
+        double xLimit = gc.getWinWidth() * 0.5d;
+        double yLimit = gc.getWinHeight() * 0.5d;
         if(shape != null){
             xLimit += shape.getBounds2D().getWidth();
             yLimit += shape.getBounds2D().getHeight();

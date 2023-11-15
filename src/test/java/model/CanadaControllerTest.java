@@ -1,9 +1,11 @@
 package model;
 
+import controllers.InGameController;
 import engine.Cmd;
 import model.components.physics.MovementComponent;
 import model.components.physics.PlayerMovementComponent;
 import org.junit.jupiter.api.Test;
+import views.InGameView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -17,9 +19,9 @@ public class CanadaControllerTest {
         CanadaPhysics physics = new CanadaPhysics();
         CanadaPainter painter = new CanadaPainter();
         CanadaController controller = new CanadaController();
-        CanadaGame game = new CanadaGame("", painter, physics, controller, 999);
+        CanadaGame game = new CanadaGame("", painter, physics, controller);
 
-        GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics);
+        GameObject player = GameObjectFactory.getInstance().createPlayerObject(game,20,20,painter,controller,physics, new InGameController(game, new InGameView(game)));
         PlayerMovementComponent m = player.getComponent(PlayerMovementComponent.class);
 
         // RIGHT TEST

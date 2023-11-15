@@ -42,7 +42,7 @@ public class PathfindingComponentTest {
 
 
         world.setGraph(graph);
-        PathfindingComponent cp = new PathfindingComponent(null, world);
+        PathfindingComponent cp = new PathfindingComponent(null, graph);
         cp.djikstra(node1);
 
         assertEquals(node6.getDistance(), 2);
@@ -77,7 +77,7 @@ public class PathfindingComponentTest {
 
         world.setGraph(graph);
         GameObject source = new GameObject(20, 20, null);
-        PathfindingComponent cp = new PathfindingComponent(source, world);
+        PathfindingComponent cp = new PathfindingComponent(source, graph);
         source.addComponent(cp);
         Vector2 target = new Vector2(6 * tileSize + 20,3 * tileSize + 20); // position sur la base écran (sera convertie en base hexagone...)
         cp.setTarget(target);

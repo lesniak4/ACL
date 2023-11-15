@@ -1,19 +1,18 @@
 package model;
 
+import controllers.InGameController;
 import engine.Cmd;
 import engine.IGame;
 import engine.IGameController;
 import engine.UIPanel;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
-import model.fsm.states.game.EndMenuState;
-import model.fsm.states.game.MainMenuState;
-import model.fsm.states.game.PauseState;
-import model.fsm.states.game.PlayingState;
+import model.fsm.states.game.*;
 import model.world.HexLayout;
 import model.world.World;
+import utils.GameConfig;
 import utils.Vector2;
-import views.InGameView;
+import views.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,14 +28,6 @@ import java.util.List;
  * 
  */
 public class CanadaGame implements IGame {
-
-	public enum ButtonId{
-
-		PLAY,
-		EXIT,
-		MAIN_MENU,
-		NONE
-	}
 
 	private CanadaPainter painter;
 	private CanadaPhysics physics;
@@ -58,11 +49,13 @@ public class CanadaGame implements IGame {
 
 	private int score;
 
+	private InGameController inGameController;
+
 	/**
 	 * constructeur avec fichier source pour le help
 	 * 
 	 */
-	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller, double maxTime) {
+	public CanadaGame(String source, CanadaPainter painter, CanadaPhysics physics, IGameController controller) {
 		BufferedReader helpReader;
 		try {
 			helpReader = new BufferedReader(new FileReader(source));
@@ -80,11 +73,13 @@ public class CanadaGame implements IGame {
 		this.controller = controller;
 
 		this.stateMachine = new StateMachine();
+	}
 
+	public void initGame(){
 		this.playerLose = false;
 		this.gameObjects = new ArrayList<>();
 		this.startTime = System.currentTimeMillis();
-		this.maxTime = maxTime;
+		this.maxTime = GameConfig.getInstance().getMaxTime();
 
 		this.niveauActuel = 0;
 		this.score = 0;
@@ -94,32 +89,53 @@ public class CanadaGame implements IGame {
 
 	@Override
 	public void init(UIPanel ui) {
-
 		initStateMachine(ui);
 	}
 
 	public void initStateMachine(UIPanel ui) {
+
 		MainMenuState mainMenu = new MainMenuState(this, ui);
 		PlayingState playing = new PlayingState(this, ui);
 		PauseState pause = new PauseState(this, ui);
 		EndMenuState endMenu = new EndMenuState(this, ui);
+		ExitState exit = new ExitState(this, ui);
+		LaunchGameState launchGame = new LaunchGameState(this,ui);
+		NextLevelState nextLevel = new NextLevelState(this, ui);
 
-		playing.addView(new InGameView(this));
+		InGameView igView = new InGameView(this);
+		inGameController = new InGameController(this, igView);
+
+		mainMenu.addView(new MenuView(this));
+		playing.addView(igView);
+		launchGame.addView(new LaunchGameView(this));
+		pause.addView(new PauseView(this));
+		endMenu.addView(new EndMenuView(this));
 
 		ICondition clickOnPlayButton = () -> lastButtonPressed == ButtonId.PLAY;
 		ICondition clickOnExitButton = () -> lastButtonPressed == ButtonId.EXIT;
 		ICondition clickOnMainMenuButton = () -> lastButtonPressed == ButtonId.MAIN_MENU;
 		ICondition pressPauseCommand = () -> lastKeyPressed == Cmd.PAUSE;
-		//ICondition gameFinished = () -> isFinished();
+		ICondition gameFinished = () -> isFinished();
+		ICondition levelFinished = () -> !isFinished() && hasPlayerWon();
 
-		stateMachine.addTransition(mainMenu, playing, clickOnPlayButton);
+		stateMachine.addTransition(mainMenu, launchGame, clickOnPlayButton);
+		stateMachine.addTransition(launchGame, playing, () -> true);
+		stateMachine.addTransition(mainMenu, exit, clickOnExitButton);
+
 		stateMachine.addTransition(playing, pause, pressPauseCommand);
+		stateMachine.addTransition(playing, endMenu, gameFinished);
+		stateMachine.addTransition(playing, nextLevel, levelFinished);
+		stateMachine.addTransition(nextLevel, playing, () -> true);
+
 		stateMachine.addTransition(pause, playing, clickOnPlayButton);
 		stateMachine.addTransition(pause, mainMenu, clickOnMainMenuButton);
-		//stateMachine.addTransition(playing, endMenu, gameFinished);
-		stateMachine.addTransition(endMenu, mainMenu, clickOnMainMenuButton);
+		stateMachine.addTransition(pause, exit, clickOnExitButton);
 
-		stateMachine.setState(playing);
+		stateMachine.addTransition(endMenu, mainMenu, clickOnMainMenuButton);
+		stateMachine.addTransition(endMenu, launchGame, clickOnPlayButton);
+		stateMachine.addTransition(endMenu, exit, clickOnExitButton);
+
+		stateMachine.setState(mainMenu);
 	}
 
 	/**
@@ -127,9 +143,9 @@ public class CanadaGame implements IGame {
 	 *
 	 */
 	@Override
-	public void evolve() {
+	public void evolve(float dt) {
 
-		stateMachine.tick();
+		stateMachine.tick(dt);
 	}
 
 	public void update(){
@@ -155,6 +171,14 @@ public class CanadaGame implements IGame {
 		return this.score;
 	}
 
+	public double getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(double startTime) {
+		this.startTime = startTime;
+	}
+
 	public boolean playerOwnsKey() {return this.hasKey;}
 
 	public void setHasKey(boolean hasKey) {this.hasKey = hasKey;}
@@ -171,6 +195,14 @@ public class CanadaGame implements IGame {
 
 	public void incrScore(int value){ this.score+=value; }
 
+	public void setLastButtonPressed(ButtonId id){
+		lastButtonPressed = id;
+	}
+
+	public void setLastKeyPressed(Cmd lastKeyPressed) {
+		this.lastKeyPressed = lastKeyPressed;
+	}
+
 	public void resetLastPlayerInputs(){
 
 		lastButtonPressed = ButtonId.NONE;
@@ -182,17 +214,20 @@ public class CanadaGame implements IGame {
 	 */
 	public void loadNextLevel(){
 
+		GameConfig gc = GameConfig.getInstance();
+
 		/* on réinitialise les listes d'objets connus */
 		if (!this.gameObjects.isEmpty()) {
 			gameObjects.clear();
-			this.physics.reset();
 		}
+
+		this.physics.reset();
 
 		this.niveauActuel++;
 
 		if(this.niveauActuel <= maxLevel) {
 			if (this.niveauActuel != 1) {
-				this.maxTime += 30;
+				this.maxTime += gc.getAddedTime();
 			}
 			this.hasKey = false;
 			this.playerWin = false;
@@ -200,8 +235,8 @@ public class CanadaGame implements IGame {
 			World world = new World(this, this.painter, this.physics);
 			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
 
-			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics);
-			world.createRandomMonsters(5, gameObjects, player);
+			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, inGameController);
+			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player);
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
 		}
@@ -228,5 +263,7 @@ public class CanadaGame implements IGame {
 	public void setCameraPosition(Vector2 cameraPosition) {
 		this.cameraPosition = cameraPosition;
 	}
+
+	public void updatePhysics(float dt){ physics.updatePhysics(dt); }
 
 }

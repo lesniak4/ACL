@@ -4,6 +4,7 @@ import model.*;
 import model.components.ai.PathNodeComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.world.WorldSpawnComponent;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.io.*;
@@ -15,8 +16,7 @@ public class World {
     private final int EVEN = 1;
     private final int ODD = -1;
 
-    private double tileSize = 92.5d;//91.84d;
-
+    private double tileSize;
     private WorldGraph graph;
 
     private CanadaGame game;
@@ -31,6 +31,8 @@ public class World {
         this.physics = physics;
         this.hexMap = new HashMap<>();
         graph = new WorldGraph<>();
+
+        tileSize = GameConfig.getInstance().getTileSize();
     }
 
     public WorldGraph getGraph() {
@@ -43,10 +45,6 @@ public class World {
 
     public void setTileSize(double tileSize) {
         this.tileSize = tileSize;
-    }
-
-    public double getTileSize() {
-        return tileSize;
     }
 
     public Collection<GameObject> buildWorld(String source, HexOrientation orientation){
@@ -188,7 +186,7 @@ public class World {
 
             objs.add(targetObj);
             objs.add(obj);
-            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, this, physics, targetObj, player));
+            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, getGraph(), physics, targetObj, player));
         }
     }
 

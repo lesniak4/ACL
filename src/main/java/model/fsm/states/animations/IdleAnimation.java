@@ -10,7 +10,7 @@ public class IdleAnimation extends AnimationState{
     }
 
     @Override
-    public void tick() {
+    public void tick(float dt) {
 
     }
 
