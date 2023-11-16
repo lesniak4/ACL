@@ -6,6 +6,12 @@ import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
 import model.components.physics.*;
+import model.components.player.PlayerInputComponent;
+import model.components.player.PlayerInteractionComponent;
+import model.components.player.PlayerPauseComponent;
+import model.components.player.PlayerStatsComponent;
+import model.components.player.skills.PlayerInvisibleModifierComponent;
+import model.components.player.skills.PlayerSpeedModifierComponent;
 import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.rendering.CameraComponent;
@@ -105,11 +111,15 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent);
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS());
+        player.addComponent(stats);
+        //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
+        //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
-        player.addComponent(new PlayerInteractionComponent(player));
+        player.addComponent(new PlayerInteractionComponent(player, stats));
 
         return player;
     }

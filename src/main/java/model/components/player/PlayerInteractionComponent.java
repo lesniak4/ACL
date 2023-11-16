@@ -1,17 +1,23 @@
-package model.components.physics;
+package model.components.player;
 
 import model.GameObject;
+import model.components.physics.MonsterMovementComponent;
 import model.components.world.CoinComponent;
 import model.components.Component;
 import model.components.world.KeyComponent;
 import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
-    public PlayerInteractionComponent(GameObject obj) {
+
+    private PlayerStatsComponent stats;
+
+    public PlayerInteractionComponent(GameObject obj, PlayerStatsComponent stats) {
+
         super(obj);
+        this.stats = stats;
     }
 
-    void interactWith(GameObject colliderObj){
+    public void interactWith(GameObject colliderObj){
 
         WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
         if(exit != null && colliderObj.getGame().playerOwnsKey()){
@@ -34,7 +40,7 @@ public class PlayerInteractionComponent extends Component {
 
         // Check collision avec un ennemi
         MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
-        if (monster != null) {
+        if (monster != null && !stats.isInvisible()) {
             colliderObj.getGame().setPlayerLose(true);
         }
     }
