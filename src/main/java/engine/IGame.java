@@ -13,7 +13,7 @@ public interface IGame {
 	/**
 	 * methode qui contient l'evolution du jeu
 	 */
-	public void evolve(float dt);
+	public void evolve();
 
 	public boolean hasPlayerWon();
 

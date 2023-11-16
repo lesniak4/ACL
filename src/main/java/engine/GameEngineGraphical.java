@@ -82,7 +82,8 @@ public class GameEngineGraphical {
 				ticks++;
 
 				// fait evoluer le game
-				this.game.evolve(dt);
+				this.game.evolve();
+				this.gamePhysics.updatePhysics(dt);
 
 				dt -= 1;
 				shouldRender = true;

@@ -4,7 +4,7 @@ import model.CanadaGame;
 import views.ButtonId;
 import views.UIView;
 
-public class MenuController extends Controller{
+public class MenuController extends UIController {
     public MenuController(CanadaGame game, UIView view) {
         super(game, view);
     }

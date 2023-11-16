@@ -10,7 +10,7 @@ public class ExitState extends GameState{
     }
 
     @Override
-    public void tick(float dt) {
+    public void tick() {
 
     }
 

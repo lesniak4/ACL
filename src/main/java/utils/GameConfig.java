@@ -29,10 +29,6 @@ public class GameConfig {
 
     public double getPlayerBaseMS(){ return 1.9d; }
 
-    public double getMaxTime(){ return 90d; }
-
-    public double getAddedTime(){ return 30f; }
-
     public int getCoinValue(){ return 5; }
 
 

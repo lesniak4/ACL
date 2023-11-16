@@ -10,7 +10,7 @@ public class LaunchGameState extends GameState{
     }
 
     @Override
-    public void tick(float dt) {
+    public void tick() {
     }
 
     @Override

@@ -2,6 +2,7 @@ package views;
 
 import model.CanadaGame;
 import model.CanadaPainter;
+import utils.GameConfig;
 import utils.SpriteLoader;
 
 import javax.swing.*;
@@ -22,7 +23,9 @@ public class InGameView extends UIView {
     @Override
     public void buildView(){
 
-        this.setSize(1024/6, (int)(576 * 0.07));
+        GameConfig gc = GameConfig.getInstance();
+
+        this.setSize(gc.getWinWidth()/6, (int)(gc.getWinHeight()* 0.07));
         this.setBackground(new Color(40,40,40,190));
 
         SpringLayout layout = new SpringLayout();

@@ -73,15 +73,9 @@ public class EndMenuView extends UIView{
     @Override
     public void update() {
         if(game.hasPlayerWon())
-            titleLabel.setText("You won !");
+            titleLabel.setText("You won ! Score : " + game.getScore());
         else{
-            String text;
-            if(game.hasPlayerLost())
-                text = "You have been killed by a monster";
-            else
-                text = "Time limit exceeded";
-
-            titleLabel.setText(text);
+            titleLabel.setText("You have been killed by a monster. Score : " + game.getScore());
         }
     }
 }

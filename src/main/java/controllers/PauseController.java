@@ -4,7 +4,7 @@ import model.CanadaGame;
 import views.ButtonId;
 import views.UIView;
 
-public class PauseController extends Controller{
+public class PauseController extends UIController {
     public PauseController(CanadaGame game, UIView view) {
         super(game, view);
     }

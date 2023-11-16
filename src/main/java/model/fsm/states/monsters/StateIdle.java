@@ -8,7 +8,7 @@ public class StateIdle extends AIState {
     }
 
     @Override
-    public void tick(float dt) {
+    public void tick() {
     }
 
     @Override

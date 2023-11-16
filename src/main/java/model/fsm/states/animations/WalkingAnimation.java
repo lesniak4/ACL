@@ -11,7 +11,7 @@ public class WalkingAnimation extends AnimationState{
     }
 
     @Override
-    public void tick(float dt) {
+    public void tick() {
 
         int angle = (int) Math.floor(controller.getDirectionAngle() * 180d / Math.PI);
 

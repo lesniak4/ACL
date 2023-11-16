@@ -5,6 +5,5 @@ public enum ButtonId{
     EXIT,
     MAIN_MENU,
 
-    END,
     NONE
 }

@@ -1,6 +1,5 @@
 package model;
 
-import controllers.InGameController;
 import engine.Cmd;
 import engine.IGame;
 import engine.IGameController;
@@ -38,8 +37,6 @@ public class CanadaGame implements IGame {
 
 	private List<GameObject> gameObjects;
 	private Vector2 cameraPosition;
-	private double startTime;
-	private double maxTime;
 	private boolean hasKey;
 	private boolean playerWin;
 	private boolean playerLose;
@@ -48,8 +45,6 @@ public class CanadaGame implements IGame {
 	private final int maxLevel = 2;
 
 	private int score;
-
-	private InGameController inGameController;
 
 	/**
 	 * constructeur avec fichier source pour le help
@@ -78,8 +73,6 @@ public class CanadaGame implements IGame {
 	public void initGame(){
 		this.playerLose = false;
 		this.gameObjects = new ArrayList<>();
-		this.startTime = System.currentTimeMillis();
-		this.maxTime = GameConfig.getInstance().getMaxTime();
 
 		this.niveauActuel = 0;
 		this.score = 0;
@@ -103,7 +96,6 @@ public class CanadaGame implements IGame {
 		NextLevelState nextLevel = new NextLevelState(this, ui);
 
 		InGameView igView = new InGameView(this);
-		inGameController = new InGameController(this, igView);
 
 		mainMenu.addView(new MenuView(this));
 		playing.addView(igView);
@@ -143,9 +135,9 @@ public class CanadaGame implements IGame {
 	 *
 	 */
 	@Override
-	public void evolve(float dt) {
+	public void evolve() {
 
-		stateMachine.tick(dt);
+		stateMachine.tick();
 	}
 
 	public void update(){
@@ -169,14 +161,6 @@ public class CanadaGame implements IGame {
 	@Override
 	public int getScore() {
 		return this.score;
-	}
-
-	public double getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(double startTime) {
-		this.startTime = startTime;
 	}
 
 	public boolean playerOwnsKey() {return this.hasKey;}
@@ -226,16 +210,13 @@ public class CanadaGame implements IGame {
 		this.niveauActuel++;
 
 		if(this.niveauActuel <= maxLevel) {
-			if (this.niveauActuel != 1) {
-				this.maxTime += gc.getAddedTime();
-			}
 			this.hasKey = false;
 			this.playerWin = false;
 
 			World world = new World(this, this.painter, this.physics);
 			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
 
-			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, inGameController);
+			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics);
 			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player);
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
@@ -248,12 +229,7 @@ public class CanadaGame implements IGame {
 	@Override
 	public boolean isFinished() {
 
-		long currentTime = (System.currentTimeMillis() - (long)startTime);
-		long timeRemaining = ((long)maxTime * 1000) - currentTime;
-		if((timeRemaining) % 2000 == 0){
-			System.out.println(timeRemaining / 1000 + " secondes restantes !");
-		}
-		return niveauActuel > maxLevel || playerLose || timeRemaining <= 0;
+		return niveauActuel > maxLevel || playerLose;
 	}
 
 	public Vector2 getCameraPosition() {
@@ -263,7 +239,5 @@ public class CanadaGame implements IGame {
 	public void setCameraPosition(Vector2 cameraPosition) {
 		this.cameraPosition = cameraPosition;
 	}
-
-	public void updatePhysics(float dt){ physics.updatePhysics(dt); }
 
 }

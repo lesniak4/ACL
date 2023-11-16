@@ -1,15 +1,15 @@
 package model;
 
-import controllers.InGameController;
 import engine.IGameController;
 import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
-import model.components.physics.ColliderComponent;
-import model.components.physics.PlayerInputComponent;
-import model.components.rendering.*;
 import model.components.physics.*;
+import model.components.rendering.AnimatedSpriteRendererComponent;
+import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.rendering.CameraComponent;
+import model.components.rendering.SpriteRendererComponent;
 import model.components.world.CoinComponent;
 import model.components.world.KeyComponent;
 import model.components.world.WorldExitComponent;
@@ -20,7 +20,6 @@ import model.world.WorldGraph;
 import utils.GameConfig;
 import utils.SpriteLoader;
 import utils.Vector2;
-import model.world.World;
 
 import java.awt.*;
 
@@ -91,7 +90,7 @@ public class GameObjectFactory {
         return key;
     }
 
-    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics, InGameController inGameController){
+    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -104,7 +103,7 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent, inGameController);
+        PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
         PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent);
         player.addComponent(movement);

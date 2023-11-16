@@ -13,7 +13,7 @@ public class CanadaPhysicsTest {
     public void areColliding() {
 
         CanadaPhysics physics = new CanadaPhysics();
-        CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController(), 100f);
+        CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController());
 
         GameObject obj1 = new GameObject(0f, 0f, game);
         ColliderComponent coll1 = new ColliderComponent(obj1, physics, 5f, false);
@@ -41,7 +41,7 @@ public class CanadaPhysicsTest {
     public void positionAfterCollision() {
 
         CanadaPhysics physics = new CanadaPhysics();
-        CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController(), 100f);
+        CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController());
 
         GameObject obj1 = new GameObject(10f, 10f, game);
         ColliderComponent coll1 = new ColliderComponent(obj1, physics, 1f, false);

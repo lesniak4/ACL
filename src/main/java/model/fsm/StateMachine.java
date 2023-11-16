@@ -15,7 +15,7 @@ public class StateMachine {
         this.anyTransitions = new HashSet<>();
     }
 
-    public void tick(float dt){
+    public void tick(){
         if(currentState != null) {
             Set<Transition> transitions = getTransition();
             for(Transition t : transitions){
@@ -24,7 +24,7 @@ public class StateMachine {
                     break;
                 }
             }
-            currentState.tick(dt);
+            currentState.tick();
         }
     }
 

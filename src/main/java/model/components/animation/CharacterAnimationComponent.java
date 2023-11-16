@@ -39,7 +39,7 @@ public class CharacterAnimationComponent extends Component {
     @Override
     public void update() {
 
-        stateMachine.tick(0);
+        stateMachine.tick();
     }
 
     public void setCurrentSprite(SpriteSheet sprite){

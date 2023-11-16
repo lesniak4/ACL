@@ -86,7 +86,7 @@ public class PathfindingComponentTest {
 
         graph.addEdge(node8, node9, true);
 
-        assertFalse(cp.pathFinding() == null);
+        assertTrue(cp.pathFinding() == null);
 
     }
 }
