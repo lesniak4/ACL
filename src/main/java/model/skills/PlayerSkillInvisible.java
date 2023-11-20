@@ -8,8 +8,10 @@ import model.components.player.skills.PlayerStatsModifierComponent;
 
 public class PlayerSkillInvisible extends PlayerSkill{
 
-    public PlayerSkillInvisible(Cmd cmdBinding, int cost, int cooldownInMs) {
-        super(cmdBinding, cost, cooldownInMs);
+    public PlayerSkillInvisible(Cmd cmdBinding, String name, int cost, int cooldownInMs) {
+        super(cmdBinding, name, cost, cooldownInMs);
+
+        this.cmd = "X";
     }
 
     @Override

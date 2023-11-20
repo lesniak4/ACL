@@ -8,12 +8,15 @@ import model.components.player.skills.PlayerStatsModifierComponent;
 public abstract class PlayerSkill {
 
     protected Cmd cmdBinding;
+    protected String name;
+    protected String cmd;
     protected int cost;
     protected int cooldownInMs;
 
-    public PlayerSkill(Cmd cmdBinding, int cost, int cooldownInMs){
+    public PlayerSkill(Cmd cmdBinding, String name, int cost, int cooldownInMs){
 
         this.cmdBinding = cmdBinding;
+        this.name = name;
         this.cost = cost;
         this.cooldownInMs = cooldownInMs;
     }
@@ -26,6 +29,11 @@ public abstract class PlayerSkill {
 
     public int getCooldown(){
         return this.cooldownInMs;
+    }
+
+    @Override
+    public String toString(){
+        return this.cmd + " " + this.name;
     }
 
 }

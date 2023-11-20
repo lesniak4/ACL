@@ -8,8 +8,10 @@ import model.components.player.skills.PlayerStatsModifierComponent;
 
 public class PlayerSkillSpeed extends PlayerSkill{
 
-    public PlayerSkillSpeed(Cmd cmdBinding, int cost, int cooldownInMs) {
-        super(cmdBinding, cost, cooldownInMs);
+    public PlayerSkillSpeed(Cmd cmdBinding, String name, int cost, int cooldownInMs) {
+        super(cmdBinding, name, cost, cooldownInMs);
+
+        this.cmd = "W";
     }
 
     @Override

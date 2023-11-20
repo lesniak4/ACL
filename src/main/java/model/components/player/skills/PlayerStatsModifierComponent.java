@@ -25,7 +25,6 @@ public abstract class PlayerStatsModifierComponent extends Component {
         applyModifier();
         if(System.currentTimeMillis() - startTime > duration){
             resetModifier();
-            System.out.println("Fin du modifier");
             this.destroyComponent();
         }
     }
