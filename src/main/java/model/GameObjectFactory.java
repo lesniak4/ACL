@@ -5,16 +5,18 @@ import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
-import model.components.physics.ColliderComponent;
-import model.components.physics.PlayerInputComponent;
-import model.components.rendering.*;
 import model.components.physics.*;
+import model.components.rendering.AnimatedSpriteRendererComponent;
+import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.rendering.CameraComponent;
+import model.components.rendering.SpriteRendererComponent;
 import model.components.world.*;
 import model.world.Hex;
 import model.world.HexLayout;
+import model.world.WorldGraph;
+import utils.GameConfig;
 import utils.SpriteLoader;
 import utils.Vector2;
-import model.world.World;
 
 import java.awt.*;
 
@@ -68,7 +70,7 @@ public class GameObjectFactory {
         GameObject coins = new GameObject(pos.X(), pos.Y(), game);
         coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
         coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
-        coins.addComponent(new CoinComponent(coins, 5));
+        coins.addComponent(new CoinComponent(coins, GameConfig.getInstance().getCoinValue()));
 
         return coins;
     }
@@ -98,6 +100,8 @@ public class GameObjectFactory {
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
 
+        GameConfig gc = GameConfig.getInstance();
+
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getPlayerIdleSprite(), 0.6d);
@@ -107,7 +111,9 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, 1.9d, physics, playerInputComponent);
+        PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
+        player.addComponent(playerPauseComponent);
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
@@ -116,10 +122,12 @@ public class GameObjectFactory {
         return player;
     }
 
-    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target, GameObject player){
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, WorldGraph worldGraph, CanadaPhysics physics, GameObject target, GameObject player){
+
+        GameConfig gc = GameConfig.getInstance();
 
         GameObject monster = new GameObject(posX, posY, game);
-        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
+        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, worldGraph);
         pathfindingComponent.setTarget(target.getPosition());
 
         //monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,1, 8, true));
@@ -127,7 +135,7 @@ public class GameObjectFactory {
         monster.addComponent(renderer);
 
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, 1.55f, physics, pathfindingComponent);
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
         monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));

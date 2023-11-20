@@ -2,15 +2,10 @@ package model.fsm.states.game;
 
 import engine.UIPanel;
 import model.CanadaGame;
-import model.GameObject;
-import views.InGameView;
-
-import javax.swing.*;
 
 public class PlayingState extends GameState {
 
     public PlayingState(CanadaGame game, UIPanel ui) {
-
         super(game, ui);
     }
 

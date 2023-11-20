@@ -9,6 +9,7 @@ import model.fsm.states.monsters.StateChase;
 import model.fsm.states.monsters.StateIdle;
 import model.fsm.states.monsters.StateMoving;
 import model.fsm.states.monsters.StatePatrol;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.util.Random;
@@ -30,6 +31,8 @@ public class AIComponent extends Component {
         this.player = player;
         this.pathfindingComponent = pathfindingComponent;
 
+        GameConfig gc = GameConfig.getInstance();
+
         Random random = new Random();
 
         stateMachine = new StateMachine();
@@ -40,8 +43,8 @@ public class AIComponent extends Component {
         stateChase = new StateChase(this);
 
         // Chase
-        ICondition conditionToChase = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < pathfindingComponent.getWorld().getTileSize() * 1.5; };
-        ICondition conditionStopChasing = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > pathfindingComponent.getWorld().getTileSize() * 1.75 ; };
+        ICondition conditionToChase = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterVision(); };
+        ICondition conditionStopChasing = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > gc.getMonsterLooseVision(); };
         stateMachine.addAnyTransition(stateChase, conditionToChase);
         stateMachine.addTransition(stateChase, stateMoving, conditionStopChasing);
 

@@ -16,8 +16,8 @@ public class EndMenuState extends GameState{
 
     @Override
     public void onEnter() {
-
         super.onEnter();
+        notifyViews();
     }
 
     @Override

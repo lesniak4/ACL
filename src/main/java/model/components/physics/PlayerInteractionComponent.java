@@ -23,7 +23,6 @@ public class PlayerInteractionComponent extends Component {
         if(coin != null){
             colliderObj.destroyGameObject();
             colliderObj.getGame().incrScore(coin.getValue());
-            System.out.println("Vous venez de récolter une pièce.");
         }
 
         // Check collision avec une hache
@@ -31,7 +30,6 @@ public class PlayerInteractionComponent extends Component {
         if(key != null){
             colliderObj.destroyGameObject();
             colliderObj.getGame().setHasKey(true);
-            System.out.println("Vous avez ramassé la hache !");
         }
 
         // Check collision avec un ennemi

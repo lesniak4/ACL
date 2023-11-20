@@ -1,5 +1,6 @@
 package engine;
 
+import utils.GameConfig;
 import views.InGameView;
 
 import javax.swing.*;
@@ -28,13 +29,14 @@ public class GraphicalInterface  {
 	 * 
 	 */
 	public GraphicalInterface(IGamePainter gamePainter, IGameController gameController){
+		GameConfig gc = GameConfig.getInstance();
 		JFrame f=new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		f.setPreferredSize(new Dimension(gamePainter.getWidth(), gamePainter.getHeight()));
+		f.setPreferredSize(new Dimension(gc.getWinWidth(), gc.getWinHeight()));
 
 		// création du panel pour l'interface
-		this.uiPanel = new UIPanel(gamePainter.getWidth(), gamePainter.getHeight());
+		this.uiPanel = new UIPanel(gc.getWinWidth(), gc.getWinHeight());
 		f.getLayeredPane().add(uiPanel, JLayeredPane.PALETTE_LAYER);
 
 		// attacher le panel contenant l'afficheur du game
