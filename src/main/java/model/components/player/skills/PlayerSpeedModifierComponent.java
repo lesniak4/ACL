@@ -8,8 +8,8 @@ public class PlayerSpeedModifierComponent extends PlayerStatsModifierComponent {
 
     private double speedFactor;
 
-    public PlayerSpeedModifierComponent(GameObject obj, PlayerStatsComponent stats, int duration, double speedFactor) {
-        super(obj, stats, duration);
+    public PlayerSpeedModifierComponent(GameObject obj, PlayerStatsComponent stats, int durationInMS, double speedFactor) {
+        super(obj, stats, durationInMS);
 
         this.speedFactor = speedFactor;
     }

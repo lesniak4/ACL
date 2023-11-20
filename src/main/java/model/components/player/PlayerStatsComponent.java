@@ -2,6 +2,8 @@ package model.components.player;
 
 import model.GameObject;
 import model.components.Component;
+import model.components.rendering.AnimatedSpriteRendererComponent;
+import model.components.rendering.GraphicsComponent;
 
 public class PlayerStatsComponent extends Component {
 
@@ -47,5 +49,10 @@ public class PlayerStatsComponent extends Component {
 
     public void setInvisible(boolean invisible) {
         this.invisible = invisible;
+        if(invisible){
+            getGameObject().getComponent(AnimatedSpriteRendererComponent.class).setInvisible();
+        }else{
+            getGameObject().getComponent(AnimatedSpriteRendererComponent.class).resetInvisibility();
+        }
     }
 }

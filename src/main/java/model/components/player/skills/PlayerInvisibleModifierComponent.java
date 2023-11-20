@@ -3,11 +3,13 @@ package model.components.player.skills;
 import model.GameObject;
 import model.components.Component;
 import model.components.player.PlayerStatsComponent;
+import model.components.rendering.GraphicsComponent;
 
 public class PlayerInvisibleModifierComponent extends PlayerStatsModifierComponent {
 
-    public PlayerInvisibleModifierComponent(GameObject obj, PlayerStatsComponent stats, int duration) {
-        super(obj, stats, duration);
+    public PlayerInvisibleModifierComponent(GameObject obj, PlayerStatsComponent stats, int durationInMS) {
+        super(obj, stats, durationInMS);
+
     }
 
     @Override
