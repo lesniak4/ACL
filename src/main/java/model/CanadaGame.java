@@ -179,6 +179,8 @@ public class CanadaGame implements IGame {
 
 	public void incrScore(int value){ this.score+=value; }
 
+	public void decrScore(int value){ this.score-=value; }
+
 	public void setLastButtonPressed(ButtonId id){
 		lastButtonPressed = id;
 	}

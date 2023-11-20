@@ -10,11 +10,11 @@ public abstract class PlayerStatsModifierComponent extends Component {
     protected long startTime;
     protected int duration;
 
-    public PlayerStatsModifierComponent(GameObject obj, PlayerStatsComponent stats, int duration) {
+    public PlayerStatsModifierComponent(GameObject obj, PlayerStatsComponent stats, int durationInMS) {
         super(obj);
 
         this.stats = stats;
-        this.duration = duration;
+        this.duration = durationInMS;
 
         this.startTime = System.currentTimeMillis();
     }
@@ -25,6 +25,7 @@ public abstract class PlayerStatsModifierComponent extends Component {
         applyModifier();
         if(System.currentTimeMillis() - startTime > duration){
             resetModifier();
+            System.out.println("Fin du modifier");
             this.destroyComponent();
         }
     }

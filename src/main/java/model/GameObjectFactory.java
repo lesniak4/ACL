@@ -11,6 +11,7 @@ import model.components.player.PlayerInteractionComponent;
 import model.components.player.PlayerPauseComponent;
 import model.components.player.PlayerStatsComponent;
 import model.components.player.skills.PlayerInvisibleModifierComponent;
+import model.components.player.skills.PlayerSkillsShopComponent;
 import model.components.player.skills.PlayerSpeedModifierComponent;
 import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
@@ -120,6 +121,8 @@ public class GameObjectFactory {
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player, stats));
+
+        player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
 
         return player;
     }
