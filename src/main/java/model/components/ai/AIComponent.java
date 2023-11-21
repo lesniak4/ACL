@@ -2,6 +2,7 @@ package model.components.ai;
 
 import model.GameObject;
 import model.components.Component;
+import model.components.player.PlayerStatsComponent;
 import model.fsm.ICondition;
 import model.fsm.State;
 import model.fsm.StateMachine;
@@ -19,6 +20,7 @@ public class AIComponent extends Component {
     private PathfindingComponent pathfindingComponent;
     private StateMachine stateMachine;
     private GameObject player;
+    private PlayerStatsComponent playerStats;
     private State stateIdle;
     private State stateMoving;
     private State statePatrol;
@@ -30,6 +32,8 @@ public class AIComponent extends Component {
         super(obj);
         this.player = player;
         this.pathfindingComponent = pathfindingComponent;
+
+        this.playerStats = player.getComponent(PlayerStatsComponent.class);
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -43,8 +47,14 @@ public class AIComponent extends Component {
         stateChase = new StateChase(this);
 
         // Chase
-        ICondition conditionToChase = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterVision(); };
-        ICondition conditionStopChasing = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > gc.getMonsterLooseVision(); };
+        ICondition conditionToChase = () -> playerStats != null
+                && !playerStats.isInvisible()
+                && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterVision();
+
+        ICondition conditionStopChasing = () ->
+                Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > gc.getMonsterLooseVision()
+                || (playerStats != null && playerStats.isInvisible());
+
         stateMachine.addAnyTransition(stateChase, conditionToChase);
         stateMachine.addTransition(stateChase, stateMoving, conditionStopChasing);
 

@@ -1,7 +1,6 @@
 package engine;
 
 import utils.GameConfig;
-import views.InGameView;
 
 import javax.swing.*;
 import java.awt.*;

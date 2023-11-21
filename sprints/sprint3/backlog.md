@@ -8,7 +8,7 @@
   - [] Vitesse
   - [] Invisibilité
 - [] Interface en jeu
-- [] Cases spéciales : pièges, passages
+- [] Case spéciale : téléportation
 
 ### Louis
 

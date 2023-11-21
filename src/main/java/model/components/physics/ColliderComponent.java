@@ -3,6 +3,7 @@ package model.components.physics;
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
+import model.components.player.PlayerInteractionComponent;
 
 public class ColliderComponent extends Component {
 

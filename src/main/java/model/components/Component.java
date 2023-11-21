@@ -18,6 +18,6 @@ public abstract class Component {
     }
 
     public void destroyComponent(){
-
+        gameObject.removeComponent(this);
     }
 }

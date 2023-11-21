@@ -75,6 +75,12 @@ public class CanadaController implements IGameController {
 			case KeyEvent.VK_ESCAPE: // si on appuie sur 'echap'
 				keysPressed.add(Cmd.PAUSE);
 				break;
+			case KeyEvent.VK_W: // si on appuie sur 'W'
+				keysPressed.add(Cmd.SKILL_1);
+				break;
+			case KeyEvent.VK_X: // si on appuie sur 'X'
+				keysPressed.add(Cmd.SKILL_2);
+				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
 		}
@@ -101,6 +107,12 @@ public class CanadaController implements IGameController {
 				break;
 			case KeyEvent.VK_ESCAPE: // si on appuie sur 'echap'
 				keysPressed.remove(Cmd.PAUSE);
+				break;
+			case KeyEvent.VK_W: // si on appuie sur 'W'
+				keysPressed.remove(Cmd.SKILL_1);
+				break;
+			case KeyEvent.VK_X: // si on appuie sur 'X'
+				keysPressed.remove(Cmd.SKILL_2);
 				break;
 			default: // Si une autre touche est appuyée, on l'ignore
 				break;
