@@ -20,6 +20,7 @@ public class SpriteLoader {
     private SpriteSheet monsterWalking;
     private BufferedImage goldCoinsSprite;
     private BufferedImage axeSprite;
+    private BufferedImage swordSprite;
     private BufferedImage exitSprite;
 
     private BufferedImage goldCoinsUI;
@@ -36,6 +37,7 @@ public class SpriteLoader {
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
             goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
             axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
+            swordSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/sword.png"));
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
 
             goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
@@ -76,6 +78,10 @@ public class SpriteLoader {
 
     public BufferedImage getAxeSprite() {
         return axeSprite;
+    }
+
+    public BufferedImage getSwordSprite() {
+        return swordSprite;
     }
 
     public BufferedImage getExitSprite() {
