@@ -1,0 +1,24 @@
+@startuml
+
+hide empty description
+
+state "Menu principal" as MainMenu
+state "Partie en cours" as Playing
+state "Partie en pause" as Pause
+state "Menu de fin de partie" as EndMenu
+
+[*] --> MainMenu
+MainMenu --> Playing: Clic sur le bouton Jouer
+Playing --> Pause: Appui sur la touche Echap
+Pause --> Playing: Clic sur le bouton Reprendre
+Playing --> EndMenu: Victoire ou mort du joueur
+
+Pause --> MainMenu : Clic sur le bouton Menu principal
+EndMenu--> MainMenu : Clic sur le bouton Menu principal
+
+MainMenu --> [*] : Clic sur le bouton Quitter
+Pause --> [*] : Clic sur le bouton Quitter
+EndMenu --> [*] : Clic sur le bouton Quitter
+
+
+@enduml
