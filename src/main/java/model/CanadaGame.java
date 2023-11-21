@@ -4,6 +4,7 @@ import engine.Cmd;
 import engine.IGame;
 import engine.IGameController;
 import engine.UIPanel;
+import model.components.player.skills.PlayerSkillsShopComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
 import model.fsm.states.game.*;
@@ -45,6 +46,8 @@ public class CanadaGame implements IGame {
 	private final int maxLevel = 2;
 
 	private int score;
+
+	private PlayerSkillsShopComponent skills;
 
 	/**
 	 * constructeur avec fichier source pour le help
@@ -95,10 +98,11 @@ public class CanadaGame implements IGame {
 		LaunchGameState launchGame = new LaunchGameState(this,ui);
 		NextLevelState nextLevel = new NextLevelState(this, ui);
 
-		InGameView igView = new InGameView(this);
+		ScoreView igView = new ScoreView(this);
 
 		mainMenu.addView(new MenuView(this));
 		playing.addView(igView);
+		playing.addView(new SkillsView(this));
 		launchGame.addView(new LaunchGameView(this));
 		pause.addView(new PauseView(this));
 		endMenu.addView(new EndMenuView(this));
@@ -179,6 +183,8 @@ public class CanadaGame implements IGame {
 
 	public void incrScore(int value){ this.score+=value; }
 
+	public void decrScore(int value){ this.score-=value; }
+
 	public void setLastButtonPressed(ButtonId id){
 		lastButtonPressed = id;
 	}
@@ -220,6 +226,8 @@ public class CanadaGame implements IGame {
 			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player);
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
+
+			this.skills = player.getComponent(PlayerSkillsShopComponent.class);
 		}
 	}
 
@@ -240,4 +248,7 @@ public class CanadaGame implements IGame {
 		this.cameraPosition = cameraPosition;
 	}
 
+	public PlayerSkillsShopComponent getSkills(){
+		return this.skills;
+	}
 }

@@ -8,14 +8,14 @@ import utils.SpriteLoader;
 import javax.swing.*;
 import java.awt.*;
 
-public class InGameView extends UIView {
+public class ScoreView extends UIView {
 
     private JLabel coinsIcon;
     private JLabel coinsLabel;
 
     private JLabel axeIcon;
 
-    public InGameView(CanadaGame game){
+    public ScoreView(CanadaGame game){
 
         super(game);
     }

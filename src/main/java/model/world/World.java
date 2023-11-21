@@ -3,6 +3,8 @@ package model.world;
 import model.*;
 import model.components.ai.PathNodeComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.world.TeleportationTileComponent;
+import model.components.world.TeleportationTileOrientation;
 import model.components.world.WorldSpawnComponent;
 import utils.GameConfig;
 import utils.Vector2;
@@ -71,6 +73,8 @@ public class World {
 
             if(line != null) {
                 int worldSize = line.trim().replaceAll("\\s+","").length();
+                TeleportationTileComponent tp1 = null;
+                TeleportationTileComponent tp2 = null;
 
                 // Lecture du fichier
                 do {
@@ -93,6 +97,22 @@ public class World {
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
                                 tiles.put(hex, GameObjectFactory.getInstance().createKeyObject(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 3);
+                            } else if(n == '4'){
+                                tiles.put(hex, GameObjectFactory.getInstance().createTeleportationTile(game, hex, layout, painter, physics, TeleportationTileOrientation.LEFT));
+                                hexMap.put(hex, 4);
+                                if(tp1 == null){
+                                    tp1 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
+                                }else{
+                                    tp2 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
+                                }
+                            }else if(n == '5'){
+                                tiles.put(hex, GameObjectFactory.getInstance().createTeleportationTile(game, hex, layout, painter, physics, TeleportationTileOrientation.RIGHT));
+                                hexMap.put(hex, 5);
+                                if(tp1 == null){
+                                    tp1 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
+                                }else{
+                                    tp2 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
+                                }
                             }else if (n == '8') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWorldSpawnTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 8);
@@ -109,6 +129,11 @@ public class World {
                 } while ((line = buffer.readLine()) != null);
                 buffer.close();
                 maxRow = row;
+
+                if(tp1 != null && tp2 != null){
+                    tp1.setLinkedTile(tp2);
+                    tp2.setLinkedTile(tp1);
+                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -118,7 +143,7 @@ public class World {
             int bitmask = 0;
             for(int i = 0; i < 4; i++){
                 Hex neighbor = Hex.hexOfNeighbor(hex, i);
-                if(neighbor != null && hexMap.containsKey(neighbor) && isWall(neighbor)){
+                if(neighbor != null && hexMap.containsKey(neighbor) && isForest(neighbor)){
                     bitmask += (int)Math.pow(2, i);
                 }
                 BitmaskedSpriteRendererComponent renderer = tiles.get(hex).getComponent(BitmaskedSpriteRendererComponent.class);
@@ -214,7 +239,8 @@ public class World {
     }
 
     private boolean isWall(Hex hex){
-        return hexMap.get(hex) == 1;
+        return hexMap.get(hex) == 1 || hexMap.get(hex) == 4 || hexMap.get(hex) == 5;
     }
+    private boolean isForest(Hex hex) { return hexMap.get(hex) == 1; };
 
 }

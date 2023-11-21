@@ -1,12 +1,8 @@
 package engine;
 
-import views.InGameView;
 import views.UIView;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class UIPanel extends JPanel {
 
