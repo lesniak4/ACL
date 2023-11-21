@@ -18,11 +18,9 @@ public class TeleportationTileComponent extends Component {
         if(orientation == TeleportationTileOrientation.LEFT){
             this.teleportationPos = new Vector2(tilePos.X() + Math.sqrt(3d) * 0.5d * gc.getTileSize(),
                                                 tilePos.Y() + 1.5d * gc.getTileSize());
-            System.out.println("LEFT : Pos " + tilePos + " Tp : " + teleportationPos);
         }else{
             this.teleportationPos = new Vector2(tilePos.X() + Math.sqrt(3d) * gc.getTileSize(),
                                                     tilePos.Y());
-            System.out.println("RIGHT : Pos " + tilePos + " Tp : " + teleportationPos);
         }
 
     }

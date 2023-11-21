@@ -31,9 +31,8 @@ public abstract class PlayerSkill {
         return this.cooldownInMs;
     }
 
-    @Override
-    public String toString(){
-        return this.cmd + " " + this.name;
+    public String getCmdString(){
+        return this.cmd;
     }
 
 }
