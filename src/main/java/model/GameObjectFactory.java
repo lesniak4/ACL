@@ -17,10 +17,7 @@ import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.rendering.CameraComponent;
 import model.components.rendering.SpriteRendererComponent;
-import model.components.world.CoinComponent;
-import model.components.world.KeyComponent;
-import model.components.world.WorldExitComponent;
-import model.components.world.WorldSpawnComponent;
+import model.components.world.*;
 import model.world.Hex;
 import model.world.HexLayout;
 import model.world.WorldGraph;
@@ -169,5 +166,17 @@ public class GameObjectFactory {
         exitTile.addComponent(new WorldExitComponent(exitTile));
 
         return exitTile;
+    }
+
+    public GameObject createTeleportationTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, TeleportationTileOrientation orientation){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject tpTile = new GameObject(pos.X(), pos.Y(), game);
+        tpTile.addComponent(new SpriteRendererComponent(tpTile, painter, Color.WHITE, 1, false, orientation == TeleportationTileOrientation.LEFT ? SpriteLoader.getInstance().getMineLeftSprite() : SpriteLoader.getInstance().getMineRightSprite()));
+
+        tpTile.addComponent(new ColliderComponent(tpTile, physics, /*Math.sqrt(3d) * 0.5d * */layout.getSize().X(), true));
+        tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
+
+        return tpTile;
     }
 }
