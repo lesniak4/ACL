@@ -1,6 +1,9 @@
 package engine;
 
-import javax.swing.JFrame;
+import utils.GameConfig;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -14,8 +17,9 @@ public class GraphicalInterface  {
 	/**
 	 * le Panel pour l'afficheur
 	 */
-	private DrawingPanel panel;
-	
+	private DrawingPanel gamePanel;
+	private UIPanel uiPanel;
+
 	/**
 	 * la construction de l'interface graphique: JFrame avec panel pour le game
 	 * 
@@ -24,16 +28,22 @@ public class GraphicalInterface  {
 	 * 
 	 */
 	public GraphicalInterface(IGamePainter gamePainter, IGameController gameController){
+		GameConfig gc = GameConfig.getInstance();
 		JFrame f=new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setResizable(false);
-		
+		f.setPreferredSize(new Dimension(gc.getWinWidth(), gc.getWinHeight()));
+
+		// création du panel pour l'interface
+		this.uiPanel = new UIPanel(gc.getWinWidth(), gc.getWinHeight());
+		f.getLayeredPane().add(uiPanel, JLayeredPane.PALETTE_LAYER);
+
 		// attacher le panel contenant l'afficheur du game
-		this.panel=new DrawingPanel(gamePainter);
-		f.setContentPane(this.panel);
-		
+		this.gamePanel = new DrawingPanel(gamePainter);
+		f.setContentPane(gamePanel);
+
 		// attacher controller au panel du game
-		this.panel.addKeyListener(gameController);	
+		gamePanel.addKeyListener(gameController);
 		
 		f.pack();
 		f.setVisible(true);
@@ -45,7 +55,11 @@ public class GraphicalInterface  {
 	 * mise a jour du dessin
 	 */
 	public void paint() {
-		this.panel.drawGame();	
+		this.gamePanel.drawGame();
+	}
+
+	public UIPanel getUIPanel(){
+		return this.uiPanel;
 	}
 	
 }

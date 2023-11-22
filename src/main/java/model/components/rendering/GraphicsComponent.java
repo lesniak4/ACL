@@ -3,6 +3,7 @@ package model.components.rendering;
 import model.CanadaPainter;
 import model.GameObject;
 import model.components.Component;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.awt.*;
@@ -17,6 +18,7 @@ public abstract class GraphicsComponent extends Component {
     protected int layer;
     protected double depth;
     protected float opacity;
+    protected float defaultOpacity;
     protected boolean isVisible;
     protected boolean transparent;
     protected Vector2 screenPos;
@@ -29,11 +31,12 @@ public abstract class GraphicsComponent extends Component {
         this.layer = layer;
         this.depth = this.layer*10000 + getGameObject().getX() + getGameObject().getY();
         this.opacity = 1f;
+        this.defaultOpacity = 1f;
         this.transparent = transparent;
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.depth = this.layer*10000 + getGameObject().getX() + getGameObject().getY();
 
@@ -44,7 +47,7 @@ public abstract class GraphicsComponent extends Component {
         if(transparent && layer == 1 && dstToCam > 5 && dstToCam < 200){
             this.opacity = 0.2f + ((float)dstToCam / 200f) * 0.8f;
         }else{
-            this.opacity = 1f;
+            this.opacity = defaultOpacity;
         }
 
         this.screenPos = Vector2.worldToScreenIso(
@@ -58,8 +61,10 @@ public abstract class GraphicsComponent extends Component {
 
     public boolean isInsideViewport() {
 
-        double xLimit = painter.getWidth() * 0.5d;
-        double yLimit = painter.getHeight() * 0.5d;
+        GameConfig gc = GameConfig.getInstance();
+
+        double xLimit = gc.getWinWidth() * 0.5d;
+        double yLimit = gc.getWinHeight() * 0.5d;
         if(shape != null){
             xLimit += shape.getBounds2D().getWidth();
             yLimit += shape.getBounds2D().getHeight();
@@ -100,5 +105,6 @@ public abstract class GraphicsComponent extends Component {
         return this.opacity;
     }
 
-    public void setInvisible() { this.isVisible = false; }
+    public void setInvisible() { this.defaultOpacity = 0.5f; }
+    public void resetInvisibility() { this.defaultOpacity = 1f; }
 }

@@ -1,17 +1,24 @@
-package model.components.physics;
+package model.components.player;
 
 import model.GameObject;
+import model.components.physics.MonsterMovementComponent;
 import model.components.world.CoinComponent;
 import model.components.Component;
 import model.components.world.KeyComponent;
+import model.components.world.TeleportationTileComponent;
 import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
-    public PlayerInteractionComponent(GameObject obj) {
+
+    private PlayerStatsComponent stats;
+
+    public PlayerInteractionComponent(GameObject obj, PlayerStatsComponent stats) {
+
         super(obj);
+        this.stats = stats;
     }
 
-    void interactWith(GameObject colliderObj){
+    public void interactWith(GameObject colliderObj){
 
         WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
         if(exit != null && colliderObj.getGame().playerOwnsKey()){
@@ -22,8 +29,7 @@ public class PlayerInteractionComponent extends Component {
         CoinComponent coin = colliderObj.getComponent(CoinComponent.class);
         if(coin != null){
             colliderObj.destroyGameObject();
-            colliderObj.getGame().incrScore();
-            System.out.println("Vous venez de récolter une pièce.");
+            colliderObj.getGame().incrScore(coin.getValue());
         }
 
         // Check collision avec une hache
@@ -31,18 +37,23 @@ public class PlayerInteractionComponent extends Component {
         if(key != null){
             colliderObj.destroyGameObject();
             colliderObj.getGame().setHasKey(true);
-            System.out.println("Vous avez ramassé la hache !");
         }
 
         // Check collision avec un ennemi
         MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
-        if (monster != null) {
+        if (monster != null && !stats.isInvisible()) {
             colliderObj.getGame().setPlayerLose(true);
+        }
+
+        // Check collision avec une case de téléportation
+        TeleportationTileComponent tpTile = colliderObj.getComponent(TeleportationTileComponent.class);
+        if (tpTile != null) {
+            this.getGameObject().setPosition(tpTile.getLinkedTile().getTeleportationPos());
         }
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
     }
 }

@@ -5,5 +5,6 @@ package engine;
  *
  */
 public enum Cmd {
-	 LEFT,RIGHT,UP,DOWN;
+	 NONE,LEFT,RIGHT,UP,DOWN,PAUSE,
+	SKILL_1, SKILL_2;
 }

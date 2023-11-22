@@ -37,7 +37,7 @@ public class CharacterAnimationComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         stateMachine.tick();
     }

@@ -16,7 +16,7 @@ public class SpriteRendererComponent extends GraphicsComponent{
     }
 
     @Override
-    public void update(double dt) {
-        super.update(dt);
+    public void update() {
+        super.update();
     }
 }

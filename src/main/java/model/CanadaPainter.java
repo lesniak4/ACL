@@ -8,8 +8,11 @@ import java.util.Comparator;
 
 import engine.IGamePainter;
 import model.components.rendering.GraphicsComponent;
+import utils.GameConfig;
 import utils.Vector2;
 import model.components.rendering.HexRendererComponent;
+
+import static java.awt.image.ImageObserver.WIDTH;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -24,9 +27,6 @@ public class CanadaPainter implements IGamePainter {
 	 */
 	protected static final int COLS_COUNT = 9;
 	protected static final int ROWS_COUNT = 5;
-
-	protected static final int WIDTH = 1024;//700;
-	protected static final int HEIGHT = 576;//(int)(Math.sqrt(3f) * WIDTH * 0.5f );
 
 	protected List<GraphicsComponent> drawQueue;
 
@@ -45,17 +45,20 @@ public class CanadaPainter implements IGamePainter {
 	 */
 	@Override
 	public void draw(BufferedImage im) {
+
+		GameConfig gc = GameConfig.getInstance();
+
 		Graphics2D crayon = (Graphics2D) im.getGraphics();
 		crayon.setColor(Color.decode("#617E4F"));
-		crayon.fillRect(0,0, WIDTH, HEIGHT);
+		crayon.fillRect(0,0, gc.getWinWidth(), gc.getWinHeight());
 
 		drawQueue.sort(Comparator.comparing(GraphicsComponent::getDepth));
 
 		for(GraphicsComponent g : drawQueue) {
 			Vector2 pos = g.getScreenPos();
 			if(g.getSprite() != null) {
-				int x = (int) pos.X() - (g.getSprite().getWidth(null) - WIDTH) / 2;
-				int y = (int) pos.Y() - (g.getSprite().getHeight(null) - 64) + HEIGHT / 2;
+				int x = (int) pos.X() - (g.getSprite().getWidth(null) - gc.getWinWidth()) / 2;
+				int y = (int) pos.Y() - (g.getSprite().getHeight(null) - 64) + gc.getWinHeight() / 2;
 
 				crayon.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, g.getOpacity()));
 				crayon.drawImage(g.getSprite(), x, y, /*g.getSprite().getWidth(null) / 2, g.getSprite().getHeight(null) / 2,*/ null);
@@ -64,6 +67,7 @@ public class CanadaPainter implements IGamePainter {
 				crayon.fill(g.getShape());
 			}
 		}
+
 
 		// Pour afficher les position des hex
 
@@ -87,16 +91,6 @@ public class CanadaPainter implements IGamePainter {
 			}
 		}
 		*/
-	}
-
-	@Override
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	@Override
-	public int getHeight() {
-		return HEIGHT;
 	}
 
 	public void addToDrawQueue(GraphicsComponent graphics){

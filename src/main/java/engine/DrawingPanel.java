@@ -4,10 +4,12 @@ package engine;
  * @author Horatiu Cirstea, Vincent Thomas
  *
  */
+import utils.GameConfig;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class DrawingPanel extends JPanel {
 
@@ -43,8 +45,11 @@ public class DrawingPanel extends JPanel {
 	 */
 	public DrawingPanel(IGamePainter painter) {
 		super();
-		this.width = painter.getWidth();
-		this.height = painter.getHeight();
+
+		GameConfig gc = GameConfig.getInstance();
+
+		this.width = gc.getWinWidth();
+		this.height = gc.getWinWidth();
 		this.setPreferredSize(new Dimension(this.width, this.height));
 
 		this.painter=painter;

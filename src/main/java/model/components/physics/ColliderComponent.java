@@ -3,6 +3,7 @@ package model.components.physics;
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
+import model.components.player.PlayerInteractionComponent;
 
 public class ColliderComponent extends Component {
 
@@ -24,7 +25,7 @@ public class ColliderComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
     }
 

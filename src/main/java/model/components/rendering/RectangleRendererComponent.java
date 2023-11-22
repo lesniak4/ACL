@@ -18,9 +18,9 @@ public class RectangleRendererComponent extends GraphicsComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.shape = new Rectangle2D.Double(this.gameObject.getX(), this.gameObject.getY(), width, height);
-        super.update(dt);
+        super.update();
     }
 }

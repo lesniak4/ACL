@@ -1,4 +1,4 @@
-package model.components.physics;
+package model.components.player;
 
 import engine.Cmd;
 
@@ -22,6 +22,6 @@ public class PlayerInputComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
     }
 }

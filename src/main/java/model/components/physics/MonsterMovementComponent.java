@@ -2,6 +2,7 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
+import utils.GameConfig;
 import utils.Vector2;
 import model.components.ai.PathfindingComponent;
 import model.world.Hex;
@@ -16,13 +17,13 @@ public class MonsterMovementComponent extends MovementComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
         if(pathfindingComponent.isMoving()){
 
             Vector2 posNextMove;
             Hex nextMove = pathfindingComponent.pathFinding();
             if(nextMove != null){
-                posNextMove = Hex.hexToWorldPos(nextMove, pathfindingComponent.getWorld().getTileSize());
+                posNextMove = Hex.hexToWorldPos(nextMove, GameConfig.getInstance().getTileSize());
             }else{
                 posNextMove = pathfindingComponent.getTarget();
             }

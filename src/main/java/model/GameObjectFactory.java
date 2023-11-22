@@ -5,19 +5,25 @@ import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
-import model.components.physics.ColliderComponent;
-import model.components.physics.PlayerInputComponent;
-import model.components.rendering.*;
 import model.components.physics.*;
-import model.components.world.CoinComponent;
-import model.components.world.KeyComponent;
-import model.components.world.WorldExitComponent;
-import model.components.world.WorldSpawnComponent;
+import model.components.player.PlayerInputComponent;
+import model.components.player.PlayerInteractionComponent;
+import model.components.player.PlayerPauseComponent;
+import model.components.player.PlayerStatsComponent;
+import model.components.player.skills.PlayerInvisibleModifierComponent;
+import model.components.player.skills.PlayerSkillsShopComponent;
+import model.components.player.skills.PlayerSpeedModifierComponent;
+import model.components.rendering.AnimatedSpriteRendererComponent;
+import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.rendering.CameraComponent;
+import model.components.rendering.SpriteRendererComponent;
+import model.components.world.*;
 import model.world.Hex;
 import model.world.HexLayout;
+import model.world.WorldGraph;
+import utils.GameConfig;
 import utils.SpriteLoader;
 import utils.Vector2;
-import model.world.World;
 
 import java.awt.*;
 
@@ -71,7 +77,7 @@ public class GameObjectFactory {
         GameObject coins = new GameObject(pos.X(), pos.Y(), game);
         coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
         coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
-        coins.addComponent(new CoinComponent(coins));
+        coins.addComponent(new CoinComponent(coins, GameConfig.getInstance().getCoinValue()));
 
         return coins;
     }
@@ -90,6 +96,8 @@ public class GameObjectFactory {
 
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
 
+        GameConfig gc = GameConfig.getInstance();
+
         GameObject player = new GameObject(posX, posY, game);
         player.addComponent(new CameraComponent(player));
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getPlayerIdleSprite(), 0.6d);
@@ -99,19 +107,29 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
         player.addComponent(playerInputComponent);
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, 1.9d, physics, playerInputComponent);
+        PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
+        player.addComponent(playerPauseComponent);
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS());
+        player.addComponent(stats);
+        //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
+        //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
-        player.addComponent(new PlayerInteractionComponent(player));
+        player.addComponent(new PlayerInteractionComponent(player, stats));
+
+        player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
 
         return player;
     }
 
-    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, World world, CanadaPhysics physics, GameObject target, GameObject player){
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, WorldGraph worldGraph, CanadaPhysics physics, GameObject target, GameObject player){
+
+        GameConfig gc = GameConfig.getInstance();
 
         GameObject monster = new GameObject(posX, posY, game);
-        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, world);
+        PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, worldGraph);
         pathfindingComponent.setTarget(target.getPosition());
 
         //monster.addComponent(new CircleRendererComponent(monster, painter, Color.RED,1, 8, true));
@@ -119,7 +137,7 @@ public class GameObjectFactory {
         monster.addComponent(renderer);
 
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, 1.55f, physics, pathfindingComponent);
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
         monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
@@ -148,5 +166,17 @@ public class GameObjectFactory {
         exitTile.addComponent(new WorldExitComponent(exitTile));
 
         return exitTile;
+    }
+
+    public GameObject createTeleportationTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, TeleportationTileOrientation orientation){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject tpTile = new GameObject(pos.X(), pos.Y(), game);
+        tpTile.addComponent(new SpriteRendererComponent(tpTile, painter, Color.WHITE, 1, false, orientation == TeleportationTileOrientation.LEFT ? SpriteLoader.getInstance().getMineLeftSprite() : SpriteLoader.getInstance().getMineRightSprite()));
+
+        tpTile.addComponent(new ColliderComponent(tpTile, physics, /*Math.sqrt(3d) * 0.5d * */layout.getSize().X(), true));
+        tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
+
+        return tpTile;
     }
 }

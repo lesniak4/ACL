@@ -23,14 +23,14 @@ public class AnimatedSpriteRendererComponent extends SpriteRendererComponent{
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
         this.sprite = spriteSheet.getSprite((int)currentFrame);
         int startFrame = rowIndex * spriteSheet.getCols();
 
         currentFrame = startFrame + ((currentFrame + timeScale) % spriteSheet.getCols());
 
-        super.update(dt);
+        super.update();
     }
 
     public void setRowIndex(int row){

@@ -2,6 +2,7 @@ package model.components.ai;
 
 import model.GameObject;
 import model.components.Component;
+import utils.GameConfig;
 import utils.Vector2;
 import model.world.Hex;
 import model.world.Node;
@@ -12,16 +13,14 @@ import java.util.*;
 
 public class PathfindingComponent extends Component {
 
-    private World world;
     private WorldGraph worldGraph;
     private boolean isMoving;
     private Vector2 target;
 
 
-    public PathfindingComponent(GameObject obj, World world) {
+    public PathfindingComponent(GameObject obj, WorldGraph worldGraph) {
         super(obj);
-        this.world = world;
-        this.worldGraph = world.getGraph();
+        this.worldGraph = worldGraph;
         this.isMoving = false;
     }
 
@@ -33,9 +32,6 @@ public class PathfindingComponent extends Component {
         return target;
     }
 
-    public World getWorld() {
-        return world;
-    }
 
     public void setMoving(boolean moving){
         this.isMoving = moving;
@@ -148,7 +144,7 @@ public class PathfindingComponent extends Component {
     public Hex getHexOfPos(Vector2 pos){
 
         for (Node n : (Set<Node>)worldGraph.getVertex()){
-            if(Hex.isInHex(n.getHex(), pos, world.getTileSize())){
+            if(Hex.isInHex(n.getHex(), pos, GameConfig.getInstance().getTileSize())){
                 return n.getHex();
             }
 
@@ -157,7 +153,7 @@ public class PathfindingComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
     }
 }

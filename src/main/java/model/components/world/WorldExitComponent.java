@@ -10,7 +10,7 @@ public class WorldExitComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
 
     }
 }

@@ -2,6 +2,7 @@ package model.components.ai;
 
 import model.GameObject;
 import model.components.Component;
+import model.components.player.PlayerStatsComponent;
 import model.fsm.ICondition;
 import model.fsm.State;
 import model.fsm.StateMachine;
@@ -9,6 +10,7 @@ import model.fsm.states.monsters.StateChase;
 import model.fsm.states.monsters.StateIdle;
 import model.fsm.states.monsters.StateMoving;
 import model.fsm.states.monsters.StatePatrol;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.util.Random;
@@ -18,6 +20,7 @@ public class AIComponent extends Component {
     private PathfindingComponent pathfindingComponent;
     private StateMachine stateMachine;
     private GameObject player;
+    private PlayerStatsComponent playerStats;
     private State stateIdle;
     private State stateMoving;
     private State statePatrol;
@@ -30,6 +33,10 @@ public class AIComponent extends Component {
         this.player = player;
         this.pathfindingComponent = pathfindingComponent;
 
+        this.playerStats = player.getComponent(PlayerStatsComponent.class);
+
+        GameConfig gc = GameConfig.getInstance();
+
         Random random = new Random();
 
         stateMachine = new StateMachine();
@@ -40,8 +47,14 @@ public class AIComponent extends Component {
         stateChase = new StateChase(this);
 
         // Chase
-        ICondition conditionToChase = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < pathfindingComponent.getWorld().getTileSize() * 1.5; };
-        ICondition conditionStopChasing = () -> { return Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > pathfindingComponent.getWorld().getTileSize() * 1.75 ; };
+        ICondition conditionToChase = () -> playerStats != null
+                && !playerStats.isInvisible()
+                && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterVision();
+
+        ICondition conditionStopChasing = () ->
+                Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) > gc.getMonsterLooseVision()
+                || (playerStats != null && playerStats.isInvisible());
+
         stateMachine.addAnyTransition(stateChase, conditionToChase);
         stateMachine.addTransition(stateChase, stateMoving, conditionStopChasing);
 
@@ -120,7 +133,7 @@ public class AIComponent extends Component {
     }
 
     @Override
-    public void update(double dt) {
+    public void update() {
         stateMachine.tick();
     }
 }
