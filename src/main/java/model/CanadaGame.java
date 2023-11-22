@@ -38,6 +38,7 @@ public class CanadaGame implements IGame {
 	private List<GameObject> gameObjects;
 	private Vector2 cameraPosition;
 	private boolean hasKey;
+	private boolean hasWeapon;
 	private boolean playerWin;
 	private boolean playerLose;
 
@@ -167,6 +168,10 @@ public class CanadaGame implements IGame {
 
 	public void setHasKey(boolean hasKey) {this.hasKey = hasKey;}
 
+	public boolean getHasWeapon() {return this.hasWeapon;}
+
+	public void setHasWeapon(boolean hasWeapon) {this.hasWeapon = hasWeapon;}
+
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
 	}
@@ -211,6 +216,7 @@ public class CanadaGame implements IGame {
 
 		if(this.niveauActuel <= maxLevel) {
 			this.hasKey = false;
+			this.hasWeapon = false;
 			this.playerWin = false;
 
 			World world = new World(this, this.painter, this.physics);

@@ -4,6 +4,7 @@ import model.GameObject;
 import model.components.world.CoinComponent;
 import model.components.Component;
 import model.components.world.KeyComponent;
+import model.components.world.WeaponComponent;
 import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
@@ -30,6 +31,15 @@ public class PlayerInteractionComponent extends Component {
         if(key != null){
             colliderObj.destroyGameObject();
             colliderObj.getGame().setHasKey(true);
+        }
+
+        // Check collision avec l'arme
+        WeaponComponent weapon = colliderObj.getComponent(WeaponComponent.class);
+        if(weapon != null){
+            if (!colliderObj.getGame().getHasWeapon()) {
+                colliderObj.destroyGameObject();
+                colliderObj.getGame().setHasWeapon(true);
+            }
         }
 
         // Check collision avec un ennemi
