@@ -1,0 +1,49 @@
+@startuml
+
+title "MVC"
+
+abstract class UIController{
+void notify()
+}
+
+class MenuController extends UIController
+class PauseController extends UIController
+class EndMenu extends UIController
+
+abstract class UIView{
+void buildView()
+void update()
+}
+
+class MenuView extends UIView
+class PauseView extends UIView
+class EndMenuView extends UIView
+class ScoreView extends UIView
+class SkillsView extends UIView
+
+class CanadaGame{
+void evolve()
+}
+
+class StateMachine{
+void tick()
+}
+
+abstract class GameState{
+void onEnter()
+void tick()
+void onExit()
+void addView(UIView view)
+void notifyViews()
+}
+
+CanadaGame "1"- GameState
+GameState "1"-"*" UIView
+
+CanadaGame -"1" StateMachine
+StateMachine -"*" GameState
+
+UIView "1"-"1" UIController
+CanadaGame "1"- UIController
+
+@enduml
