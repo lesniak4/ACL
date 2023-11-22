@@ -1,15 +1,22 @@
 package model.components.physics;
 
 import model.GameObject;
+import model.components.player.PlayerStatsComponent;
 import model.components.world.CoinComponent;
 import model.components.Component;
 import model.components.world.KeyComponent;
 import model.components.world.WeaponComponent;
+import model.components.world.TeleportationTileComponent;
 import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
-    public PlayerInteractionComponent(GameObject obj) {
+
+    private PlayerStatsComponent stats;
+
+    public PlayerInteractionComponent(GameObject obj, PlayerStatsComponent stats) {
+
         super(obj);
+        this.stats = stats;
     }
 
     void interactWith(GameObject colliderObj){
@@ -46,6 +53,12 @@ public class PlayerInteractionComponent extends Component {
         MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
         if (monster != null) {
             colliderObj.getGame().setPlayerLose(true);
+        }
+
+        // Check collision avec une case de téléportation
+        TeleportationTileComponent tpTile = colliderObj.getComponent(TeleportationTileComponent.class);
+        if (tpTile != null) {
+            this.getGameObject().setPosition(tpTile.getLinkedTile().getTeleportationPos());
         }
     }
 

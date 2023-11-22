@@ -6,6 +6,12 @@ import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
 import model.components.physics.*;
+import model.components.player.PlayerInputComponent;
+import model.components.player.PlayerPauseComponent;
+import model.components.player.PlayerStatsComponent;
+import model.components.player.skills.PlayerInvisibleModifierComponent;
+import model.components.player.skills.PlayerSkillsShopComponent;
+import model.components.player.skills.PlayerSpeedModifierComponent;
 import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.rendering.CameraComponent;
@@ -91,7 +97,7 @@ public class GameObjectFactory {
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject weapon = new GameObject(pos.X(), pos.Y(), game);
-        weapon.addComponent(new SpriteRendererComponent(weapon, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
+        weapon.addComponent(new SpriteRendererComponent(weapon, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getSwordSprite()));
         weapon.addComponent(new ColliderComponent(weapon, physics, 25, true));
         weapon.addComponent(new WeaponComponent(weapon));
 
@@ -113,11 +119,17 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent);
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS());
+        player.addComponent(stats);
+        //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
+        //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
-        player.addComponent(new PlayerInteractionComponent(player));
+        player.addComponent(new PlayerInteractionComponent(player, stats));
+
+        player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
 
         return player;
     }
@@ -164,5 +176,17 @@ public class GameObjectFactory {
         exitTile.addComponent(new WorldExitComponent(exitTile));
 
         return exitTile;
+    }
+
+    public GameObject createTeleportationTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, TeleportationTileOrientation orientation){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject tpTile = new GameObject(pos.X(), pos.Y(), game);
+        tpTile.addComponent(new SpriteRendererComponent(tpTile, painter, Color.WHITE, 1, false, orientation == TeleportationTileOrientation.LEFT ? SpriteLoader.getInstance().getMineLeftSprite() : SpriteLoader.getInstance().getMineRightSprite()));
+
+        tpTile.addComponent(new ColliderComponent(tpTile, physics, /*Math.sqrt(3d) * 0.5d * */layout.getSize().X(), true));
+        tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
+
+        return tpTile;
     }
 }

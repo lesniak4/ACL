@@ -1,4 +1,4 @@
-package model.components.physics;
+package model.components.player;
 
 import engine.Cmd;
 import model.GameObject;

@@ -20,10 +20,17 @@ public class SpriteLoader {
     private SpriteSheet monsterWalking;
     private BufferedImage goldCoinsSprite;
     private BufferedImage axeSprite;
+    private BufferedImage swordSprite;
     private BufferedImage exitSprite;
+    private BufferedImage mineLeftSprite;
+    private BufferedImage mineRightSprite;
 
+    private BufferedImage mainMenuBackgroundUI;
     private BufferedImage goldCoinsUI;
+    private BufferedImage goldCoinsSmallUI;
     private BufferedImage axeUI;
+    private BufferedImage speedUI;
+    private BufferedImage invisibilityUI;
 
     private SpriteLoader(){
 
@@ -36,10 +43,17 @@ public class SpriteLoader {
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
             goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
             axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
+            swordSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/sword.png"));
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
+            mineLeftSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_left.png"));
+            mineRightSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_right.png"));
 
+            mainMenuBackgroundUI = ImageIO.read(getClass().getResource("/sprites/ui/mainmenu_background.png"));
             goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
+            goldCoinsSmallUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_small_ui.png"));
             axeUI = ImageIO.read(getClass().getResource("/sprites/ui/axe_ui.png"));
+            speedUI = ImageIO.read(getClass().getResource("/sprites/ui/speed_ui.png"));
+            invisibilityUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -78,14 +92,42 @@ public class SpriteLoader {
         return axeSprite;
     }
 
+    public BufferedImage getSwordSprite() {
+        return swordSprite;
+    }
+
     public BufferedImage getExitSprite() {
         return exitSprite;
+    }
+
+    public BufferedImage getMineLeftSprite() {
+        return mineLeftSprite;
+    }
+
+    public BufferedImage getMineRightSprite() {
+        return mineRightSprite;
+    }
+
+    public BufferedImage getMainMenuBackgroundUI() {
+        return mainMenuBackgroundUI;
     }
 
     public BufferedImage getGoldCoinsUI() {
         return goldCoinsUI;
     }
+
+    public BufferedImage getGoldCoinsSmallUI() {
+        return goldCoinsSmallUI;
+    }
     public BufferedImage getAxeUI() {
         return axeUI;
+    }
+
+    public BufferedImage getSpeedUI() {
+        return speedUI;
+    }
+
+    public BufferedImage getInvisibilityUI() {
+        return invisibilityUI;
     }
 }
