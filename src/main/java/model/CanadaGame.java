@@ -11,6 +11,7 @@ import model.fsm.states.game.*;
 import model.world.HexLayout;
 import model.world.World;
 import utils.GameConfig;
+import utils.ScoreSaver;
 import utils.Vector2;
 import views.*;
 
@@ -31,6 +32,8 @@ public class CanadaGame implements IGame {
 
 	private CanadaPainter painter;
 	private CanadaPhysics physics;
+
+	private ScoreSaver scoreSaver;
 	private IGameController controller;
 	private StateMachine stateMachine;
 	private ButtonId lastButtonPressed;
@@ -69,6 +72,7 @@ public class CanadaGame implements IGame {
 		this.painter = painter;
 		this.physics = physics;
 		this.controller = controller;
+		this.scoreSaver = new ScoreSaver();
 
 		this.stateMachine = new StateMachine();
 	}
@@ -191,6 +195,17 @@ public class CanadaGame implements IGame {
 
 	public void setLastKeyPressed(Cmd lastKeyPressed) {
 		this.lastKeyPressed = lastKeyPressed;
+	}
+
+	public void updateMaxScore(){
+		if(score > getMaxScore()){
+			scoreSaver.setMaxScore(score);
+			scoreSaver.writeScoreFile();
+		}
+	}
+
+	public int getMaxScore(){
+		return scoreSaver.getMaxScore();
 	}
 
 	public void resetLastPlayerInputs(){

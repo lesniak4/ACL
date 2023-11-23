@@ -58,5 +58,7 @@ public class GameConfig {
     public int getSkill3Cooldown(){ return 20000; }
     public int getSkill3Modifier(){ return 50; } // Damage added
 
+    public String getSaveFileName() { return "CanadaCamp.save"; }
+
 
 }
