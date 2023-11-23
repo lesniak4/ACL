@@ -5,6 +5,10 @@ import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
+import model.components.attacks.AttackComponent;
+import model.components.attacks.DamageAreaComponent;
+import model.components.attacks.HealthComponent;
+import model.components.attacks.MeleeAttackComponent;
 import model.components.physics.*;
 import model.components.player.PlayerInputComponent;
 import model.components.player.PlayerInteractionComponent;
@@ -109,7 +113,7 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS());
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerMeleeAttackDistance());
         player.addComponent(stats);
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
@@ -120,6 +124,8 @@ public class GameObjectFactory {
         player.addComponent(new PlayerInteractionComponent(player, stats));
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
+        player.addComponent(new MeleeAttackComponent(player, playerInputComponent, stats, movement, physics, 12.5d, 2, 500));
+        player.addComponent(new HealthComponent(player, 20));
 
         return player;
     }
@@ -141,6 +147,8 @@ public class GameObjectFactory {
         monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
+
+        monster.addComponent(new HealthComponent(monster, 10));
 
         return monster;
     }
@@ -178,5 +186,14 @@ public class GameObjectFactory {
         tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
 
         return tpTile;
+    }
+
+    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int lifetime){
+
+        GameObject damageArea = new GameObject(position.X(), position.Y(), game);
+        damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
+        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, lifetime, owner));
+
+        return damageArea;
     }
 }

@@ -4,7 +4,7 @@ import model.GameObject;
 import model.components.Component;
 import model.components.player.PlayerStatsComponent;
 import model.fsm.ICondition;
-import model.fsm.State;
+import model.fsm.IState;
 import model.fsm.StateMachine;
 import model.fsm.states.monsters.StateChase;
 import model.fsm.states.monsters.StateIdle;
@@ -21,10 +21,10 @@ public class AIComponent extends Component {
     private StateMachine stateMachine;
     private GameObject player;
     private PlayerStatsComponent playerStats;
-    private State stateIdle;
-    private State stateMoving;
-    private State statePatrol;
-    private State stateChase;
+    private IState stateIdle;
+    private IState stateMoving;
+    private IState statePatrol;
+    private IState stateChase;
     private Vector2 savedTarget;
     private Vector2 initialPos;
 

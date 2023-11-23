@@ -8,18 +8,21 @@ import model.components.rendering.GraphicsComponent;
 public class PlayerStatsComponent extends Component {
 
     private double defaultSpeed;
-
     private double actualSpeed;
 
     private boolean invisible;
 
-    public PlayerStatsComponent(GameObject obj, double defaultSpeed) {
+    private double meleeAttackDistance;
+
+    public PlayerStatsComponent(GameObject obj, double defaultSpeed, double meleeAttackDistance) {
         super(obj);
 
         this.defaultSpeed = defaultSpeed;
         this.actualSpeed = defaultSpeed;
 
         this.invisible = false;
+
+        this.meleeAttackDistance = meleeAttackDistance;
     }
 
     @Override
@@ -54,5 +57,9 @@ public class PlayerStatsComponent extends Component {
         }else{
             getGameObject().getComponent(AnimatedSpriteRendererComponent.class).resetInvisibility();
         }
+    }
+
+    public double getMeleeAttackDistance() {
+        return meleeAttackDistance;
     }
 }

@@ -1,10 +1,10 @@
 package model.fsm.states.animations;
 
 import model.components.animation.CharacterAnimationComponent;
-import model.fsm.State;
+import model.fsm.IState;
 import utils.SpriteSheet;
 
-public abstract class AnimationState extends State {
+public abstract class AnimationState implements IState {
 
     protected CharacterAnimationComponent controller;
     protected SpriteSheet stateSprite;

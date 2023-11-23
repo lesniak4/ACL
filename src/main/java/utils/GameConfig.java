@@ -31,5 +31,9 @@ public class GameConfig {
 
     public int getCoinValue(){ return 5; }
 
+    public double getPlayerMeleeAttackDistance(){
+        return 25d;
+    }
+
 
 }
