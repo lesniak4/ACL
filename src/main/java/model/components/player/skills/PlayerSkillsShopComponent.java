@@ -6,8 +6,10 @@ import model.components.Component;
 import model.components.player.PlayerInputComponent;
 import model.components.player.PlayerStatsComponent;
 import model.skills.PlayerSkill;
+import model.skills.PlayerSkillDamage;
 import model.skills.PlayerSkillInvisible;
 import model.skills.PlayerSkillSpeed;
+import utils.GameConfig;
 import utils.Vector2;
 
 import java.util.HashMap;
@@ -25,14 +27,17 @@ public class PlayerSkillsShopComponent extends Component {
     public PlayerSkillsShopComponent(GameObject obj, PlayerInputComponent playerInputComponent, PlayerStatsComponent stats) {
         super(obj);
 
+        GameConfig gc = GameConfig.getInstance();
+
         this.playerInputComponent = playerInputComponent;
         this.stats = stats;
 
-        this.skills = new HashMap<>(2);
-        skills.put(Cmd.SKILL_1, new PlayerSkillSpeed(Cmd.SKILL_1, "Vitesse", 15, 30000));
-        skills.put(Cmd.SKILL_2, new PlayerSkillInvisible(Cmd.SKILL_2, "Invisibilité", 25, 40000));
+        this.skills = new HashMap<>(3);
+        skills.put(Cmd.SKILL_1, new PlayerSkillSpeed(Cmd.SKILL_1, "Vitesse", gc.getSkill1Cost(), gc.getSkill1Cooldown()));
+        skills.put(Cmd.SKILL_2, new PlayerSkillInvisible(Cmd.SKILL_2, "Invisibilité", gc.getSkill2Cost(), gc.getSkill2Cooldown()));
+        skills.put(Cmd.SKILL_3, new PlayerSkillDamage(Cmd.SKILL_3, "Dégats", gc.getSkill3Cost(), gc.getSkill3Cooldown()));
 
-        this.lastTimesUsed = new HashMap<>(2);
+        this.lastTimesUsed = new HashMap<>(3);
         for(Cmd cmd : skills.keySet()){
             lastTimesUsed.put(cmd, 0L);
         }

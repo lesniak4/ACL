@@ -109,7 +109,7 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS());
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG());
         player.addComponent(stats);
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));

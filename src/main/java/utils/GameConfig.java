@@ -29,7 +29,34 @@ public class GameConfig {
 
     public double getPlayerBaseMS(){ return 1.9d; }
 
+    public int getPlayerBaseDMG(){ return 50; }
+
     public int getCoinValue(){ return 5; }
+
+
+    // Skill 1 Speed
+
+    public String getSkill1Key() { return "A"; }
+    public int getSkill1Cost(){ return 15; }
+    public int getSkill1Duration(){ return 10000; }
+    public int getSkill1Cooldown(){ return 30000; }
+    public double getSkill1Modifier(){ return 1.5d; } // Speed factor
+
+    // Skill 2 Invisibility
+
+    public String getSkill2Key() { return "E"; }
+    public int getSkill2Cost(){ return 25; }
+    public int getSkill2Duration(){ return 7500; }
+    public int getSkill2Cooldown(){ return 40000; }
+
+
+    // Skill 3 Damage
+
+    public String getSkill3Key() { return "R"; }
+    public int getSkill3Cost(){ return 25; }
+    public int getSkill3Duration(){ return 5000; }
+    public int getSkill3Cooldown(){ return 20000; }
+    public int getSkill3Modifier(){ return 50; } // Damage added
 
 
 }
