@@ -4,7 +4,10 @@ import engine.Cmd;
 import engine.IGame;
 import engine.IGameController;
 import engine.UIPanel;
+import model.components.physics.MonsterMovementComponent;
+import model.components.physics.PlayerMovementComponent;
 import model.components.player.skills.PlayerSkillsShopComponent;
+import model.components.rendering.HealthBarComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
 import model.fsm.states.game.*;
@@ -19,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -51,6 +55,8 @@ public class CanadaGame implements IGame {
 	private int score;
 
 	private PlayerSkillsShopComponent skills;
+
+	private PlayingState playingState;
 
 	/**
 	 * constructeur avec fichier source pour le help
@@ -95,7 +101,7 @@ public class CanadaGame implements IGame {
 	public void initStateMachine(UIPanel ui) {
 
 		MainMenuState mainMenu = new MainMenuState(this, ui);
-		PlayingState playing = new PlayingState(this, ui);
+		playingState = new PlayingState(this, ui);
 		PauseState pause = new PauseState(this, ui);
 		EndMenuState endMenu = new EndMenuState(this, ui);
 		ExitState exit = new ExitState(this, ui);
@@ -105,8 +111,8 @@ public class CanadaGame implements IGame {
 		ScoreView igView = new ScoreView(this);
 
 		mainMenu.addView(new MenuView(this));
-		playing.addView(igView);
-		playing.addView(new SkillsView(this));
+		playingState.addView(igView);
+		playingState.addView(new SkillsView(this));
 		launchGame.addView(new LaunchGameView(this));
 		pause.addView(new PauseView(this));
 		endMenu.addView(new EndMenuView(this));
@@ -119,15 +125,15 @@ public class CanadaGame implements IGame {
 		ICondition levelFinished = () -> !isFinished() && hasPlayerWon();
 
 		stateMachine.addTransition(mainMenu, launchGame, clickOnPlayButton);
-		stateMachine.addTransition(launchGame, playing, () -> true);
+		stateMachine.addTransition(launchGame, playingState, () -> true);
 		stateMachine.addTransition(mainMenu, exit, clickOnExitButton);
 
-		stateMachine.addTransition(playing, pause, pressPauseCommand);
-		stateMachine.addTransition(playing, endMenu, gameFinished);
-		stateMachine.addTransition(playing, nextLevel, levelFinished);
-		stateMachine.addTransition(nextLevel, playing, () -> true);
+		stateMachine.addTransition(playingState, pause, pressPauseCommand);
+		stateMachine.addTransition(playingState, endMenu, gameFinished);
+		stateMachine.addTransition(playingState, nextLevel, levelFinished);
+		stateMachine.addTransition(nextLevel, playingState, () -> true);
 
-		stateMachine.addTransition(pause, playing, clickOnPlayButton);
+		stateMachine.addTransition(pause, playingState, clickOnPlayButton);
 		stateMachine.addTransition(pause, mainMenu, clickOnMainMenuButton);
 		stateMachine.addTransition(pause, exit, clickOnExitButton);
 
@@ -237,8 +243,8 @@ public class CanadaGame implements IGame {
 			World world = new World(this, this.painter, this.physics);
 			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
 
-			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics);
-			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player);
+			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState);
+			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player, playingState);
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
 
@@ -265,5 +271,17 @@ public class CanadaGame implements IGame {
 
 	public PlayerSkillsShopComponent getSkills(){
 		return this.skills;
+	}
+
+	public void removePlayingViews(){
+		for(GameObject obj : gameObjects){
+			MonsterMovementComponent mmc = obj.getComponent(MonsterMovementComponent.class);
+			PlayerMovementComponent pmc = obj.getComponent(PlayerMovementComponent.class);
+			if(mmc != null){
+				playingState.removeView(mmc.getView());
+			} else if (pmc != null) {
+				playingState.removeView(pmc.getView());
+			}
+		}
 	}
 }

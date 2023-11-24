@@ -19,7 +19,12 @@ public class UIPanel extends JPanel {
     }
 
     public void addView(UIView view, Integer layer){
-
         this.add(view, layer);
+    }
+
+    public void removeView(UIView view){
+        this.remove((JPanel)view);
+        this.revalidate();
+        this.repaint();
     }
 }

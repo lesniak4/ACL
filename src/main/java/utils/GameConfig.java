@@ -17,6 +17,20 @@ public class GameConfig {
 
     public double getTileSize(){ return 92.5d; } //91.84d;
 
+    public int getCoinValue(){ return 5; }
+
+    // Player
+
+    public double getPlayerBaseMS(){ return 1.9d; }
+
+    public int getPlayerBaseDMG(){ return 50; }
+
+    public int getPlayerBaseHealth(){
+        return 100;
+    }
+
+    // Monster
+
     // Facteur du nombre d'hexagone où le monstre repère le joueur
     public double getMonsterVision(){ return getTileSize() * 1.5d; }
 
@@ -27,11 +41,9 @@ public class GameConfig {
 
     public double getMonsterBaseMS(){ return 1.55d; }
 
-    public double getPlayerBaseMS(){ return 1.9d; }
-
-    public int getPlayerBaseDMG(){ return 50; }
-
-    public int getCoinValue(){ return 5; }
+    public int getMonsterBaseHealth(){
+        return 100;
+    }
 
 
     // Skill 1 Speed

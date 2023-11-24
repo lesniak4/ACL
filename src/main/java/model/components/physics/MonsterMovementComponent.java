@@ -2,22 +2,33 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
+import model.components.rendering.HealthBarComponent;
 import utils.GameConfig;
 import utils.Vector2;
 import model.components.ai.PathfindingComponent;
 import model.world.Hex;
+import views.HealthBarView;
 
 public class MonsterMovementComponent extends MovementComponent{
 
     private PathfindingComponent pathfindingComponent;
 
-    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent) {
+    private HealthBarView healthBar;
+
+    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent, HealthBarView healthBar) {
         super(obj, movementSpeed, physics);
         this.pathfindingComponent = pathfindingComponent;
+        this.healthBar = healthBar;
+    }
+
+    public HealthBarView getView() {
+        return healthBar;
     }
 
     @Override
     public void update() {
+        healthBar.update();
+
         if(pathfindingComponent.isMoving()){
 
             Vector2 posNextMove;

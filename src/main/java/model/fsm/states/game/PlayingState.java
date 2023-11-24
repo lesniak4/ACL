@@ -2,6 +2,11 @@ package model.fsm.states.game;
 
 import engine.UIPanel;
 import model.CanadaGame;
+import model.GameObject;
+import views.UIView;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class PlayingState extends GameState {
 
@@ -20,13 +25,12 @@ public class PlayingState extends GameState {
 
     @Override
     public void onEnter() {
-
         super.onEnter();
     }
 
     @Override
     public void onExit() {
-
         super.onExit();
+        game.removePlayingViews();
     }
 }

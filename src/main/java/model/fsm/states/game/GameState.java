@@ -13,7 +13,7 @@ public abstract class GameState extends State {
 
     protected CanadaGame game;
     protected UIPanel ui;
-    protected Collection<UIView> views;
+    protected ArrayList<UIView> views;
 
     public GameState(CanadaGame game, UIPanel ui){
 
@@ -44,6 +44,13 @@ public abstract class GameState extends State {
 
         views.add(view);
         ui.addView(view, JLayeredPane.PALETTE_LAYER);
+    }
+
+    public void removeView(UIView view){
+        if(view != null) {
+            views.remove(view);
+            ui.removeView(view);
+        }
     }
 
     public void notifyViews(){
