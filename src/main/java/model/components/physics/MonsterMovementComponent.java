@@ -41,6 +41,7 @@ public class MonsterMovementComponent extends MovementComponent{
 
             Vector2 pos = this.getGameObject().getPosition();
             Vector2 dir = Vector2.normalize(new Vector2(posNextMove.X() - pos.X(), (posNextMove.Y() - pos.Y())));
+            this.setCurrentFacingDirection(dir);
             this.velocityX = dir.X() * movementSpeed;
             this.velocityY = dir.Y() * movementSpeed;
 

@@ -44,6 +44,8 @@ public class CanadaGame implements IGame {
 	private Cmd lastKeyPressed;
 
 	private List<GameObject> gameObjects;
+	private List<GameObject> toInstantiate;
+	private List<GameObject> toDestroy;
 	private Vector2 cameraPosition;
 	private boolean hasKey;
 	private boolean playerWin;
@@ -86,6 +88,8 @@ public class CanadaGame implements IGame {
 	public void initGame(){
 		this.playerLose = false;
 		this.gameObjects = new ArrayList<>();
+		this.toInstantiate = new ArrayList<>();
+		this.toDestroy = new ArrayList<>();
 
 		this.niveauActuel = 0;
 		this.score = 0;
@@ -157,9 +161,11 @@ public class CanadaGame implements IGame {
 	public void update(){
 
 		painter.clearDrawQueue();
+		instantiateGameObjects();
 		for(GameObject obj : gameObjects){
 			obj.update();
 		}
+		destroyGameObjects();
 		painter.setCameraPosition(this.cameraPosition);
 
 	}
@@ -187,8 +193,26 @@ public class CanadaGame implements IGame {
 
 	public void setPlayerLose(boolean playerLose) {this.playerLose = playerLose;}
 
+	public void addGameObject(GameObject obj){
+		toInstantiate.add(obj);
+	}
+
 	public void removeGameObject(GameObject obj){
-		gameObjects.remove(obj);
+		toDestroy.remove(obj);
+	}
+
+	public void instantiateGameObjects(){
+		for(GameObject obj : toInstantiate){
+			gameObjects.add(obj);
+		}
+		toInstantiate.clear();
+	}
+
+	public void destroyGameObjects(){
+		for(GameObject obj : toDestroy){
+			gameObjects.remove(obj);
+		}
+		toDestroy.clear();
 	}
 
 	public void incrScore(int value){ this.score+=value; }

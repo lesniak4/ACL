@@ -72,5 +72,9 @@ public class GameConfig {
 
     public String getSaveFileName() { return "CanadaCamp.save"; }
 
+    public double getPlayerMeleeAttackDistance(){
+        return 25d;
+    }
+
 
 }
