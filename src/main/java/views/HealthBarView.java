@@ -7,6 +7,7 @@ import utils.GameConfig;
 import utils.Vector2;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import java.awt.*;
 
@@ -30,7 +31,6 @@ public class HealthBarView extends UIView {
         healthBar = new JProgressBar(0,100);
         healthBar.setBorderPainted(true);
         healthBar.setValue(100);
-
         Dimension dimension = new Dimension(75,10);
         healthBar.setMaximumSize(dimension);
         healthBar.setPreferredSize(dimension);
@@ -39,6 +39,7 @@ public class HealthBarView extends UIView {
         this.setBackground(new Color(0,0,0,0));
         healthBar.setVisible(false);
         healthBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        healthBar.setUI(new BasicProgressBarUI());
         this.setVisible(false);
 
         this.add(healthBar);
