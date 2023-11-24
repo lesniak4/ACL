@@ -2,11 +2,10 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
-import model.components.rendering.HealthBarComponent;
-import utils.GameConfig;
-import utils.Vector2;
 import model.components.ai.PathfindingComponent;
 import model.world.Hex;
+import utils.GameConfig;
+import utils.Vector2;
 import views.HealthBarView;
 
 public class MonsterMovementComponent extends MovementComponent{

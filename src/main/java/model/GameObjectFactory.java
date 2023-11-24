@@ -118,7 +118,7 @@ public class GameObjectFactory {
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
 
-        HealthBarComponent health = new HealthBarComponent(player, gc.getPlayerBaseHealth());
+        HealthComponent health = new HealthComponent(player, gc.getPlayerBaseHealth());
         player.addComponent(health);
         HealthBarView healthBar = new HealthBarView(game, player, health);
         playingState.addView(healthBar);
@@ -131,7 +131,6 @@ public class GameObjectFactory {
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
         player.addComponent(new MeleeAttackComponent(player, playerInputComponent, stats, movement, physics, 12.5d, 2, 500));
-        player.addComponent(new HealthComponent(player, 20));
 
         return player;
     }
@@ -148,9 +147,8 @@ public class GameObjectFactory {
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(monster, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getMonsterIdleSprite(), 0.5d);
         monster.addComponent(renderer);
 
-        HealthBarComponent health = new HealthBarComponent(monster, gc.getMonsterBaseHealth());
+        HealthComponent health = new HealthComponent(monster, gc.getMonsterBaseHealth());
         monster.addComponent(health);
-
         HealthBarView healthBar = new HealthBarView(game, monster, health);
         playingState.addView(healthBar);
 
@@ -160,7 +158,7 @@ public class GameObjectFactory {
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
 
-        monster.addComponent(new HealthComponent(monster, 10));
+
 
         return monster;
     }

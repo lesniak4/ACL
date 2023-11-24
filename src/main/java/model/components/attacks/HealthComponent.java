@@ -20,10 +20,21 @@ public class HealthComponent extends Component{
 
     }
 
+    public int getCurrentHealth(){
+        return this.currentHealth;
+    }
+
     public void takeDamage(int damage){
         this.currentHealth -= damage;
         if(this.currentHealth <= 0) {
             getGameObject().destroyGameObject();
         }
+    }
+
+    public int getHealthOn100(){
+        if(this.defaultHealth > 0)
+            return (int)((this.currentHealth * 100) / this.defaultHealth);
+        else
+            return 0;
     }
 }

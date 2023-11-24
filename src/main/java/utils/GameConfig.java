@@ -26,7 +26,7 @@ public class GameConfig {
     public int getPlayerBaseDMG(){ return 50; }
 
     public int getPlayerBaseHealth(){
-        return 100;
+        return 20;
     }
 
     // Monster
@@ -42,7 +42,7 @@ public class GameConfig {
     public double getMonsterBaseMS(){ return 1.55d; }
 
     public int getMonsterBaseHealth(){
-        return 100;
+        return 10;
     }
 
 

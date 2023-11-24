@@ -5,7 +5,6 @@ import model.CanadaPhysics;
 import model.GameObject;
 import model.components.player.PlayerInputComponent;
 import model.components.player.PlayerStatsComponent;
-import model.components.rendering.HealthBarComponent;
 import utils.Vector2;
 import views.HealthBarView;
 

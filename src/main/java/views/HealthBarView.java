@@ -2,22 +2,21 @@ package views;
 
 import model.CanadaGame;
 import model.GameObject;
-import model.components.rendering.HealthBarComponent;
+import model.components.attacks.HealthComponent;
 import utils.GameConfig;
 import utils.Vector2;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
-
 import java.awt.*;
 
 public class HealthBarView extends UIView {
 
-    private HealthBarComponent health;
+    private HealthComponent health;
     private GameObject entity;
     private JProgressBar healthBar;
 
-    public HealthBarView(CanadaGame game, GameObject entity, HealthBarComponent health){
+    public HealthBarView(CanadaGame game, GameObject entity, HealthComponent health){
         super(game);
         this.entity = entity;
         this.health = health;
@@ -66,7 +65,7 @@ public class HealthBarView extends UIView {
 
         healthBar.setValue(health.getHealthOn100());
 
-        if(health.getHealth() <= 0){
+        if(health.getCurrentHealth() <= 0){
             healthBar.setVisible(false);
             this.setVisible(false);
         }

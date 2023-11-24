@@ -7,7 +7,6 @@ import engine.UIPanel;
 import model.components.physics.MonsterMovementComponent;
 import model.components.physics.PlayerMovementComponent;
 import model.components.player.skills.PlayerSkillsShopComponent;
-import model.components.rendering.HealthBarComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
 import model.fsm.states.game.*;
@@ -22,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
