@@ -6,6 +6,7 @@ import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.world.TeleportationTileComponent;
 import model.components.world.TeleportationTileOrientation;
 import model.components.world.WorldSpawnComponent;
+import model.fsm.states.game.PlayingState;
 import utils.GameConfig;
 import utils.Vector2;
 
@@ -189,7 +190,7 @@ public class World {
         return tiles.values();
     }
 
-    public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player){
+    public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player, PlayingState playingState){
         Random random = new Random();
 
         ArrayList<GameObject> objs = new ArrayList<>();
@@ -211,7 +212,7 @@ public class World {
 
             objs.add(targetObj);
             objs.add(obj);
-            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, getGraph(), physics, targetObj, player));
+            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, getGraph(), physics, targetObj, player, playingState));
         }
     }
 

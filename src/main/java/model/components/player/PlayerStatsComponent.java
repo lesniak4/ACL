@@ -10,15 +10,21 @@ public class PlayerStatsComponent extends Component {
     private double defaultSpeed;
     private double actualSpeed;
 
+    private double defaultDamage;
+    private double actualDamage;
+
     private boolean invisible;
 
     private double meleeAttackDistance;
 
-    public PlayerStatsComponent(GameObject obj, double defaultSpeed, double meleeAttackDistance) {
+    public PlayerStatsComponent(GameObject obj, double defaultSpeed, double defaultDamage, double meleeAttackDistance) {
         super(obj);
 
         this.defaultSpeed = defaultSpeed;
         this.actualSpeed = defaultSpeed;
+
+        this.defaultDamage = defaultDamage;
+        this.actualDamage = defaultDamage;
 
         this.invisible = false;
 
@@ -57,6 +63,18 @@ public class PlayerStatsComponent extends Component {
         }else{
             getGameObject().getComponent(AnimatedSpriteRendererComponent.class).resetInvisibility();
         }
+    }
+
+    public double getDefaultDamage() {
+        return defaultDamage;
+    }
+
+    public void setActualDamage(double newDamage){
+        this.actualDamage = newDamage;
+    }
+
+    public void resetActualDamage(){
+        this.actualDamage = defaultSpeed;
     }
 
     public double getMeleeAttackDistance() {

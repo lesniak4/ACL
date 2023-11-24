@@ -17,17 +17,16 @@ import model.components.player.PlayerStatsComponent;
 import model.components.player.skills.PlayerInvisibleModifierComponent;
 import model.components.player.skills.PlayerSkillsShopComponent;
 import model.components.player.skills.PlayerSpeedModifierComponent;
-import model.components.rendering.AnimatedSpriteRendererComponent;
-import model.components.rendering.BitmaskedSpriteRendererComponent;
-import model.components.rendering.CameraComponent;
-import model.components.rendering.SpriteRendererComponent;
+import model.components.rendering.*;
 import model.components.world.*;
+import model.fsm.states.game.PlayingState;
 import model.world.Hex;
 import model.world.HexLayout;
 import model.world.WorldGraph;
 import utils.GameConfig;
 import utils.SpriteLoader;
 import utils.Vector2;
+import views.HealthBarView;
 
 import java.awt.*;
 
@@ -98,7 +97,7 @@ public class GameObjectFactory {
         return key;
     }
 
-    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics){
+    public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics, PlayingState playingState){
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -113,11 +112,18 @@ public class GameObjectFactory {
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerMeleeAttackDistance());
+      
+        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
         player.addComponent(stats);
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
+
+        HealthBarComponent health = new HealthBarComponent(player, gc.getPlayerBaseHealth());
+        player.addComponent(health);
+        HealthBarView healthBar = new HealthBarView(game, player, health);
+        playingState.addView(healthBar);
+
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats, healthBar);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
@@ -130,7 +136,7 @@ public class GameObjectFactory {
         return player;
     }
 
-    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, WorldGraph worldGraph, CanadaPhysics physics, GameObject target, GameObject player){
+    public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, WorldGraph worldGraph, CanadaPhysics physics, GameObject target, GameObject player, PlayingState playingState){
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -142,8 +148,14 @@ public class GameObjectFactory {
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(monster, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getMonsterIdleSprite(), 0.5d);
         monster.addComponent(renderer);
 
+        HealthBarComponent health = new HealthBarComponent(monster, gc.getMonsterBaseHealth());
+        monster.addComponent(health);
+
+        HealthBarView healthBar = new HealthBarView(game, monster, health);
+        playingState.addView(healthBar);
+
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent, healthBar);
         monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));

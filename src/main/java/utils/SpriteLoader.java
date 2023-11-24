@@ -31,6 +31,7 @@ public class SpriteLoader {
     private BufferedImage axeUI;
     private BufferedImage speedUI;
     private BufferedImage invisibilityUI;
+    private BufferedImage damageUI;
 
     private SpriteLoader(){
 
@@ -54,6 +55,7 @@ public class SpriteLoader {
             axeUI = ImageIO.read(getClass().getResource("/sprites/ui/axe_ui.png"));
             speedUI = ImageIO.read(getClass().getResource("/sprites/ui/speed_ui.png"));
             invisibilityUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
+            damageUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -129,5 +131,9 @@ public class SpriteLoader {
 
     public BufferedImage getInvisibilityUI() {
         return invisibilityUI;
+    }
+
+    public BufferedImage getDamageUI() {
+        return damageUI;
     }
 }

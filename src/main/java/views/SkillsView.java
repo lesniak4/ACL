@@ -17,6 +17,9 @@ public class SkillsView extends UIView{
     private JLabel invisibleIcon;
     private JLabel invisibleLabel;
 
+    private JLabel damageIcon;
+    private JLabel damageLabel;
+
 
     public SkillsView(CanadaGame game) {
         super(game);
@@ -27,7 +30,7 @@ public class SkillsView extends UIView{
 
         GameConfig gc = GameConfig.getInstance();
 
-        int width = gc.getWinWidth()/6;
+        int width = (int)(gc.getWinWidth()/4.3);
         this.setBounds((gc.getWinWidth() - width)/2, 0, width, (int)(gc.getWinHeight()* 0.10));
         this.setBackground(new Color(40,40,40,190));
         this.setAlignmentX(CENTER_ALIGNMENT);
@@ -37,22 +40,32 @@ public class SkillsView extends UIView{
 
         speedIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getSpeedUI()));
         invisibleIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getInvisibilityUI()));
+        damageIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getDamageUI()));
+
         speedLabel = new JLabel("Speed");
         invisibleLabel = new JLabel("Invisible");
+        damageLabel = new JLabel("Invisible");
+
         speedLabel.setForeground(Color.WHITE);
         invisibleLabel.setForeground(Color.WHITE);
+        damageLabel.setForeground(Color.WHITE);
 
         JPanel speed = skillContainer(speedIcon, speedLabel);
         JPanel invisible = skillContainer(invisibleIcon, invisibleLabel);
+        JPanel damage = skillContainer(damageIcon, damageLabel);
 
         this.add(speed);
         this.add(invisible);
+        this.add(damage);
 
         layout.putConstraint(SpringLayout.WEST, speed, 15, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.WEST, invisible, 15, SpringLayout.EAST, speed);
+        layout.putConstraint(SpringLayout.WEST, damage, 15, SpringLayout.EAST, invisible);
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, speed, 0, SpringLayout.VERTICAL_CENTER, this);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, invisible, 0, SpringLayout.VERTICAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, damage, 0, SpringLayout.VERTICAL_CENTER, this);
+
     }
 
     @Override
@@ -60,6 +73,7 @@ public class SkillsView extends UIView{
 
         updateSkillLabel(speedLabel, Cmd.SKILL_1);
         updateSkillLabel(invisibleLabel, Cmd.SKILL_2);
+        updateSkillLabel(damageLabel, Cmd.SKILL_3);
     }
 
     public void updateSkillLabel(JLabel label, Cmd cmd){

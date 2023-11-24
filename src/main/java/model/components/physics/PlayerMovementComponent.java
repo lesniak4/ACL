@@ -5,7 +5,9 @@ import model.CanadaPhysics;
 import model.GameObject;
 import model.components.player.PlayerInputComponent;
 import model.components.player.PlayerStatsComponent;
+import model.components.rendering.HealthBarComponent;
 import utils.Vector2;
+import views.HealthBarView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,16 +17,25 @@ public class PlayerMovementComponent extends MovementComponent{
     private PlayerInputComponent playerInputComponent;
     private PlayerStatsComponent stats;
 
-    public PlayerMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics , PlayerInputComponent playerInputComponent, PlayerStatsComponent stats) {
+    private HealthBarView healthBar;
+
+    public PlayerMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics , PlayerInputComponent playerInputComponent, PlayerStatsComponent stats, HealthBarView healthBar) {
         super(obj, movementSpeed, physics);
         this.playerInputComponent = playerInputComponent;
         this.stats = stats;
+        this.healthBar = healthBar;
+    }
+
+    public HealthBarView getView() {
+        return healthBar;
     }
 
     @Override
     public void update() {
 
         if(this.gameObject != null){
+            healthBar.update();
+
             Set<Cmd> commands = new HashSet<>(playerInputComponent.getCommands());
 
             if(!commands.isEmpty()) {
