@@ -1,4 +1,4 @@
-package model.components.player;
+package model.components.characters.player;
 
 import engine.Cmd;
 import model.GameObject;

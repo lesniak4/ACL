@@ -37,7 +37,7 @@ public class GameConfig {
     // Facteur du nombre d'hexagone où le monstre perd de vue le joueur
     public double getMonsterLooseVision(){ return getTileSize() * 1.75d; }
 
-    public int getMonsterNb(){ return 5; }
+    public int getMonsterNb(){ return 1; }
 
     public double getMonsterBaseMS(){ return 1.55d; }
 

@@ -1,16 +1,15 @@
-package model.components.player.skills;
+package model.components.characters.player.skills;
 
 import engine.Cmd;
 import model.GameObject;
 import model.components.Component;
-import model.components.player.PlayerInputComponent;
-import model.components.player.PlayerStatsComponent;
+import model.components.characters.player.PlayerInputComponent;
+import model.components.characters.StatsComponent;
 import model.skills.PlayerSkill;
 import model.skills.PlayerSkillDamage;
 import model.skills.PlayerSkillInvisible;
 import model.skills.PlayerSkillSpeed;
 import utils.GameConfig;
-import utils.Vector2;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,12 +18,12 @@ import java.util.Set;
 public class PlayerSkillsShopComponent extends Component {
 
     private PlayerInputComponent playerInputComponent;
-    private PlayerStatsComponent stats;
+    private StatsComponent stats;
 
     private HashMap<Cmd, PlayerSkill> skills;
     private HashMap<Cmd, Long> lastTimesUsed;
 
-    public PlayerSkillsShopComponent(GameObject obj, PlayerInputComponent playerInputComponent, PlayerStatsComponent stats) {
+    public PlayerSkillsShopComponent(GameObject obj, PlayerInputComponent playerInputComponent, StatsComponent stats) {
         super(obj);
 
         GameConfig gc = GameConfig.getInstance();

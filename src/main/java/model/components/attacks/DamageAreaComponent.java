@@ -6,16 +6,18 @@ import model.components.Component;
 public class DamageAreaComponent extends Component {
 
     private int damage;
-    private int lifetimeInMS;
+    private int stunDuration;
+    private int lifetime;
 
     private AttackComponent owner;
     private long spawnTime;
 
-    public DamageAreaComponent(GameObject obj, int damage, int lifetimeInMS, AttackComponent owner) {
+    public DamageAreaComponent(GameObject obj, int damage, int stunDurationInMS, int lifetimeInMS, AttackComponent owner) {
         super(obj);
 
         this.damage = damage;
-        this.lifetimeInMS = lifetimeInMS;
+        this.stunDuration = stunDurationInMS;
+        this.lifetime = lifetimeInMS;
         this.owner = owner;
         this.spawnTime = System.currentTimeMillis();
     }
@@ -23,7 +25,7 @@ public class DamageAreaComponent extends Component {
     @Override
     public void update() {
 
-        if(System.currentTimeMillis() - spawnTime > lifetimeInMS){
+        if(System.currentTimeMillis() - spawnTime > lifetime){
             destroy();
         }
     }
@@ -39,5 +41,9 @@ public class DamageAreaComponent extends Component {
     public void destroy(){
         this.owner.clearDamageArea();
         this.getGameObject().destroyGameObject();
+    }
+
+    public int getStunDuration() {
+        return stunDuration;
     }
 }

@@ -1,16 +1,16 @@
-package model.components.player.skills;
+package model.components.characters.player.skills;
 
 import model.GameObject;
 import model.components.Component;
-import model.components.player.PlayerStatsComponent;
+import model.components.characters.StatsComponent;
 
 public abstract class PlayerStatsModifierComponent extends Component {
 
-    protected PlayerStatsComponent stats;
+    protected StatsComponent stats;
     protected long startTime;
     protected int duration;
 
-    public PlayerStatsModifierComponent(GameObject obj, PlayerStatsComponent stats, int durationInMS) {
+    public PlayerStatsModifierComponent(GameObject obj, StatsComponent stats, int durationInMS) {
         super(obj);
 
         this.stats = stats;

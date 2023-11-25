@@ -12,21 +12,13 @@ public class MonsterMovementComponent extends MovementComponent{
 
     private PathfindingComponent pathfindingComponent;
 
-    private HealthBarView healthBar;
-
-    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent, HealthBarView healthBar) {
+    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent) {
         super(obj, movementSpeed, physics);
         this.pathfindingComponent = pathfindingComponent;
-        this.healthBar = healthBar;
-    }
-
-    public HealthBarView getView() {
-        return healthBar;
     }
 
     @Override
     public void update() {
-        healthBar.update();
 
         if(pathfindingComponent.isMoving()){
 
@@ -45,6 +37,8 @@ public class MonsterMovementComponent extends MovementComponent{
             this.velocityY = dir.Y() * movementSpeed;
 
             physics.addToUpdate(this);
+        }else{
+            resetVelocity();
         }
     }
 }

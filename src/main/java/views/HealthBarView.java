@@ -20,6 +20,9 @@ public class HealthBarView extends UIView {
         super(game);
         this.entity = entity;
         this.health = health;
+
+        this.setVisible(true);
+        health.setView(this);
     }
 
     @Override
@@ -30,7 +33,7 @@ public class HealthBarView extends UIView {
         healthBar = new JProgressBar(0,100);
         healthBar.setBorderPainted(true);
         healthBar.setValue(100);
-        Dimension dimension = new Dimension(75,10);
+        Dimension dimension = new Dimension(60,8);
         healthBar.setMaximumSize(dimension);
         healthBar.setPreferredSize(dimension);
 
@@ -46,6 +49,7 @@ public class HealthBarView extends UIView {
 
     @Override
     public void update() {
+
         GameConfig gc = GameConfig.getInstance();
 
         Vector2 entityPos = entity.getPosition();

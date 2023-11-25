@@ -5,18 +5,13 @@ import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.animation.CharacterAnimationComponent;
-import model.components.attacks.AttackComponent;
-import model.components.attacks.DamageAreaComponent;
-import model.components.attacks.HealthComponent;
-import model.components.attacks.MeleeAttackComponent;
+import model.components.attacks.*;
 import model.components.physics.*;
-import model.components.player.PlayerInputComponent;
-import model.components.player.PlayerInteractionComponent;
-import model.components.player.PlayerPauseComponent;
-import model.components.player.PlayerStatsComponent;
-import model.components.player.skills.PlayerInvisibleModifierComponent;
-import model.components.player.skills.PlayerSkillsShopComponent;
-import model.components.player.skills.PlayerSpeedModifierComponent;
+import model.components.characters.player.PlayerInputComponent;
+import model.components.characters.player.PlayerInteractionComponent;
+import model.components.characters.player.PlayerPauseComponent;
+import model.components.characters.StatsComponent;
+import model.components.characters.player.skills.PlayerSkillsShopComponent;
 import model.components.rendering.*;
 import model.components.world.*;
 import model.fsm.states.game.PlayingState;
@@ -113,7 +108,7 @@ public class GameObjectFactory {
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
       
-        PlayerStatsComponent stats = new PlayerStatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
+        StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
         player.addComponent(stats);
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
@@ -123,14 +118,14 @@ public class GameObjectFactory {
         HealthBarView healthBar = new HealthBarView(game, player, health);
         playingState.addView(healthBar);
 
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats, healthBar);
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player, stats));
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
-        player.addComponent(new MeleeAttackComponent(player, playerInputComponent, stats, movement, physics, 12.5d, 2, 500));
+        player.addComponent(new MeleeAttackComponent(player, playerInputComponent, stats, movement, physics, 12.5d, 2, 450,500));
 
         return player;
     }
@@ -152,8 +147,11 @@ public class GameObjectFactory {
         HealthBarView healthBar = new HealthBarView(game, monster, health);
         playingState.addView(healthBar);
 
-        monster.addComponent(new AIComponent(monster,pathfindingComponent, player));
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent, healthBar);
+        StunComponent stun = new StunComponent(monster);
+        monster.addComponent(stun);
+
+        monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun));
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
         monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
@@ -198,11 +196,11 @@ public class GameObjectFactory {
         return tpTile;
     }
 
-    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int lifetime){
+    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime){
 
         GameObject damageArea = new GameObject(position.X(), position.Y(), game);
         damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
-        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, lifetime, owner));
+        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner));
 
         return damageArea;
     }

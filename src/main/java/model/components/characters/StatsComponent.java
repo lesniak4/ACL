@@ -1,11 +1,10 @@
-package model.components.player;
+package model.components.characters;
 
 import model.GameObject;
 import model.components.Component;
 import model.components.rendering.AnimatedSpriteRendererComponent;
-import model.components.rendering.GraphicsComponent;
 
-public class PlayerStatsComponent extends Component {
+public class StatsComponent extends Component {
 
     private double defaultSpeed;
     private double actualSpeed;
@@ -17,7 +16,7 @@ public class PlayerStatsComponent extends Component {
 
     private double meleeAttackDistance;
 
-    public PlayerStatsComponent(GameObject obj, double defaultSpeed, double defaultDamage, double meleeAttackDistance) {
+    public StatsComponent(GameObject obj, double defaultSpeed, double defaultDamage, double meleeAttackDistance) {
         super(obj);
 
         this.defaultSpeed = defaultSpeed;

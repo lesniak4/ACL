@@ -10,18 +10,20 @@ public abstract class AttackComponent extends Component {
 
     protected double radius;
     protected int damage;
-    protected int lifetimeInMS;
+    protected int stunDuration;
+    protected int lifetime;
 
     protected DamageAreaComponent instantiatedDamageArea;
 
-    public AttackComponent(GameObject obj, CanadaPhysics physics, double radius, int damage, int lifetimeInMS) {
+    public AttackComponent(GameObject obj, CanadaPhysics physics, double radius, int damage, int stunDurationInMS, int lifetimeInMS) {
         super(obj);
 
         this.physics = physics;
 
         this.radius = radius;
         this.damage = damage;
-        this.lifetimeInMS = lifetimeInMS;
+        this.stunDuration = stunDurationInMS;
+        this.lifetime = lifetimeInMS;
         this.instantiatedDamageArea = null;
     }
 

@@ -1,14 +1,13 @@
-package model.components.player.skills;
+package model.components.characters.player.skills;
 
 import model.GameObject;
-import model.components.Component;
-import model.components.player.PlayerStatsComponent;
+import model.components.characters.StatsComponent;
 
 public class PlayerSpeedModifierComponent extends PlayerStatsModifierComponent {
 
     private double speedFactor;
 
-    public PlayerSpeedModifierComponent(GameObject obj, PlayerStatsComponent stats, int durationInMS, double speedFactor) {
+    public PlayerSpeedModifierComponent(GameObject obj, StatsComponent stats, int durationInMS, double speedFactor) {
         super(obj, stats, durationInMS);
 
         this.speedFactor = speedFactor;

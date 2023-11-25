@@ -2,11 +2,14 @@ package model.components.attacks;
 
 import model.GameObject;
 import model.components.Component;
+import views.HealthBarView;
 
 public class HealthComponent extends Component{
 
     private int defaultHealth;
     private int currentHealth;
+
+    private HealthBarView view;
 
     public HealthComponent(GameObject obj, int defaultHealth) {
         super(obj);
@@ -18,6 +21,14 @@ public class HealthComponent extends Component{
     @Override
     public void update() {
 
+    }
+
+    public HealthBarView getView(){
+        return this.view;
+    }
+
+    public void setView(HealthBarView view){
+        this.view = view;
     }
 
     public int getCurrentHealth(){

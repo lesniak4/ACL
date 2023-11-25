@@ -1,6 +1,7 @@
-package model.components.player;
+package model.components.characters.player;
 
 import model.GameObject;
+import model.components.characters.StatsComponent;
 import model.components.physics.MonsterMovementComponent;
 import model.components.world.CoinComponent;
 import model.components.Component;
@@ -10,9 +11,9 @@ import model.components.world.WorldExitComponent;
 
 public class PlayerInteractionComponent extends Component {
 
-    private PlayerStatsComponent stats;
+    private StatsComponent stats;
 
-    public PlayerInteractionComponent(GameObject obj, PlayerStatsComponent stats) {
+    public PlayerInteractionComponent(GameObject obj, StatsComponent stats) {
 
         super(obj);
         this.stats = stats;

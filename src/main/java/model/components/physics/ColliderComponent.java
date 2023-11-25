@@ -5,7 +5,8 @@ import model.GameObject;
 import model.components.Component;
 import model.components.attacks.DamageAreaComponent;
 import model.components.attacks.HealthComponent;
-import model.components.player.PlayerInteractionComponent;
+import model.components.attacks.StunComponent;
+import model.components.characters.player.PlayerInteractionComponent;
 
 public class ColliderComponent extends Component {
 
@@ -54,8 +55,12 @@ public class ColliderComponent extends Component {
             HealthComponent health = obj.getComponent(HealthComponent.class);
             if(health != null){
                 health.takeDamage(damageArea.getDamage());
-                damageArea.destroy();
             }
+            StunComponent stun = obj.getComponent(StunComponent.class);
+            if(stun != null){
+                stun.stun(damageArea.getStunDuration());
+            }
+            damageArea.destroy();
         }
 
 

@@ -5,8 +5,8 @@ import model.CanadaPhysics;
 import model.GameObject;
 import model.GameObjectFactory;
 import model.components.physics.MovementComponent;
-import model.components.player.PlayerInputComponent;
-import model.components.player.PlayerStatsComponent;
+import model.components.characters.player.PlayerInputComponent;
+import model.components.characters.StatsComponent;
 import utils.Vector2;
 
 import java.util.HashSet;
@@ -15,14 +15,14 @@ import java.util.Set;
 public class MeleeAttackComponent extends AttackComponent{
 
     private PlayerInputComponent playerInputComponent;
-    private PlayerStatsComponent stats;
+    private StatsComponent stats;
     private MovementComponent movementComponent;
 
     private boolean attacked;
     private long lastAttackTime;
 
-    public MeleeAttackComponent(GameObject obj, PlayerInputComponent input, PlayerStatsComponent stats, MovementComponent movement, CanadaPhysics physics,  double radius, int damage, int lifetimeInMS) {
-        super(obj, physics, radius, damage, lifetimeInMS);
+    public MeleeAttackComponent(GameObject obj, PlayerInputComponent input, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int damage, int stunDurationInMS, int lifetimeInMS) {
+        super(obj, physics, radius, damage, stunDurationInMS, lifetimeInMS);
 
         this.playerInputComponent = input;
         this.stats = stats;
@@ -39,7 +39,7 @@ public class MeleeAttackComponent extends AttackComponent{
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.MELEE_ATTACK) {
-                        if(!attacked && System.currentTimeMillis() - lastAttackTime > lifetimeInMS) {
+                        if(!attacked && System.currentTimeMillis() - lastAttackTime > lifetime) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.MELEE_ATTACK);
                             Vector2 currentPos = this.getGameObject().getPosition();
                             instantiateDamageArea(new Vector2(
@@ -58,7 +58,7 @@ public class MeleeAttackComponent extends AttackComponent{
 
     public void instantiateDamageArea(Vector2 pos){
 
-        GameObject damageArea = GameObjectFactory.getInstance().createDamageArea(gameObject.getGame(), pos, this, physics, radius, damage, lifetimeInMS);
+        GameObject damageArea = GameObjectFactory.getInstance().createDamageArea(gameObject.getGame(), pos, this, physics, radius, damage, stunDuration, lifetime);
         getGameObject().getGame().addGameObject(damageArea);
 
         instantiatedDamageArea = damageArea.getComponent(DamageAreaComponent.class);

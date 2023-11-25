@@ -4,9 +4,8 @@ import engine.Cmd;
 import engine.IGame;
 import engine.IGameController;
 import engine.UIPanel;
-import model.components.physics.MonsterMovementComponent;
-import model.components.physics.PlayerMovementComponent;
-import model.components.player.skills.PlayerSkillsShopComponent;
+import model.components.attacks.HealthComponent;
+import model.components.characters.player.skills.PlayerSkillsShopComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
 import model.fsm.states.game.*;
@@ -295,15 +294,14 @@ public class CanadaGame implements IGame {
 		return this.skills;
 	}
 
+
 	public void removePlayingViews(){
 		for(GameObject obj : gameObjects){
-			MonsterMovementComponent mmc = obj.getComponent(MonsterMovementComponent.class);
-			PlayerMovementComponent pmc = obj.getComponent(PlayerMovementComponent.class);
-			if(mmc != null){
-				playingState.removeView(mmc.getView());
-			} else if (pmc != null) {
-				playingState.removeView(pmc.getView());
+			HealthComponent health = obj.getComponent(HealthComponent.class);
+			if(health != null){
+				playingState.removeView(health.getView());
 			}
 		}
 	}
+
 }
