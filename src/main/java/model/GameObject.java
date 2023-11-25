@@ -12,6 +12,7 @@ public class GameObject {
 
     private Map<Class<? extends Component>, Component> components;
 
+    private ArrayList<Component> toAdd;
     private ArrayList<Component> toDestroy;
 
     public GameObject(CanadaGame game){
@@ -25,11 +26,13 @@ public class GameObject {
         this.position = new Vector2(x, y);
 
         this.components = new LinkedHashMap<>();
+        this.toAdd = new ArrayList<>();
         this.toDestroy = new ArrayList<>();
     }
 
     public void update(){
 
+        addComponents();
         for(Component c : components.values()){
             c.update();
         }
@@ -40,8 +43,20 @@ public class GameObject {
         this.components.put(component.getClass(), component);
     }
 
+    public void addComponentNextLoop(Component component){
+        toAdd.add(component);
+    }
+
     public void removeComponent(Component component){
         toDestroy.add(component);
+    }
+
+    public void addComponents(){
+
+        for (Component comp : toAdd){
+            this.components.put(comp.getClass(), comp);
+        }
+        toAdd.clear();
     }
 
     public void destroyComponents(){

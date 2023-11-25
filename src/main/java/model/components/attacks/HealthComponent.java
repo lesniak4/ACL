@@ -37,9 +37,13 @@ public class HealthComponent extends Component{
 
     public void takeDamage(int damage){
         this.currentHealth -= damage;
-        if(this.currentHealth <= 0) {
+        if(isDead()) {
             getGameObject().destroyGameObject();
         }
+    }
+
+    public boolean isDead(){
+        return this.currentHealth <= 0;
     }
 
     public int getHealthOn100(){

@@ -5,11 +5,11 @@ import model.components.characters.StatsComponent;
 
 public class PlayerDamageModifierComponent extends PlayerStatsModifierComponent {
 
-    private int damageAdded;
+    private float damageFactor;
 
-    public PlayerDamageModifierComponent(GameObject obj, StatsComponent stats, int durationInMS, int damageAdded) {
+    public PlayerDamageModifierComponent(GameObject obj, StatsComponent stats, int durationInMS, float damageFactor) {
         super(obj, stats, durationInMS);
-        this.damageAdded = damageAdded;
+        this.damageFactor = damageFactor;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class PlayerDamageModifierComponent extends PlayerStatsModifierComponent 
 
     @Override
     public void applyModifier() {
-        stats.setActualDamage(stats.getDefaultDamage() + damageAdded);
+        stats.setActualDamage((int)(stats.getDefaultDamage() * damageFactor));
     }
 
     @Override

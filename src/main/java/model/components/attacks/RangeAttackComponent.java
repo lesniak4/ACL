@@ -2,11 +2,13 @@ package model.components.attacks;
 
 import model.CanadaPhysics;
 import model.GameObject;
+import model.components.characters.StatsComponent;
+import model.components.physics.MovementComponent;
 
 public class RangeAttackComponent extends AttackComponent{
 
-    public RangeAttackComponent(GameObject obj, CanadaPhysics physics, double radius, int damage, int stunDurationInMS, int lifetimeInMS) {
-        super(obj, physics, radius, damage, stunDurationInMS, lifetimeInMS);
+    public RangeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunDurationInMS, int lifetimeInMS) {
+        super(obj, stats, movement, physics, radius, stunDurationInMS, lifetimeInMS);
     }
 
     @Override

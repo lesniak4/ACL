@@ -2,6 +2,7 @@ package model.components.ai;
 
 import model.GameObject;
 import model.components.Component;
+import model.components.attacks.AttackComponent;
 import model.components.attacks.StunComponent;
 import model.components.characters.StatsComponent;
 import model.fsm.ICondition;
@@ -20,6 +21,7 @@ public class AIComponent extends Component {
     private GameObject player;
     private StatsComponent playerStats;
     private StunComponent stunComponent;
+    private AttackComponent attackComponent;
     private IState stateIdle;
     private IState stateMoving;
     private IState statePatrol;
@@ -27,13 +29,14 @@ public class AIComponent extends Component {
     private Vector2 savedTarget;
     private Vector2 initialPos;
 
-    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player, StunComponent stun) {
+    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player, StunComponent stun, AttackComponent attack) {
         super(obj);
         this.player = player;
         this.pathfindingComponent = pathfindingComponent;
 
         this.playerStats = player.getComponent(StatsComponent.class);
         this.stunComponent = stun;
+        this.attackComponent = attack;
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -46,6 +49,7 @@ public class AIComponent extends Component {
         statePatrol = new StatePatrol(this);
         stateChase = new StateChase(this);
         IState stateStun = new StateStun(this);
+        IState stateAttack = new StateAttack(this, attackComponent);
 
         // Chase
         ICondition conditionToChase = () -> playerStats != null
@@ -61,8 +65,8 @@ public class AIComponent extends Component {
         stateMachine.addTransition(stateChase, stateMoving, conditionStopChasing);
 
         // Moving
-        ICondition conditionMove = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) > 1d; };
-        ICondition conditionStopMoving = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 0.9d; };
+        ICondition conditionMove = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) >= 1d; };
+        ICondition conditionStopMoving = () -> { return Vector2.distance(pathfindingComponent.getTarget(), this.getGameObject().getPosition()) < 1d; };
         stateMachine.addTransition(stateMoving, stateIdle, conditionStopMoving);
 
         // Stun
@@ -71,7 +75,16 @@ public class AIComponent extends Component {
 
         stateMachine.addTransition(stateMoving, stateStun, isStun);
         stateMachine.addTransition(stateChase, stateStun, isStun);
+        stateMachine.addTransition(stateAttack, stateStun, isStun);
         stateMachine.addTransition(stateStun, stateMoving, recovered);
+
+        // Attack
+        ICondition canAttack = () -> Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
+        ICondition attackFinished = () -> !attackComponent.isAttacking();
+
+        stateMachine.addTransition(stateMoving, stateAttack, canAttack);
+        stateMachine.addTransition(stateChase, stateAttack, canAttack);
+        stateMachine.addTransition(stateAttack, stateMoving, attackFinished);
 
 
         switch (random.nextInt(3)){

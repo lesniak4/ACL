@@ -43,7 +43,7 @@ public class PlayerInteractionComponent extends Component {
         // Check collision avec un ennemi
         MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
         if (monster != null && !stats.isInvisible()) {
-            colliderObj.getGame().setPlayerLose(true);
+            //colliderObj.getGame().setPlayerLose(true);
         }
 
         // Check collision avec une case de téléportation

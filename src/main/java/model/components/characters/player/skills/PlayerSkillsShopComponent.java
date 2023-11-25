@@ -56,7 +56,7 @@ public class PlayerSkillsShopComponent extends Component {
                         if(isSkillAvailable(command) && this.getGameObject().getGame().getScore() >= skill.getCost()) {
                             this.getGameObject().getGame().decrScore(skill.getCost());
                             lastTimesUsed.put(command, System.currentTimeMillis());
-                            this.getGameObject().addComponent(skill.getNewModifierComponent(this.getGameObject(), stats));
+                            this.getGameObject().addComponentNextLoop(skill.getNewModifierComponent(this.getGameObject(), stats));
                         }
                     }
                 }

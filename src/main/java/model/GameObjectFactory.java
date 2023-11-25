@@ -104,11 +104,17 @@ public class GameObjectFactory {
         //player.addComponent(new CircleRendererComponent(player, painter, Color.RED,1,1, true));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
+        StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
+        MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, 12.5d, 450,500);
+        playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
+        StunComponent stun = new StunComponent(player);
+        playerInputComponent.setStunComponent(stun);
+
         player.addComponent(playerInputComponent);
         PlayerPauseComponent playerPauseComponent  = new PlayerPauseComponent(player, playerInputComponent);
         player.addComponent(playerPauseComponent);
-      
-        StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
+
         player.addComponent(stats);
         //player.addComponent(new PlayerSpeedModifierComponent(player, stats, 10000, 2d));
         //player.addComponent(new PlayerInvisibleModifierComponent(player, stats, 10000));
@@ -118,14 +124,14 @@ public class GameObjectFactory {
         HealthBarView healthBar = new HealthBarView(game, player, health);
         playingState.addView(healthBar);
 
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         player.addComponent(movement);
         player.addComponent(new CharacterAnimationComponent(player, movement, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player, stats));
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
-        player.addComponent(new MeleeAttackComponent(player, playerInputComponent, stats, movement, physics, 12.5d, 2, 450,500));
+        player.addComponent(meleeAttackComponent);
+        player.addComponent(stun);
 
         return player;
     }
@@ -142,17 +148,24 @@ public class GameObjectFactory {
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(monster, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getMonsterIdleSprite(), 0.5d);
         monster.addComponent(renderer);
 
+        StatsComponent stats = new StatsComponent(monster, gc.getMonsterBaseMS(), gc.getMonsterBaseDMG(), gc.getMonsterMeleeAttackDistance());
+
+
         HealthComponent health = new HealthComponent(monster, gc.getMonsterBaseHealth());
         monster.addComponent(health);
         HealthBarView healthBar = new HealthBarView(game, monster, health);
         playingState.addView(healthBar);
 
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
+        MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, 12.5d, 300,500);
         StunComponent stun = new StunComponent(monster);
+
+        monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun, meleeAttack));
+
+        monster.addComponent(movement);
+        monster.addComponent(meleeAttack);
         monster.addComponent(stun);
 
-        monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun));
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
-        monster.addComponent(movement);
         monster.addComponent(new CharacterAnimationComponent(monster, movement, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8, true));
 

@@ -46,7 +46,7 @@ public class CanadaGame implements IGame {
 	private Vector2 cameraPosition;
 	private boolean hasKey;
 	private boolean playerWin;
-	private boolean playerLose;
+	private HealthComponent playerHealth;
 
 	private int niveauActuel;
 	private final int maxLevel = 2;
@@ -83,7 +83,7 @@ public class CanadaGame implements IGame {
 	}
 
 	public void initGame(){
-		this.playerLose = false;
+
 		this.gameObjects = new ArrayList<>();
 		this.toInstantiate = new ArrayList<>();
 		this.toDestroy = new ArrayList<>();
@@ -173,7 +173,7 @@ public class CanadaGame implements IGame {
 	}
 
 	@Override
-	public boolean hasPlayerLost(){return this.playerLose;}
+	public boolean hasPlayerLost(){return this.playerHealth.isDead(); }
 
 	@Override
 	public int getScore() {
@@ -188,7 +188,6 @@ public class CanadaGame implements IGame {
 		this.playerWin = playerWin;
 	}
 
-	public void setPlayerLose(boolean playerLose) {this.playerLose = playerLose;}
 
 	public void addGameObject(GameObject obj){
 		toInstantiate.add(obj);
@@ -269,6 +268,8 @@ public class CanadaGame implements IGame {
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
 
+			this.playerHealth = player.getComponent(HealthComponent.class);
+
 			this.skills = player.getComponent(PlayerSkillsShopComponent.class);
 		}
 	}
@@ -279,7 +280,7 @@ public class CanadaGame implements IGame {
 	@Override
 	public boolean isFinished() {
 
-		return niveauActuel > maxLevel || playerLose;
+		return niveauActuel > maxLevel || hasPlayerLost();
 	}
 
 	public Vector2 getCameraPosition() {

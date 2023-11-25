@@ -69,7 +69,7 @@ public class HealthBarView extends UIView {
 
         healthBar.setValue(health.getHealthOn100());
 
-        if(health.getCurrentHealth() <= 0){
+        if(health.isDead()){
             healthBar.setVisible(false);
             this.setVisible(false);
         }

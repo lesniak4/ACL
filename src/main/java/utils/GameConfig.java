@@ -23,10 +23,14 @@ public class GameConfig {
 
     public double getPlayerBaseMS(){ return 1.9d; }
 
-    public int getPlayerBaseDMG(){ return 50; }
+    public int getPlayerBaseDMG(){ return 2; }
 
     public int getPlayerBaseHealth(){
         return 20;
+    }
+
+    public double getPlayerMeleeAttackDistance(){
+        return 25d;
     }
 
     // Monster
@@ -37,12 +41,18 @@ public class GameConfig {
     // Facteur du nombre d'hexagone où le monstre perd de vue le joueur
     public double getMonsterLooseVision(){ return getTileSize() * 1.75d; }
 
-    public int getMonsterNb(){ return 1; }
+    public int getMonsterNb(){ return 5; }
 
     public double getMonsterBaseMS(){ return 1.55d; }
 
+    public int getMonsterBaseDMG(){ return 2; }
+
     public int getMonsterBaseHealth(){
         return 10;
+    }
+
+    public double getMonsterMeleeAttackDistance(){
+        return 25d;
     }
 
 
@@ -68,13 +78,9 @@ public class GameConfig {
     public int getSkill3Cost(){ return 25; }
     public int getSkill3Duration(){ return 5000; }
     public int getSkill3Cooldown(){ return 20000; }
-    public int getSkill3Modifier(){ return 50; } // Damage added
+    public float getSkill3Modifier(){ return 2f; } // Damage factor
 
     public String getSaveFileName() { return "CanadaCamp.save"; }
-
-    public double getPlayerMeleeAttackDistance(){
-        return 25d;
-    }
 
 
 }

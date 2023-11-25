@@ -9,14 +9,14 @@ public class StatsComponent extends Component {
     private double defaultSpeed;
     private double actualSpeed;
 
-    private double defaultDamage;
-    private double actualDamage;
+    private int defaultDamage;
+    private int actualDamage;
 
     private boolean invisible;
 
     private double meleeAttackDistance;
 
-    public StatsComponent(GameObject obj, double defaultSpeed, double defaultDamage, double meleeAttackDistance) {
+    public StatsComponent(GameObject obj, double defaultSpeed, int defaultDamage, double meleeAttackDistance) {
         super(obj);
 
         this.defaultSpeed = defaultSpeed;
@@ -64,16 +64,19 @@ public class StatsComponent extends Component {
         }
     }
 
-    public double getDefaultDamage() {
+    public int getDefaultDamage() {
         return defaultDamage;
     }
+    public int getActualDamage() {
+        return actualDamage;
+    }
 
-    public void setActualDamage(double newDamage){
+    public void setActualDamage(int newDamage){
         this.actualDamage = newDamage;
     }
 
     public void resetActualDamage(){
-        this.actualDamage = defaultSpeed;
+        this.actualDamage = defaultDamage;
     }
 
     public double getMeleeAttackDistance() {
