@@ -49,32 +49,30 @@ public class HealthBarView extends UIView {
 
     @Override
     public void update() {
-
-        GameConfig gc = GameConfig.getInstance();
-
-        Vector2 entityPos = entity.getPosition();
-        Vector2 camPos = game.getCameraPosition();
-        Vector2 diffPos = new Vector2(entityPos.X() - camPos.X(), entityPos.Y() - camPos.Y());
-        Vector2 hexLayoutCorrection = Vector2.worldToScreenIso(new Vector2(diffPos.X() - gc.getTileSize(), diffPos.Y() - gc.getTileSize()));
-        Vector2 layoutPos = new Vector2(gc.getWinWidth()/2 + hexLayoutCorrection.X() - healthBar.getWidth()/2, gc.getWinHeight()/2 + hexLayoutCorrection.Y() - healthBar.getHeight()/2 - 5); // -5 pour que la barre soit un peu plus au dessus de l'entité
-
-        if(layoutPos.X() > 0 && layoutPos.X() < gc.getWinWidth() && layoutPos.Y() > 0 && layoutPos.Y() < gc.getWinHeight()) {
-            this.setBounds((int)layoutPos.X(), (int)layoutPos.Y(), healthBar.getWidth(), healthBar.getHeight());
-            healthBar.setVisible(true);
-            this.setVisible(true);
-        } else {
-            healthBar.setVisible(false);
-            this.setVisible(false);
-        }
-
-        healthBar.setValue(health.getHealthOn100());
-
         if(health.isDead()){
             healthBar.setVisible(false);
             this.setVisible(false);
         }
         else{
+            GameConfig gc = GameConfig.getInstance();
+
             healthBar.setForeground(new Color((255* (100-health.getHealthOn100())) / 100,255 * health.getHealthOn100() /100, 0 ));
+            healthBar.setValue(health.getHealthOn100());
+
+            Vector2 entityPos = entity.getPosition();
+            Vector2 camPos = game.getCameraPosition();
+            Vector2 diffPos = new Vector2(entityPos.X() - camPos.X(), entityPos.Y() - camPos.Y());
+            Vector2 hexLayoutCorrection = Vector2.worldToScreenIso(new Vector2(diffPos.X() - gc.getTileSize(), diffPos.Y() - gc.getTileSize()));
+            Vector2 layoutPos = new Vector2(gc.getWinWidth()/2 + hexLayoutCorrection.X() - healthBar.getWidth()/2, gc.getWinHeight()/2 + hexLayoutCorrection.Y() - healthBar.getHeight()/2 - 5); // -5 pour que la barre soit un peu plus au dessus de l'entité
+
+            if(layoutPos.X() > 0 && layoutPos.X() < gc.getWinWidth() && layoutPos.Y() > 0 && layoutPos.Y() < gc.getWinHeight()) {
+                this.setBounds((int)layoutPos.X(), (int)layoutPos.Y(), healthBar.getWidth(), healthBar.getHeight());
+                healthBar.setVisible(true);
+                this.setVisible(true);
+            } else {
+                healthBar.setVisible(false);
+                this.setVisible(false);
+            }
         }
     }
 }
