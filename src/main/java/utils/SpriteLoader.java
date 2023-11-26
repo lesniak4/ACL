@@ -16,8 +16,10 @@ public class SpriteLoader {
     private SpriteSheet wallSprite;
     private SpriteSheet playerWalking;
     private SpriteSheet playerIdle;
+    private SpriteSheet playerFighting;
     private SpriteSheet monsterIdle;
     private SpriteSheet monsterWalking;
+    private SpriteSheet monsterFighting;
     private BufferedImage goldCoinsSprite;
     private BufferedImage axeSprite;
     private BufferedImage swordSprite;
@@ -40,8 +42,12 @@ public class SpriteLoader {
             wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/wall.png")), 1, 16);
             playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_walking.png")), 8, 16);
             playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_idle.png")), 8, 1);
+            playerFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_fighting.png")), 8, 6);
+
             monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_idle.png")), 8, 1);
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
+            monsterFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_fighting.png")), 8, 6);
+
             goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
             axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
             swordSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/sword.png"));
@@ -77,6 +83,9 @@ public class SpriteLoader {
     public SpriteSheet getPlayerIdleSprite() {
         return playerIdle;
     }
+    public SpriteSheet getPlayerFightingSprite() {
+        return playerFighting;
+    }
 
     public SpriteSheet getMonsterIdleSprite() {
         return monsterIdle;
@@ -84,6 +93,9 @@ public class SpriteLoader {
 
     public SpriteSheet getMonsterWalkingSprite() {
         return monsterWalking;
+    }
+    public SpriteSheet getMonsterFightingSprite() {
+        return monsterFighting;
     }
 
     public BufferedImage getGoldCoinsSprite() {
