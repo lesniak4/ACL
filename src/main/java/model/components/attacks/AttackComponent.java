@@ -21,30 +21,34 @@ public abstract class AttackComponent extends Component {
 
     protected DamageAreaComponent instantiatedDamageArea;
     protected boolean attacking;
-    protected long lastAttackTime;
+    protected int frameBeforeEndAttack;
 
-    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunDurationInMS, int lifetimeInMS) {
+    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
         super(obj);
 
         this.physics = physics;
 
         this.radius = radius;
-        this.stunDuration = stunDurationInMS;
-        this.lifetime = lifetimeInMS;
+        this.stunDuration = stunFrameCount;
+        this.lifetime = lifetimeFrameCount;
 
         this.stats = stats;
         this.movementComponent = movement;
 
         this.instantiatedDamageArea = null;
         this.attacking = false;
-        this.lastAttackTime = 0;
+
+        this.frameBeforeEndAttack = 0;
     }
 
     @Override
     public void update(){
 
-        if(System.currentTimeMillis() - lastAttackTime > lifetime) {
-            this.attacking = false;
+        if(attacking){
+            frameBeforeEndAttack--;
+            if(frameBeforeEndAttack == 0){
+                this.attacking = false;
+            }
         }
     }
 
@@ -56,7 +60,7 @@ public abstract class AttackComponent extends Component {
                 currentPos.X() + this.movementComponent.getCurrentFacingDirection().X() * stats.getMeleeAttackDistance(),
                 currentPos.Y() + this.movementComponent.getCurrentFacingDirection().Y() * stats.getMeleeAttackDistance()));
         this.attacking = true;
-        this.lastAttackTime = System.currentTimeMillis();
+        this.frameBeforeEndAttack = lifetime;
     }
 
     public void instantiateDamageArea(Vector2 pos){

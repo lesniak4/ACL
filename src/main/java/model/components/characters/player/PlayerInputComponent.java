@@ -10,6 +10,7 @@ import model.components.attacks.StunComponent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class PlayerInputComponent extends Component {
 
@@ -18,9 +19,13 @@ public class PlayerInputComponent extends Component {
     private MeleeAttackComponent meleeAttackComponent;
     private StunComponent stunComponent;
 
+    private Set<Cmd> processedCmd;
+
     public PlayerInputComponent(GameObject obj, IGameController controller){
         super(obj);
         this.controller = controller;
+
+        processedCmd = new HashSet<>();
 
     }
 
@@ -40,7 +45,7 @@ public class PlayerInputComponent extends Component {
             Set<Cmd> commands = new HashSet<>(getCommands());
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
-                    if (command == Cmd.MELEE_ATTACK && meleeAttackComponent != null) {
+                    if (command == Cmd.MELEE_ATTACK && meleeAttackComponent != null && !processedCmd.contains(Cmd.MELEE_ATTACK)) {
                         if(!meleeAttackComponent.isAttacking()) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.MELEE_ATTACK);
                             meleeAttackComponent.attack();
@@ -48,6 +53,8 @@ public class PlayerInputComponent extends Component {
                     }
                 }
             }
+            processedCmd.clear();
+            processedCmd.addAll(commands);
         }
     }
 

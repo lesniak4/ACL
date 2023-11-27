@@ -14,8 +14,8 @@ import java.util.Set;
 public class MeleeAttackComponent extends AttackComponent{
 
 
-    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunDurationInMS, int lifetimeInMS) {
-        super(obj, stats, movement, physics, radius, stunDurationInMS, lifetimeInMS);
+    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount);
     }
 
     @Override

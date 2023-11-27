@@ -75,7 +75,7 @@ public class CanadaController implements IGameController {
 			case KeyEvent.VK_ESCAPE: // si on appuie sur 'echap'
 				keysPressed.add(Cmd.PAUSE);
 				break;
-      case KeyEvent.VK_SPACE: // si on appuie sur 'espace'
+      		case KeyEvent.VK_SPACE: // si on appuie sur 'espace'
 				keysPressed.add(Cmd.MELEE_ATTACK);
 				break;
 			case KeyEvent.VK_A: // si on appuie sur 'A'

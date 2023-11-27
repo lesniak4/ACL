@@ -7,25 +7,24 @@ public class DamageAreaComponent extends Component {
 
     private int damage;
     private int stunDuration;
-    private int lifetime;
 
     private AttackComponent owner;
-    private long spawnTime;
+    private int frameBeforeDestroy;
 
-    public DamageAreaComponent(GameObject obj, int damage, int stunDurationInMS, int lifetimeInMS, AttackComponent owner) {
+    public DamageAreaComponent(GameObject obj, int damage, int stunFrameCount, int lifetimeFrameCount, AttackComponent owner) {
         super(obj);
 
         this.damage = damage;
-        this.stunDuration = stunDurationInMS;
-        this.lifetime = lifetimeInMS;
+        this.stunDuration = stunFrameCount;
         this.owner = owner;
-        this.spawnTime = System.currentTimeMillis();
+        this.frameBeforeDestroy = lifetimeFrameCount;
     }
 
     @Override
     public void update() {
 
-        if(System.currentTimeMillis() - spawnTime > lifetime){
+        frameBeforeDestroy--;
+        if(frameBeforeDestroy <= 0){
             destroy();
         }
     }

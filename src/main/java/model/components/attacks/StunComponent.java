@@ -6,22 +6,23 @@ import model.components.Component;
 public class StunComponent extends Component {
 
     private int stunDuration;
-
     private boolean isStun;
-    private long startStunTime;
 
     public StunComponent(GameObject obj) {
         super(obj);
 
         this.isStun = false;
-        this.startStunTime = System.currentTimeMillis();
+        this.stunDuration = 0;
     }
 
     @Override
     public void update() {
 
-        if(System.currentTimeMillis() - startStunTime > stunDuration){
-            isStun = false;
+        if(isStun){
+            stunDuration--;
+            if(stunDuration == 0){
+                this.isStun = false;
+            }
         }
     }
 
@@ -29,9 +30,8 @@ public class StunComponent extends Component {
         return isStun;
     }
 
-    public void stun(int duration){
+    public void stun(int frameCount){
         this.isStun = true;
-        this.stunDuration = duration;
-        this.startStunTime = System.currentTimeMillis();
+        this.stunDuration = frameCount;
     }
 }

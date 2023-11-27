@@ -7,8 +7,8 @@ import model.components.physics.MovementComponent;
 
 public class RangeAttackComponent extends AttackComponent{
 
-    public RangeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunDurationInMS, int lifetimeInMS) {
-        super(obj, stats, movement, physics, radius, stunDurationInMS, lifetimeInMS);
+    public RangeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount);
     }
 
     @Override

@@ -4,13 +4,17 @@ import model.components.ai.AIComponent;
 import model.components.attacks.AttackComponent;
 import model.components.attacks.MeleeAttackComponent;
 
+import java.util.Random;
+
 public class StateAttack extends AIState{
 
+    private Random random;
     private AttackComponent attackComponent;
 
     public StateAttack(AIComponent aiComponent, AttackComponent attackComponent) {
         super(aiComponent);
 
+        this.random = new Random();
         this.attackComponent = attackComponent;
     }
 
@@ -29,5 +33,6 @@ public class StateAttack extends AIState{
     @Override
     public void onExit() {
 
+        aiComponent.setAttackCooldown(random.nextInt(60) + 60);
     }
 }
