@@ -212,6 +212,7 @@ public class GameObjectFactory {
     public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime){
 
         GameObject damageArea = new GameObject(position.X(), position.Y(), game);
+        damageArea.addComponent(new DamageAreaMovementComponent(damageArea, 0, physics));
         damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
         damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner));
 

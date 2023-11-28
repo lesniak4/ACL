@@ -50,17 +50,17 @@ public class ColliderComponent extends Component {
             }
         }
 
-        DamageAreaComponent damageArea = colliderObj.getComponent(DamageAreaComponent.class);
-        if(damageArea != null && obj != damageArea.getOwner().getGameObject()){
-            HealthComponent health = obj.getComponent(HealthComponent.class);
-            if(health != null){
-                health.takeDamage(damageArea.getDamage());
-            }
-            StunComponent stun = obj.getComponent(StunComponent.class);
+        DamageAreaComponent damageArea = obj.getComponent(DamageAreaComponent.class);
+        if(damageArea != null && colliderObj != damageArea.getOwner().getGameObject()){
+            StunComponent stun = colliderObj.getComponent(StunComponent.class);
             if(stun != null){
                 stun.stun(damageArea.getStunDuration());
             }
-            damageArea.destroy();
+            HealthComponent health = colliderObj.getComponent(HealthComponent.class);
+            if(health != null){
+                health.takeDamage(damageArea.getDamage());
+                damageArea.destroy();
+            }
         }
 
 
