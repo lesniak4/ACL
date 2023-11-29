@@ -40,7 +40,7 @@ public class GameObjectFactory {
     public GameObject createWallTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject wallTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject wallTile = new GameObject(pos.X(), pos.Y(), "Wall_"+hex.getQ()+"_"+hex.getR(), game);
         wallTile.addComponent(new BitmaskedSpriteRendererComponent(wallTile, painter, Color.WHITE, 1, true, SpriteLoader.getInstance().getWallSprite()));
         //wallTile.addComponent(new HexRendererComponent(wallTile, painter, Color.GREEN, hex, layout, true));
         wallTile.addComponent(new ColliderComponent(wallTile, physics, layout.getSize().X(), false));
@@ -51,7 +51,7 @@ public class GameObjectFactory {
     public GameObject createBorderTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject wallTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject wallTile = new GameObject(pos.X(), pos.Y(), "Border_"+hex.getQ()+"_"+hex.getR(), game);
         wallTile.addComponent(new BitmaskedSpriteRendererComponent(wallTile, painter, Color.WHITE, 1, true, SpriteLoader.getInstance().getWallSprite()));
         //wallTile.addComponent(new HexRendererComponent(wallTile, painter, Color.GREEN, hex, layout, true));
 
@@ -61,7 +61,7 @@ public class GameObjectFactory {
     public GameObject createPathTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject pathTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject pathTile = new GameObject(pos.X(), pos.Y(), "Path_"+hex.getQ()+"_"+hex.getR(), game);
         pathTile.addComponent(new BitmaskedSpriteRendererComponent(pathTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
         pathTile.addComponent(new PathNodeComponent(pathTile));
         //pathTile.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
@@ -72,7 +72,7 @@ public class GameObjectFactory {
     public GameObject createCoinsObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject coins = new GameObject(pos.X(), pos.Y(), game);
+        GameObject coins = new GameObject(pos.X(), pos.Y(), "Coins_"+hex.getQ()+"_"+hex.getR(), game);
         coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
         coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
         coins.addComponent(new CoinComponent(coins, GameConfig.getInstance().getCoinValue()));
@@ -83,7 +83,7 @@ public class GameObjectFactory {
     public GameObject createKeyObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject key = new GameObject(pos.X(), pos.Y(), game);
+        GameObject key = new GameObject(pos.X(), pos.Y(), "Key_"+hex.getQ()+"_"+hex.getR(), game);
         key.addComponent(new SpriteRendererComponent(key, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
         key.addComponent(new ColliderComponent(key, physics,25, true));
         key.addComponent(new KeyComponent(key));
@@ -96,7 +96,7 @@ public class GameObjectFactory {
 
         GameConfig gc = GameConfig.getInstance();
 
-        GameObject player = new GameObject(posX, posY, game);
+        GameObject player = new GameObject(posX, posY, "Player", game);
         player.addComponent(new CameraComponent(player));
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(player, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getPlayerIdleSprite(), 0.6d);
         player.addComponent(renderer);
@@ -104,10 +104,13 @@ public class GameObjectFactory {
         //player.addComponent(new CircleRendererComponent(player, painter, Color.RED,1,1, true));
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller);
-        StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseDMG(), gc.getPlayerMeleeAttackDistance());
+        StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseMeleeDMG(), gc.getPlayerBaseRangedDMG(), gc.getPlayerMeleeAttackDistance(), gc.getPlayerRangedAttackSpeed());
         PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, 15d, 60,10);
+        RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, 10d, 180,90);
         playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
+        playerInputComponent.setRangedAttackComponent(rangedAttackComponent);
+
         StunComponent stun = new StunComponent(player);
         playerInputComponent.setStunComponent(stun);
 
@@ -131,6 +134,7 @@ public class GameObjectFactory {
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats));
         player.addComponent(meleeAttackComponent);
+        player.addComponent(rangedAttackComponent);
         player.addComponent(stun);
 
         return player;
@@ -140,7 +144,7 @@ public class GameObjectFactory {
 
         GameConfig gc = GameConfig.getInstance();
 
-        GameObject monster = new GameObject(posX, posY, game);
+        GameObject monster = new GameObject(posX, posY, "Monster", game);
         PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, worldGraph);
         pathfindingComponent.setTarget(target.getPosition());
 
@@ -148,7 +152,7 @@ public class GameObjectFactory {
         AnimatedSpriteRendererComponent renderer = new AnimatedSpriteRendererComponent(monster, painter, Color.WHITE, 1, false, SpriteLoader.getInstance().getMonsterIdleSprite(), 0.6d);
         monster.addComponent(renderer);
 
-        StatsComponent stats = new StatsComponent(monster, gc.getMonsterBaseMS(), gc.getMonsterBaseDMG(), gc.getMonsterMeleeAttackDistance());
+        StatsComponent stats = new StatsComponent(monster, gc.getMonsterBaseMS(), gc.getMonsterBaseMeleeDMG(), gc.getMonsterBaseRangedDMG(), gc.getMonsterMeleeAttackDistance(), gc.getMonsterRangedAttackSpeed());
 
 
         HealthComponent health = new HealthComponent(monster, gc.getMonsterBaseHealth());
@@ -177,7 +181,7 @@ public class GameObjectFactory {
     public GameObject createWorldSpawnTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject exitTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject exitTile = new GameObject(pos.X(), pos.Y(), "WorldSpawn", game);
         exitTile.addComponent(new BitmaskedSpriteRendererComponent(exitTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
         exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), false));
         exitTile.addComponent(new WorldSpawnComponent(exitTile));
@@ -188,7 +192,7 @@ public class GameObjectFactory {
     public GameObject createWorldExitTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject exitTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject exitTile = new GameObject(pos.X(), pos.Y(), "WorldExit", game);
         exitTile.addComponent(new BitmaskedSpriteRendererComponent(exitTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
         exitTile.addComponent(new SpriteRendererComponent(exitTile, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getExitSprite()));
         exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), false));
@@ -200,21 +204,32 @@ public class GameObjectFactory {
     public GameObject createTeleportationTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, TeleportationTileOrientation orientation){
 
         Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject tpTile = new GameObject(pos.X(), pos.Y(), game);
+        GameObject tpTile = new GameObject(pos.X(), pos.Y(), "Mine_"+hex.getQ()+"_"+hex.getR(), game);
         tpTile.addComponent(new SpriteRendererComponent(tpTile, painter, Color.WHITE, 1, false, orientation == TeleportationTileOrientation.LEFT ? SpriteLoader.getInstance().getMineLeftSprite() : SpriteLoader.getInstance().getMineRightSprite()));
 
-        tpTile.addComponent(new ColliderComponent(tpTile, physics, /*Math.sqrt(3d) * 0.5d * */layout.getSize().X(), true));
+        tpTile.addComponent(new ColliderComponent(tpTile, physics, layout.getSize().X(), true));
         tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
 
         return tpTile;
     }
 
-    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime){
+    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime, boolean destroyOnHit){
 
-        GameObject damageArea = new GameObject(position.X(), position.Y(), game);
-        damageArea.addComponent(new DamageAreaMovementComponent(damageArea, 0, physics));
+        GameObject damageArea = new GameObject(position.X(), position.Y(), "DamageArea_"+owner.getGameObject().toString(), game);
+        damageArea.addComponent(new DamageAreaMovementComponent(damageArea, 0, new Vector2(0,0), physics));
         damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
-        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner));
+        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit));
+
+        return damageArea;
+    }
+
+    public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime, double movementSpeed, Vector2 direction, boolean destroyOnHit){
+
+        GameObject damageArea = new GameObject(position.X(), position.Y(), "DamageArea_"+owner.getGameObject().toString(), game);
+        damageArea.addComponent(new SpriteRendererComponent(damageArea, game.getPainter(), Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
+        damageArea.addComponent(new DamageAreaMovementComponent(damageArea, movementSpeed, direction, physics));
+        damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
+        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit));
 
         return damageArea;
     }

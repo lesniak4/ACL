@@ -78,6 +78,9 @@ public class CanadaController implements IGameController {
       		case KeyEvent.VK_SPACE: // si on appuie sur 'espace'
 				keysPressed.add(Cmd.MELEE_ATTACK);
 				break;
+			case KeyEvent.VK_F: // si on appuie sur 'F'
+				keysPressed.add(Cmd.RANGED_ATTACK);
+				break;
 			case KeyEvent.VK_A: // si on appuie sur 'A'
 				keysPressed.add(Cmd.SKILL_1);
 				break;
@@ -114,8 +117,11 @@ public class CanadaController implements IGameController {
 			case KeyEvent.VK_ESCAPE: // si on appuie sur 'echap'
 				keysPressed.remove(Cmd.PAUSE);
 				break;
-      case KeyEvent.VK_SPACE: // si on appuie sur 'espace'
+      		case KeyEvent.VK_SPACE: // si on appuie sur 'espace'
 				keysPressed.remove(Cmd.MELEE_ATTACK);
+				break;
+			case KeyEvent.VK_F: // si on appuie sur 'F'
+				keysPressed.remove(Cmd.RANGED_ATTACK);
 				break;
 			case KeyEvent.VK_A: // si on appuie sur 'A'
 				keysPressed.remove(Cmd.SKILL_1);

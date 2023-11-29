@@ -9,6 +9,7 @@ public class GameObject {
 
     private CanadaGame game;
     private Vector2 position;
+    private String name;
 
     private Map<Class<? extends Component>, Component> components;
 
@@ -17,13 +18,19 @@ public class GameObject {
 
     public GameObject(CanadaGame game){
 
-        this(0d, 0d, game);
+        this(0d, 0d, "New GameObject", game);
     }
 
     public GameObject(double x, double y, CanadaGame game){
 
+        this(x, y, "New GameObject", game);
+    }
+
+    public GameObject(double x, double y, String name, CanadaGame game){
+
         this.game = game;
         this.position = new Vector2(x, y);
+        this.name = name;
 
         this.components = new LinkedHashMap<>();
         this.toAdd = new ArrayList<>();
@@ -103,5 +110,10 @@ public class GameObject {
             c.destroyComponent();
         }
         game.removeGameObject(this);
+    }
+
+    @Override
+    public String toString(){
+        return this.name;
     }
 }

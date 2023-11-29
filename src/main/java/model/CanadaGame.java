@@ -167,6 +167,10 @@ public class CanadaGame implements IGame {
 
 	}
 
+	public CanadaPainter getPainter(){
+		return this.painter;
+	}
+
 	@Override
 	public boolean hasPlayerWon(){
 		return this.playerWin;

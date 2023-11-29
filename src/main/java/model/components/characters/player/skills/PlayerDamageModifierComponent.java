@@ -19,7 +19,9 @@ public class PlayerDamageModifierComponent extends PlayerStatsModifierComponent 
 
     @Override
     public void applyModifier() {
-        stats.setActualDamage((int)(stats.getDefaultDamage() * damageFactor));
+
+        stats.setActualMeleeDamage((int)(stats.getDefaultMeleeDamage() * damageFactor));
+        stats.setActualRangedDamage((int)(stats.getDefaultRangedDamage() * damageFactor));
     }
 
     @Override

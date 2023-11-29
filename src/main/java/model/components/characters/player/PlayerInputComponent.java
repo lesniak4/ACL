@@ -6,6 +6,7 @@ import engine.IGameController;
 import model.GameObject;
 import model.components.Component;
 import model.components.attacks.MeleeAttackComponent;
+import model.components.attacks.RangedAttackComponent;
 import model.components.attacks.StunComponent;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class PlayerInputComponent extends Component {
     protected IGameController controller;
 
     private MeleeAttackComponent meleeAttackComponent;
+    private RangedAttackComponent rangedAttackComponent;
     private StunComponent stunComponent;
 
     private Set<Cmd> processedCmd;
@@ -51,6 +53,12 @@ public class PlayerInputComponent extends Component {
                             meleeAttackComponent.attack();
                         }
                     }
+                    if (command == Cmd.RANGED_ATTACK && rangedAttackComponent != null && !processedCmd.contains(Cmd.RANGED_ATTACK)) {
+                        if(!rangedAttackComponent.isAttacking()) {
+                            this.getGameObject().getGame().setLastKeyPressed(Cmd.RANGED_ATTACK);
+                            rangedAttackComponent.attack();
+                        }
+                    }
                 }
             }
             processedCmd.clear();
@@ -60,6 +68,10 @@ public class PlayerInputComponent extends Component {
 
     public void setMeleeAttackComponent(MeleeAttackComponent meleeAttackComponent){
         this.meleeAttackComponent = meleeAttackComponent;
+    }
+
+    public void setRangedAttackComponent(RangedAttackComponent rangedAttackComponent){
+        this.rangedAttackComponent = rangedAttackComponent;
     }
 
     public void setStunComponent(StunComponent stunComponent){

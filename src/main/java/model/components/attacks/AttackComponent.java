@@ -63,13 +63,7 @@ public abstract class AttackComponent extends Component {
         this.frameBeforeEndAttack = lifetime;
     }
 
-    public void instantiateDamageArea(Vector2 pos){
-
-        GameObject damageArea = GameObjectFactory.getInstance().createDamageArea(gameObject.getGame(), pos, this, physics, radius, stats.getActualDamage(), stunDuration, lifetime);
-        getGameObject().getGame().addGameObject(damageArea);
-
-        instantiatedDamageArea = damageArea.getComponent(DamageAreaComponent.class);
-    }
+    public abstract void instantiateDamageArea(Vector2 pos);
 
     public boolean isAttacking(){
         return this.attacking;

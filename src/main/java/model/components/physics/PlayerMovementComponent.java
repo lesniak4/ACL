@@ -19,6 +19,7 @@ public class PlayerMovementComponent extends MovementComponent{
         super(obj, movementSpeed, physics);
         this.playerInputComponent = playerInputComponent;
         this.stats = stats;
+
     }
 
     @Override

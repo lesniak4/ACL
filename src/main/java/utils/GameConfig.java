@@ -23,7 +23,8 @@ public class GameConfig {
 
     public double getPlayerBaseMS(){ return 1.9d; }
 
-    public int getPlayerBaseDMG(){ return 2; }
+    public int getPlayerBaseMeleeDMG(){ return 2; }
+    public int getPlayerBaseRangedDMG(){ return 1; }
 
     public int getPlayerBaseHealth(){
         return 20;
@@ -31,6 +32,10 @@ public class GameConfig {
 
     public double getPlayerMeleeAttackDistance(){
         return 25d;
+    }
+
+    public double getPlayerRangedAttackSpeed(){
+        return 4d;
     }
 
     // Monster
@@ -45,7 +50,8 @@ public class GameConfig {
 
     public double getMonsterBaseMS(){ return 1.55d; }
 
-    public int getMonsterBaseDMG(){ return 2; }
+    public int getMonsterBaseMeleeDMG(){ return 2; }
+    public int getMonsterBaseRangedDMG(){ return 1; }
 
     public int getMonsterBaseHealth(){
         return 10;
@@ -53,6 +59,10 @@ public class GameConfig {
 
     public double getMonsterMeleeAttackDistance(){
         return 25d;
+    }
+
+    public double getMonsterRangedAttackSpeed(){
+        return 4d;
     }
 
 

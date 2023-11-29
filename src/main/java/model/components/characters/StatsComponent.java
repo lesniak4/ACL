@@ -9,25 +9,33 @@ public class StatsComponent extends Component {
     private double defaultSpeed;
     private double actualSpeed;
 
-    private int defaultDamage;
-    private int actualDamage;
+    private int defaultMeleeDamage;
+    private int actualMeleeDamage;
+
+    private int defaultRangedDamage;
+    private int actualRangedDamage;
 
     private boolean invisible;
 
     private double meleeAttackDistance;
+    private double rangedAttackSpeed;
 
-    public StatsComponent(GameObject obj, double defaultSpeed, int defaultDamage, double meleeAttackDistance) {
+    public StatsComponent(GameObject obj, double defaultSpeed, int defaultMeleeDamage, int defaultRangedDamage, double meleeAttackDistance, double rangedAttackSpeed) {
         super(obj);
 
         this.defaultSpeed = defaultSpeed;
         this.actualSpeed = defaultSpeed;
 
-        this.defaultDamage = defaultDamage;
-        this.actualDamage = defaultDamage;
+        this.defaultMeleeDamage = defaultMeleeDamage;
+        this.actualMeleeDamage = defaultMeleeDamage;
+
+        this.defaultRangedDamage = defaultRangedDamage;
+        this.actualRangedDamage = defaultRangedDamage;
 
         this.invisible = false;
 
         this.meleeAttackDistance = meleeAttackDistance;
+        this.rangedAttackSpeed = rangedAttackSpeed;
     }
 
     @Override
@@ -64,22 +72,39 @@ public class StatsComponent extends Component {
         }
     }
 
-    public int getDefaultDamage() {
-        return defaultDamage;
+    public int getDefaultMeleeDamage() {
+        return defaultMeleeDamage;
     }
-    public int getActualDamage() {
-        return actualDamage;
+    public int getActualMeleeDamage() {
+        return actualMeleeDamage;
     }
 
-    public void setActualDamage(int newDamage){
-        this.actualDamage = newDamage;
+    public int getDefaultRangedDamage() {
+        return defaultRangedDamage;
+    }
+    public int getActualRangedDamage() {
+        return actualRangedDamage;
+    }
+
+    public void setActualMeleeDamage(int newDamage){
+        this.actualMeleeDamage = newDamage;
+    }
+
+    public void setActualRangedDamage(int newDamage){
+        this.actualRangedDamage = newDamage;
     }
 
     public void resetActualDamage(){
-        this.actualDamage = defaultDamage;
+
+        this.actualMeleeDamage = defaultMeleeDamage;
+        this.actualRangedDamage = defaultRangedDamage;
     }
 
     public double getMeleeAttackDistance() {
         return meleeAttackDistance;
+    }
+
+    public double getRangedAttackSpeed() {
+        return rangedAttackSpeed;
     }
 }
