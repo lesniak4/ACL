@@ -35,7 +35,7 @@ public class GameConfig {
     }
 
     public double getPlayerRangedAttackSpeed(){
-        return 4d;
+        return 5d;
     }
 
     // Monster
@@ -62,7 +62,7 @@ public class GameConfig {
     }
 
     public double getMonsterRangedAttackSpeed(){
-        return 4d;
+        return 5d;
     }
 
 

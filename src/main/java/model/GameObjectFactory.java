@@ -226,7 +226,7 @@ public class GameObjectFactory {
     public GameObject createDamageArea(CanadaGame game, Vector2 position, AttackComponent owner, CanadaPhysics physics, double radius, int damage, int stunDuration, int lifetime, double movementSpeed, Vector2 direction, boolean destroyOnHit){
 
         GameObject damageArea = new GameObject(position.X(), position.Y(), "DamageArea_"+owner.getGameObject().toString(), game);
-        damageArea.addComponent(new SpriteRendererComponent(damageArea, game.getPainter(), Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
+        damageArea.addComponent(new SpriteRendererComponent(damageArea, game.getPainter(), Color.ORANGE, 1, false, SpriteLoader.getInstance().getStoneSprite()));
         damageArea.addComponent(new DamageAreaMovementComponent(damageArea, movementSpeed, direction, physics));
         damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
         damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit));

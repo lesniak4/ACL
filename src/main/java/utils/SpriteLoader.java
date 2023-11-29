@@ -26,6 +26,7 @@ public class SpriteLoader {
     private BufferedImage exitSprite;
     private BufferedImage mineLeftSprite;
     private BufferedImage mineRightSprite;
+    private BufferedImage stoneSprite;
 
     private BufferedImage mainMenuBackgroundUI;
     private BufferedImage goldCoinsUI;
@@ -54,6 +55,7 @@ public class SpriteLoader {
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
             mineLeftSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_left.png"));
             mineRightSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_right.png"));
+            stoneSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/stone.png"));
 
             mainMenuBackgroundUI = ImageIO.read(getClass().getResource("/sprites/ui/mainmenu_background.png"));
             goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
@@ -120,6 +122,9 @@ public class SpriteLoader {
 
     public BufferedImage getMineRightSprite() {
         return mineRightSprite;
+    }
+    public BufferedImage getStoneSprite() {
+        return stoneSprite;
     }
 
     public BufferedImage getMainMenuBackgroundUI() {
