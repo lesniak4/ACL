@@ -6,6 +6,7 @@ import model.GameObjectFactory;
 import model.components.characters.StatsComponent;
 import model.components.physics.MovementComponent;
 import model.components.rendering.SpriteRendererComponent;
+import model.items.WeaponData;
 import utils.GameConfig;
 import utils.SpriteLoader;
 import utils.Vector2;
@@ -14,8 +15,8 @@ import java.awt.*;
 
 public class RangedAttackComponent extends AttackComponent{
 
-    public RangedAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
-        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount);
+    public RangedAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, weapon);
     }
 
     @Override

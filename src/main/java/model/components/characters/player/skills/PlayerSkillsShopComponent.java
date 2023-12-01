@@ -3,8 +3,11 @@ package model.components.characters.player.skills;
 import engine.Cmd;
 import model.GameObject;
 import model.components.Component;
-import model.components.characters.player.PlayerInputComponent;
 import model.components.characters.StatsComponent;
+import model.components.characters.player.PlayerInputComponent;
+import model.items.Inventory;
+import model.items.ItemData;
+import model.items.ResourceData;
 import model.skills.PlayerSkill;
 import model.skills.PlayerSkillDamage;
 import model.skills.PlayerSkillInvisible;
@@ -19,17 +22,21 @@ public class PlayerSkillsShopComponent extends Component {
 
     private PlayerInputComponent playerInputComponent;
     private StatsComponent stats;
+    private Inventory playerInventory;
+    private ResourceData moneyType;
 
     private HashMap<Cmd, PlayerSkill> skills;
     private HashMap<Cmd, Long> lastTimesUsed;
 
-    public PlayerSkillsShopComponent(GameObject obj, PlayerInputComponent playerInputComponent, StatsComponent stats) {
+    public PlayerSkillsShopComponent(GameObject obj, PlayerInputComponent playerInputComponent, StatsComponent stats, Inventory playerInventory, ResourceData moneyType) {
         super(obj);
 
         GameConfig gc = GameConfig.getInstance();
 
         this.playerInputComponent = playerInputComponent;
         this.stats = stats;
+        this.playerInventory = playerInventory;
+        this.moneyType = moneyType;
 
         this.skills = new HashMap<>(3);
         skills.put(Cmd.SKILL_1, new PlayerSkillSpeed(Cmd.SKILL_1, "Vitesse", gc.getSkill1Cost(), gc.getSkill1Cooldown()));
@@ -53,8 +60,7 @@ public class PlayerSkillsShopComponent extends Component {
                     if(skills.containsKey(command)){
 
                         PlayerSkill skill = skills.get(command);
-                        if(isSkillAvailable(command) && this.getGameObject().getGame().getScore() >= skill.getCost()) {
-                            this.getGameObject().getGame().decrScore(skill.getCost());
+                        if(isSkillAvailable(command) && playerInventory.remove(moneyType, skill.getCost())) {
                             lastTimesUsed.put(command, System.currentTimeMillis());
                             this.getGameObject().addComponentNextLoop(skill.getNewModifierComponent(this.getGameObject(), stats));
                         }

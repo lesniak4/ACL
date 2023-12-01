@@ -27,6 +27,7 @@ public class SpriteLoader {
     private BufferedImage mineLeftSprite;
     private BufferedImage mineRightSprite;
     private BufferedImage stoneSprite;
+    private BufferedImage slingshotSprite;
 
     private BufferedImage mainMenuBackgroundUI;
     private BufferedImage goldCoinsUI;
@@ -56,6 +57,7 @@ public class SpriteLoader {
             mineLeftSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_left.png"));
             mineRightSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_right.png"));
             stoneSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/stone.png"));
+            slingshotSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/slingshot.png"));
 
             mainMenuBackgroundUI = ImageIO.read(getClass().getResource("/sprites/ui/mainmenu_background.png"));
             goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
@@ -68,6 +70,15 @@ public class SpriteLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static BufferedImage getSprite(String path){
+        try {
+            return ImageIO.read(SpriteLoader.class.getResource(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public SpriteSheet getPathSprite() {
@@ -125,6 +136,9 @@ public class SpriteLoader {
     }
     public BufferedImage getStoneSprite() {
         return stoneSprite;
+    }
+    public BufferedImage getSlingshotSprite() {
+        return slingshotSprite;
     }
 
     public BufferedImage getMainMenuBackgroundUI() {

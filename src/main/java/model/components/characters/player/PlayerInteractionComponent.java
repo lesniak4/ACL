@@ -1,49 +1,48 @@
 package model.components.characters.player;
 
+import data.ItemDataFactory;
+import data.ItemType;
 import model.GameObject;
 import model.components.characters.StatsComponent;
 import model.components.physics.MonsterMovementComponent;
-import model.components.world.CoinComponent;
+import model.components.world.*;
 import model.components.Component;
-import model.components.world.KeyComponent;
-import model.components.world.TeleportationTileComponent;
-import model.components.world.WorldExitComponent;
+import model.items.Inventory;
 
 public class PlayerInteractionComponent extends Component {
 
     private StatsComponent stats;
+    private Inventory inventory;
 
-    public PlayerInteractionComponent(GameObject obj, StatsComponent stats) {
+    public PlayerInteractionComponent(GameObject obj, StatsComponent stats, Inventory inventory) {
 
         super(obj);
         this.stats = stats;
+        this.inventory = inventory;
     }
 
     public void interactWith(GameObject colliderObj){
 
         WorldExitComponent exit = colliderObj.getComponent(WorldExitComponent.class);
-        if(exit != null && colliderObj.getGame().playerOwnsKey()){
+        if(exit != null && inventory.contains(ItemDataFactory.getResourceData(ItemType.AXE))){
+            inventory.remove(ItemDataFactory.getResourceData(ItemType.AXE), 1);
+            getGameObject().getGame().incrScore(50);
             getGameObject().getGame().setPlayerWin(true);
+
         }
 
-        // Check collision avec une pièce
-        CoinComponent coin = colliderObj.getComponent(CoinComponent.class);
-        if(coin != null){
+        ResourceComponent resource = colliderObj.getComponent(ResourceComponent.class);
+        if(resource != null){
+            inventory.add(resource.getData(), resource.getAmount());
             colliderObj.destroyGameObject();
-            colliderObj.getGame().incrScore(coin.getValue());
+            getGameObject().getGame().incrScore(resource.getData().getScoreValue());
         }
 
-        // Check collision avec une hache
-        KeyComponent key = colliderObj.getComponent(KeyComponent.class);
-        if(key != null){
+        WeaponComponent weapon = colliderObj.getComponent(WeaponComponent.class);
+        if(weapon != null){
+            inventory.add(weapon.getData());
             colliderObj.destroyGameObject();
-            colliderObj.getGame().setHasKey(true);
-        }
-
-        // Check collision avec un ennemi
-        MonsterMovementComponent monster = colliderObj.getComponent(MonsterMovementComponent.class);
-        if (monster != null && !stats.isInvisible()) {
-            //colliderObj.getGame().setPlayerLose(true);
+            getGameObject().getGame().incrScore(weapon.getData().getScoreValue());
         }
 
         // Check collision avec une case de téléportation

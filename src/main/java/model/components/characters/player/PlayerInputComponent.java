@@ -1,5 +1,7 @@
 package model.components.characters.player;
 
+import data.ItemDataFactory;
+import data.ItemType;
 import engine.Cmd;
 
 import engine.IGameController;
@@ -8,6 +10,7 @@ import model.components.Component;
 import model.components.attacks.MeleeAttackComponent;
 import model.components.attacks.RangedAttackComponent;
 import model.components.attacks.StunComponent;
+import model.items.Inventory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +19,7 @@ import java.util.TreeSet;
 public class PlayerInputComponent extends Component {
 
     protected IGameController controller;
+    protected Inventory playerInventory;
 
     private MeleeAttackComponent meleeAttackComponent;
     private RangedAttackComponent rangedAttackComponent;
@@ -23,9 +27,10 @@ public class PlayerInputComponent extends Component {
 
     private Set<Cmd> processedCmd;
 
-    public PlayerInputComponent(GameObject obj, IGameController controller){
+    public PlayerInputComponent(GameObject obj, IGameController controller, Inventory playerInventory){
         super(obj);
         this.controller = controller;
+        this.playerInventory = playerInventory;
 
         processedCmd = new HashSet<>();
 
@@ -48,15 +53,17 @@ public class PlayerInputComponent extends Component {
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.MELEE_ATTACK && meleeAttackComponent != null && !processedCmd.contains(Cmd.MELEE_ATTACK)) {
-                        if(!meleeAttackComponent.isAttacking()) {
+                        if(!meleeAttackComponent.isAttacking() && playerInventory.contains(meleeAttackComponent.getWeapon())) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.MELEE_ATTACK);
                             meleeAttackComponent.attack();
+                            playerInventory.use(meleeAttackComponent.getWeapon());
                         }
                     }
                     if (command == Cmd.RANGED_ATTACK && rangedAttackComponent != null && !processedCmd.contains(Cmd.RANGED_ATTACK)) {
-                        if(!rangedAttackComponent.isAttacking()) {
+                        if(!rangedAttackComponent.isAttacking() && playerInventory.contains(rangedAttackComponent.getWeapon())) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.RANGED_ATTACK);
                             rangedAttackComponent.attack();
+                            playerInventory.use(rangedAttackComponent.getWeapon());
                         }
                     }
                 }

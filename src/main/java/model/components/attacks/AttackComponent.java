@@ -6,6 +6,8 @@ import model.GameObjectFactory;
 import model.components.Component;
 import model.components.characters.StatsComponent;
 import model.components.physics.MovementComponent;
+import model.items.ItemData;
+import model.items.WeaponData;
 import utils.Vector2;
 
 public abstract class AttackComponent extends Component {
@@ -18,12 +20,13 @@ public abstract class AttackComponent extends Component {
 
     protected StatsComponent stats;
     protected MovementComponent movementComponent;
+    protected WeaponData requiredWeapon;
 
     protected DamageAreaComponent instantiatedDamageArea;
     protected boolean attacking;
     protected int frameBeforeEndAttack;
 
-    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
+    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
         super(obj);
 
         this.physics = physics;
@@ -34,6 +37,7 @@ public abstract class AttackComponent extends Component {
 
         this.stats = stats;
         this.movementComponent = movement;
+        this.requiredWeapon = weapon;
 
         this.instantiatedDamageArea = null;
         this.attacking = false;
@@ -72,4 +76,6 @@ public abstract class AttackComponent extends Component {
     public void clearDamageArea(){
         instantiatedDamageArea = null;
     }
+
+    public WeaponData getWeapon(){ return requiredWeapon; }
 }

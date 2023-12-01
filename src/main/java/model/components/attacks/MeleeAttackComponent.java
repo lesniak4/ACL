@@ -7,6 +7,7 @@ import model.GameObjectFactory;
 import model.components.physics.MovementComponent;
 import model.components.characters.player.PlayerInputComponent;
 import model.components.characters.StatsComponent;
+import model.items.WeaponData;
 import utils.Vector2;
 
 import java.util.HashSet;
@@ -15,8 +16,8 @@ import java.util.Set;
 public class MeleeAttackComponent extends AttackComponent{
 
 
-    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount) {
-        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount);
+    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, weapon);
     }
 
     @Override

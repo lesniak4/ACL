@@ -19,7 +19,7 @@ public class PlayingState extends GameState {
 
         game.update();
 
-        // Pendant la partie on met à jour l'interface à chaque frame
+        // Pendant la partie on met à jour l'interface qui en a besoin à chaque frame
         notifyViews();
     }
 

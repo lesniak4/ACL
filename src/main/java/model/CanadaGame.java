@@ -9,6 +9,7 @@ import model.components.characters.player.skills.PlayerSkillsShopComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
 import model.fsm.states.game.*;
+import model.items.Inventory;
 import model.world.HexLayout;
 import model.world.World;
 import utils.GameConfig;
@@ -44,9 +45,9 @@ public class CanadaGame implements IGame {
 	private List<GameObject> toInstantiate;
 	private List<GameObject> toDestroy;
 	private Vector2 cameraPosition;
-	private boolean hasKey;
 	private boolean playerWin;
 	private HealthComponent playerHealth;
+	private Inventory playerInventory;
 
 	private int niveauActuel;
 	private final int maxLevel = 2;
@@ -79,6 +80,8 @@ public class CanadaGame implements IGame {
 		this.controller = controller;
 		this.scoreSaver = new ScoreSaver();
 
+		this.playerInventory = new Inventory();
+
 		this.stateMachine = new StateMachine();
 	}
 
@@ -88,6 +91,7 @@ public class CanadaGame implements IGame {
 		this.toInstantiate = new ArrayList<>();
 		this.toDestroy = new ArrayList<>();
 
+		this.playerInventory.clear();
 		this.niveauActuel = 0;
 		this.score = 0;
 
@@ -109,7 +113,7 @@ public class CanadaGame implements IGame {
 		LaunchGameState launchGame = new LaunchGameState(this,ui);
 		NextLevelState nextLevel = new NextLevelState(this, ui);
 
-		ScoreView igView = new ScoreView(this);
+		InventoryView igView = new InventoryView(this, playerInventory);
 
 		mainMenu.addView(new MenuView(this));
 		playingState.addView(igView);
@@ -170,6 +174,9 @@ public class CanadaGame implements IGame {
 	public CanadaPainter getPainter(){
 		return this.painter;
 	}
+	public Inventory getPlayerInventory(){
+		return this.playerInventory;
+	}
 
 	@Override
 	public boolean hasPlayerWon(){
@@ -183,10 +190,6 @@ public class CanadaGame implements IGame {
 	public int getScore() {
 		return this.score;
 	}
-
-	public boolean playerOwnsKey() {return this.hasKey;}
-
-	public void setHasKey(boolean hasKey) {this.hasKey = hasKey;}
 
 	public void setPlayerWin(boolean playerWin){
 		this.playerWin = playerWin;
@@ -216,8 +219,6 @@ public class CanadaGame implements IGame {
 	}
 
 	public void incrScore(int value){ this.score+=value; }
-
-	public void decrScore(int value){ this.score-=value; }
 
 	public void setLastButtonPressed(ButtonId id){
 		lastButtonPressed = id;
@@ -261,13 +262,12 @@ public class CanadaGame implements IGame {
 		this.niveauActuel++;
 
 		if(this.niveauActuel <= maxLevel) {
-			this.hasKey = false;
 			this.playerWin = false;
 
 			World world = new World(this, this.painter, this.physics);
 			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
 
-			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState);
+			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState, playerInventory);
 			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player, playingState);
 			gameObjects.add(player);
 			this.setCameraPosition(player.getPosition());
