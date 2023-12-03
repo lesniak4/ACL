@@ -52,7 +52,7 @@ public class CanadaGame implements IGame {
 
 	private int niveauActuel;
 	private List<String> completedLevels;
-	private final int maxLevel = 3;
+	private final int maxLevel = 4;
 
 	private int score;
 
@@ -268,7 +268,7 @@ public class CanadaGame implements IGame {
 			this.playerWin = false;
 
 			int nextLevel = 1;
-			if (this.niveauActuel!=0) {
+			if (this.niveauActuel!=1) {
 				nextLevel = loadRandLevel();
 			}
 			this.completedLevels.add(String.valueOf(nextLevel));
