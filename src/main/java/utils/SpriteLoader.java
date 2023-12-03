@@ -22,22 +22,12 @@ public class SpriteLoader {
     private SpriteSheet monsterIdle;
     private SpriteSheet monsterWalking;
     private SpriteSheet monsterFighting;
-    private BufferedImage goldCoinsSprite;
-    private BufferedImage axeSprite;
-    private BufferedImage swordSprite;
+
+    private BufferedImage stoneSprite;
     private BufferedImage exitSprite;
     private BufferedImage mineLeftSprite;
     private BufferedImage mineRightSprite;
-    private BufferedImage stoneSprite;
-    private BufferedImage slingshotSprite;
 
-    private BufferedImage mainMenuBackgroundUI;
-    private BufferedImage goldCoinsUI;
-    private BufferedImage goldCoinsSmallUI;
-    private BufferedImage axeUI;
-    private BufferedImage speedUI;
-    private BufferedImage invisibilityUI;
-    private BufferedImage damageUI;
 
     private SpriteLoader(){
 
@@ -54,22 +44,10 @@ public class SpriteLoader {
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
             monsterFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_fighting.png")), 8, 6);
 
-            goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
-            axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
-            swordSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/sword.png"));
+            stoneSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/stone.png"));
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
             mineLeftSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_left.png"));
             mineRightSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_right.png"));
-            stoneSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/stone.png"));
-            slingshotSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/slingshot.png"));
-
-            mainMenuBackgroundUI = ImageIO.read(getClass().getResource("/sprites/ui/mainmenu_background.png"));
-            goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
-            goldCoinsSmallUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_small_ui.png"));
-            axeUI = ImageIO.read(getClass().getResource("/sprites/ui/axe_ui.png"));
-            speedUI = ImageIO.read(getClass().getResource("/sprites/ui/speed_ui.png"));
-            invisibilityUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
-            damageUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -79,15 +57,6 @@ public class SpriteLoader {
     public static BufferedImage getSprite(String path){
         try {
             return ImageIO.read(SpriteLoader.class.getResource(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static SpriteSheet getSpriteSheet(String path, int rows, int cols){
-        try {
-            return new SpriteSheet(ImageIO.read(SpriteLoader.class.getResource(path)), rows, cols);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,16 +100,8 @@ public class SpriteLoader {
         return monsterFighting;
     }
 
-    public BufferedImage getGoldCoinsSprite() {
-        return goldCoinsSprite;
-    }
-
-    public BufferedImage getAxeSprite() {
-        return axeSprite;
-    }
-
-    public BufferedImage getSwordSprite() {
-        return swordSprite;
+    public BufferedImage getStoneSprite() {
+        return stoneSprite;
     }
 
     public BufferedImage getExitSprite() {
@@ -153,38 +114,5 @@ public class SpriteLoader {
 
     public BufferedImage getMineRightSprite() {
         return mineRightSprite;
-    }
-    public BufferedImage getStoneSprite() {
-        return stoneSprite;
-    }
-    public BufferedImage getSlingshotSprite() {
-        return slingshotSprite;
-    }
-
-    public BufferedImage getMainMenuBackgroundUI() {
-        return mainMenuBackgroundUI;
-    }
-
-    public BufferedImage getGoldCoinsUI() {
-        return goldCoinsUI;
-    }
-
-    public BufferedImage getGoldCoinsSmallUI() {
-        return goldCoinsSmallUI;
-    }
-    public BufferedImage getAxeUI() {
-        return axeUI;
-    }
-
-    public BufferedImage getSpeedUI() {
-        return speedUI;
-    }
-
-    public BufferedImage getInvisibilityUI() {
-        return invisibilityUI;
-    }
-
-    public BufferedImage getDamageUI() {
-        return damageUI;
     }
 }

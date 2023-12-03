@@ -12,6 +12,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class MenuView extends UIView{
 
@@ -22,9 +23,12 @@ public class MenuView extends UIView{
 
     private JLabel maxScoreLabel;
 
+    private BufferedImage background;
+
     public MenuView(CanadaGame game){
         super(game);
         controller = new MenuController(game, this);
+        this.background = SpriteLoader.getSprite("/sprites/ui/mainmenu_background.png");
     }
 
     @Override
@@ -113,7 +117,7 @@ public class MenuView extends UIView{
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        g.drawImage(SpriteLoader.getInstance().getMainMenuBackgroundUI(), 0, 0, null);
+        g.drawImage(background, 0, 0, null);
     }
 
 }

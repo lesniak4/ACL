@@ -97,49 +97,6 @@ public class GameObjectFactory {
         return weaponObj;
     }
 
-    public GameObject createCoinsObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
-
-        Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject coins = new GameObject(pos.X(), pos.Y(), "Coins_"+hex.getQ()+"_"+hex.getR(), game);
-        coins.addComponent(new SpriteRendererComponent(coins, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getGoldCoinsSprite()));
-        coins.addComponent(new ColliderComponent(coins,  physics, 10,true));
-        coins.addComponent(new CoinComponent(coins, GameConfig.getInstance().getCoinValue()));
-
-        return coins;
-    }
-
-    public GameObject createKeyObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
-
-        Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject key = new GameObject(pos.X(), pos.Y(), "Key_"+hex.getQ()+"_"+hex.getR(), game);
-        key.addComponent(new SpriteRendererComponent(key, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getAxeSprite()));
-        key.addComponent(new ColliderComponent(key, physics,25, true));
-        key.addComponent(new KeyComponent(key));
-
-
-        return key;
-    }
-
-    public GameObject createSwordObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
-
-        Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject sword = new GameObject(pos.X(), pos.Y(), "Sword_"+hex.getQ()+"_"+hex.getR(), game);
-        sword.addComponent(new SpriteRendererComponent(sword, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getSwordSprite()));
-        sword.addComponent(new ColliderComponent(sword, physics,25, true));
-
-        return sword;
-    }
-
-    public GameObject createSlingshotObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
-
-        Vector2 pos = layout.hexToWorldPos(hex);
-        GameObject slingshot = new GameObject(pos.X(), pos.Y(), "Slingshot_"+hex.getQ()+"_"+hex.getR(), game);
-        slingshot.addComponent(new SpriteRendererComponent(slingshot, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getSlingshotSprite()));
-        slingshot.addComponent(new ColliderComponent(slingshot, physics,25, true));
-
-        return slingshot;
-    }
-
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics, PlayingState playingState, Inventory inventory){
 
         GameConfig gc = GameConfig.getInstance();
@@ -155,8 +112,8 @@ public class GameObjectFactory {
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller, inventory);
         StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseMeleeDMG(), gc.getPlayerBaseRangedDMG(), gc.getPlayerMeleeAttackDistance(), gc.getPlayerRangedAttackSpeed());
         PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
-        MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, 15d, 60,10, 60, ItemDataFactory.getWeaponData(ItemType.SWORD));
-        RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, 10d, 180,15, 90,80, ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
+        MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, gc.getPlayerMeleeAttackRadius(), gc.getPlayerMeleeStunFrameCount(), gc.getPlayerMeleeAttackLifetimeFrameCount(), gc.getPlayerMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
+        RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, gc.getPlayerRangedAttackRadius(), gc.getPlayerRangedStunFrameCount(),gc.getPlayerRangedAttackFrameCount(), gc.getPlayerRangedAttackLifetimeFrameCount(),gc.getPlayerRangedAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
         playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
         playerInputComponent.setRangedAttackComponent(rangedAttackComponent);
 
@@ -211,7 +168,7 @@ public class GameObjectFactory {
         playingState.addView(healthBar);
 
         MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
-        MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, 15d, 30,10, 90, ItemDataFactory.getWeaponData(ItemType.SWORD));
+        MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, gc.getMonsterMeleeAttackRadius(), gc.getMonsterMeleeStunFrameCount(),gc.getMonsterMeleeAttackLifetimeFrameCount(), gc.getMonsterMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         StunComponent stun = new StunComponent(monster, renderer);
 
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun, meleeAttack));

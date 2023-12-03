@@ -38,6 +38,17 @@ public class GameConfig {
         return 5d;
     }
 
+    public double getPlayerMeleeAttackRadius(){ return 15d; }
+    public int getPlayerMeleeStunFrameCount(){ return 60; }
+    public int getPlayerMeleeAttackLifetimeFrameCount(){ return 10; }
+    public int getPlayerMeleeAttackCooldownFrameCount(){ return 60; }
+
+    public double getPlayerRangedAttackRadius(){ return 10d; }
+    public int getPlayerRangedStunFrameCount(){ return 120; }
+    public int getPlayerRangedAttackFrameCount(){ return 15; }
+    public int getPlayerRangedAttackLifetimeFrameCount(){ return 90; }
+    public int getPlayerRangedAttackCooldownFrameCount(){ return 130; }
+
     // Monster
 
     // Facteur du nombre d'hexagone où le monstre repère le joueur
@@ -64,6 +75,11 @@ public class GameConfig {
     public double getMonsterRangedAttackSpeed(){
         return 5d;
     }
+
+    public double getMonsterMeleeAttackRadius(){ return 15d; }
+    public int getMonsterMeleeStunFrameCount(){ return 30; }
+    public int getMonsterMeleeAttackLifetimeFrameCount(){ return 10; }
+    public int getMonsterMeleeAttackCooldownFrameCount(){ return 90; }
 
     public int getStunFlashFrameCount(){ return 8; }
 

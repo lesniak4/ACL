@@ -20,9 +20,13 @@ public class SkillsView extends UIView{
     private JLabel damageIcon;
     private JLabel damageLabel;
 
+    private ImageIcon goldImage;
+
 
     public SkillsView(CanadaGame game) {
+
         super(game);
+        this.goldImage = new ImageIcon(SpriteLoader.getSprite("/sprites/ui/coins_small_ui.png"));
     }
 
     @Override
@@ -38,9 +42,9 @@ public class SkillsView extends UIView{
         SpringLayout layout = new SpringLayout();
         this.setLayout(layout);
 
-        speedIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getSpeedUI()));
-        invisibleIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getInvisibilityUI()));
-        damageIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getDamageUI()));
+        speedIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/speed_ui.png")));
+        invisibleIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/invisible_ui.png")));
+        damageIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/damage_ui.png")));
 
         speedLabel = new JLabel("Speed");
         invisibleLabel = new JLabel("Invisible");
@@ -99,7 +103,7 @@ public class SkillsView extends UIView{
 
         icon.setAlignmentX(CENTER_ALIGNMENT);
 
-        JLabel goldIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getGoldCoinsSmallUI()));
+        JLabel goldIcon = new JLabel(goldImage);
 
         JPanel labelPanel = new JPanel();
         labelPanel.setBackground(new Color(0,0,0,0));
