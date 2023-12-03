@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Horatiu Cirstea, Vincent Thomas
@@ -50,7 +51,8 @@ public class CanadaGame implements IGame {
 	private Inventory playerInventory;
 
 	private int niveauActuel;
-	private final int maxLevel = 2;
+	private List<String> completedLevels;
+	private final int maxLevel = 3;
 
 	private int score;
 
@@ -92,6 +94,7 @@ public class CanadaGame implements IGame {
 		this.toDestroy = new ArrayList<>();
 
 		this.playerInventory.clear();
+		this.completedLevels = new ArrayList<>();
 		this.niveauActuel = 0;
 		this.score = 0;
 
@@ -264,8 +267,14 @@ public class CanadaGame implements IGame {
 		if(this.niveauActuel <= maxLevel) {
 			this.playerWin = false;
 
+			int nextLevel = 1;
+			if (this.niveauActuel!=0) {
+				nextLevel = loadRandLevel();
+			}
+			this.completedLevels.add(String.valueOf(nextLevel));
+
 			World world = new World(this, this.painter, this.physics);
-			gameObjects.addAll(world.buildWorld("/map" + this.niveauActuel + ".txt", HexLayout.pointy));
+			gameObjects.addAll(world.buildWorld("/maps/map" + nextLevel + ".txt", HexLayout.pointy));	//modif selon rand
 
 			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState, playerInventory);
 			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player, playingState);
@@ -276,6 +285,21 @@ public class CanadaGame implements IGame {
 
 			this.skills = player.getComponent(PlayerSkillsShopComponent.class);
 		}
+	}
+
+	/**
+	 * gen un nombre aléatoire qui sera le prochain niveau
+	 * @return l'int correspondant au niveau à charger
+	 */
+	public int loadRandLevel() {
+
+		Random rand = new Random();
+		int randomLevel = rand.nextInt(3) + 1;
+		while(completedLevels.contains(String.valueOf(randomLevel))) {
+			randomLevel = rand.nextInt(3) + 1;
+		}
+
+		return randomLevel;
 	}
 
 	/**
