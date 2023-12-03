@@ -26,7 +26,11 @@ public abstract class AttackComponent extends Component {
     protected boolean attacking;
     protected int frameBeforeEndAttack;
 
-    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
+    protected int attackCooldown;
+    protected boolean waitingCooldown;
+    protected int frameBeforeEndCooldown;
+
+    public AttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, int cooldownFrameCount, WeaponData weapon) {
         super(obj);
 
         this.physics = physics;
@@ -41,8 +45,11 @@ public abstract class AttackComponent extends Component {
 
         this.instantiatedDamageArea = null;
         this.attacking = false;
-
         this.frameBeforeEndAttack = 0;
+
+        this.waitingCooldown = false;
+        this.attackCooldown = cooldownFrameCount;
+        this.frameBeforeEndCooldown = 0;
     }
 
     @Override
@@ -52,8 +59,18 @@ public abstract class AttackComponent extends Component {
             frameBeforeEndAttack--;
             if(frameBeforeEndAttack == 0){
                 this.attacking = false;
+                this.waitingCooldown = true;
+                frameBeforeEndCooldown = attackCooldown;
             }
         }
+
+        if(waitingCooldown){
+            frameBeforeEndCooldown--;
+            if(frameBeforeEndCooldown == 0){
+                this.waitingCooldown = false;
+            }
+        }
+
     }
 
     public void attack() {
@@ -64,13 +81,20 @@ public abstract class AttackComponent extends Component {
                 currentPos.X() + this.movementComponent.getCurrentFacingDirection().X() * stats.getMeleeAttackDistance(),
                 currentPos.Y() + this.movementComponent.getCurrentFacingDirection().Y() * stats.getMeleeAttackDistance()));
         this.attacking = true;
-        this.frameBeforeEndAttack = lifetime;
     }
 
     public abstract void instantiateDamageArea(Vector2 pos);
 
     public boolean isAttacking(){
         return this.attacking;
+    }
+
+    public boolean isWaitingCooldown(){
+        return waitingCooldown;
+    }
+
+    public boolean canAttack(){
+        return !attacking && !waitingCooldown;
     }
 
     public void clearDamageArea(){

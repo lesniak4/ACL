@@ -33,6 +33,5 @@ public class StateAttack extends AIState{
     @Override
     public void onExit() {
 
-        aiComponent.setAttackCooldown(random.nextInt(60) + 60);
     }
 }

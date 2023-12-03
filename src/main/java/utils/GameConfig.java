@@ -65,6 +65,7 @@ public class GameConfig {
         return 5d;
     }
 
+    public int getStunFlashFrameCount(){ return 8; }
 
     // Skill 1 Speed
 

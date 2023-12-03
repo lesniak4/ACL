@@ -15,14 +15,26 @@ import java.awt.*;
 
 public class RangedAttackComponent extends AttackComponent{
 
-    public RangedAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
-        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, weapon);
+    private int attackFrameCount;
+
+    public RangedAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int attackFrameCount, int lifetimeFrameCount, int cooldownFrameCount, WeaponData weapon) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, cooldownFrameCount, weapon);
+
+        this.attackFrameCount = attackFrameCount;
     }
 
     @Override
     public void update() {
 
         super.update();
+    }
+
+    @Override
+    public void attack(){
+
+        super.attack();
+
+        this.frameBeforeEndAttack = attackFrameCount;
     }
 
     @Override
@@ -34,7 +46,7 @@ public class RangedAttackComponent extends AttackComponent{
         getGameObject().getGame().addGameObject(damageArea);
 
         instantiatedDamageArea = damageArea.getComponent(DamageAreaComponent.class);
-
-
     }
+
+
 }

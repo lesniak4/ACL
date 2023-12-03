@@ -16,14 +16,22 @@ import java.util.Set;
 public class MeleeAttackComponent extends AttackComponent{
 
 
-    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, WeaponData weapon) {
-        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, weapon);
+    public MeleeAttackComponent(GameObject obj, StatsComponent stats, MovementComponent movement, CanadaPhysics physics, double radius, int stunFrameCount, int lifetimeFrameCount, int cooldownFrameCount, WeaponData weapon) {
+        super(obj, stats, movement, physics, radius, stunFrameCount, lifetimeFrameCount, cooldownFrameCount, weapon);
     }
 
     @Override
     public void update() {
 
         super.update();
+    }
+
+    @Override
+    public void attack(){
+
+        super.attack();
+
+        this.frameBeforeEndAttack = lifetime;
     }
 
     @Override

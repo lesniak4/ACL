@@ -143,6 +143,7 @@ public class GameObjectFactory {
     public GameObject createPlayerObject(CanadaGame game, double posX, double posY, CanadaPainter painter, IGameController controller, CanadaPhysics physics, PlayingState playingState, Inventory inventory){
 
         GameConfig gc = GameConfig.getInstance();
+        SpriteLoader sl = SpriteLoader.getInstance();
 
         GameObject player = new GameObject(posX, posY, "Player", game);
         player.addComponent(new CameraComponent(player));
@@ -154,12 +155,12 @@ public class GameObjectFactory {
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller, inventory);
         StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseMeleeDMG(), gc.getPlayerBaseRangedDMG(), gc.getPlayerMeleeAttackDistance(), gc.getPlayerRangedAttackSpeed());
         PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
-        MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, 15d, 60,10, ItemDataFactory.getWeaponData(ItemType.SWORD));
-        RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, 10d, 180,90, ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
+        MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, 15d, 60,10, 60, ItemDataFactory.getWeaponData(ItemType.SWORD));
+        RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, 10d, 180,15, 90,80, ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
         playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
         playerInputComponent.setRangedAttackComponent(rangedAttackComponent);
 
-        StunComponent stun = new StunComponent(player);
+        StunComponent stun = new StunComponent(player, renderer);
         playerInputComponent.setStunComponent(stun);
 
         player.addComponent(playerInputComponent);
@@ -176,7 +177,7 @@ public class GameObjectFactory {
         playingState.addView(healthBar);
 
         player.addComponent(movement);
-        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, renderer, SpriteLoader.getInstance().getPlayerIdleSprite(), SpriteLoader.getInstance().getPlayerWalkingSprite(), SpriteLoader.getInstance().getPlayerFightingSprite()));
+        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, rangedAttackComponent, renderer, sl.getPlayerIdleSprite(), sl.getPlayerWalkingSprite(), sl.getPlayerFightingSprite(), sl.getPlayerSlingshotSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player, stats, game.getPlayerInventory()));
 
@@ -191,6 +192,7 @@ public class GameObjectFactory {
     public GameObject createMonsterObject(CanadaGame game, double posX, double posY, CanadaPainter painter, WorldGraph worldGraph, CanadaPhysics physics, GameObject target, GameObject player, PlayingState playingState){
 
         GameConfig gc = GameConfig.getInstance();
+        SpriteLoader sl = SpriteLoader.getInstance();
 
         GameObject monster = new GameObject(posX, posY, "Monster", game);
         PathfindingComponent pathfindingComponent = new PathfindingComponent(monster, worldGraph);
@@ -209,8 +211,8 @@ public class GameObjectFactory {
         playingState.addView(healthBar);
 
         MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
-        MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, 15d, 30,10, ItemDataFactory.getWeaponData(ItemType.SWORD));
-        StunComponent stun = new StunComponent(monster);
+        MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, 15d, 30,10, 90, ItemDataFactory.getWeaponData(ItemType.SWORD));
+        StunComponent stun = new StunComponent(monster, renderer);
 
         monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun, meleeAttack));
 
@@ -218,10 +220,8 @@ public class GameObjectFactory {
         monster.addComponent(meleeAttack);
         monster.addComponent(stun);
 
-        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, renderer, SpriteLoader.getInstance().getMonsterIdleSprite(), SpriteLoader.getInstance().getMonsterWalkingSprite(), SpriteLoader.getInstance().getMonsterFightingSprite()));
+        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, null, renderer, sl.getMonsterIdleSprite(), sl.getMonsterWalkingSprite(), sl.getMonsterFightingSprite(), null));
         monster.addComponent(new ColliderComponent(monster, physics, 8d, true));
-
-
 
         return monster;
     }

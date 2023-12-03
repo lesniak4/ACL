@@ -28,7 +28,6 @@ public class AIComponent extends Component {
     private IState stateChase;
     private Vector2 savedTarget;
     private Vector2 initialPos;
-    private int attackCooldown;
 
     public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player, StunComponent stun, AttackComponent attack) {
         super(obj);
@@ -80,7 +79,7 @@ public class AIComponent extends Component {
         stateMachine.addTransition(stateStun, stateMoving, recovered);
 
         // Attack
-        ICondition canAttack = () -> attackCooldown <= 0 && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
+        ICondition canAttack = () -> attack.canAttack() && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
         ICondition attackFinished = () -> !attackComponent.isAttacking();
 
         stateMachine.addTransition(stateMoving, stateAttack, canAttack);
@@ -161,14 +160,7 @@ public class AIComponent extends Component {
     public void update() {
 
         stateMachine.tick();
-
-        if(attackCooldown > 0 && !attackComponent.isAttacking()) {
-            attackCooldown--;
-        }
     }
 
-    public void setAttackCooldown(int frameCount){
-        this.attackCooldown = frameCount;
-    }
 
 }

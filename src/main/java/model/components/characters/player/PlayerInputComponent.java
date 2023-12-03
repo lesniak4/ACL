@@ -53,14 +53,14 @@ public class PlayerInputComponent extends Component {
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.MELEE_ATTACK && meleeAttackComponent != null && !processedCmd.contains(Cmd.MELEE_ATTACK)) {
-                        if(!meleeAttackComponent.isAttacking() && playerInventory.contains(meleeAttackComponent.getWeapon())) {
+                        if(meleeAttackComponent.canAttack() && playerInventory.contains(meleeAttackComponent.getWeapon())) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.MELEE_ATTACK);
                             meleeAttackComponent.attack();
                             playerInventory.use(meleeAttackComponent.getWeapon());
                         }
                     }
                     if (command == Cmd.RANGED_ATTACK && rangedAttackComponent != null && !processedCmd.contains(Cmd.RANGED_ATTACK)) {
-                        if(!rangedAttackComponent.isAttacking() && playerInventory.contains(rangedAttackComponent.getWeapon())) {
+                        if(rangedAttackComponent.canAttack() && playerInventory.contains(rangedAttackComponent.getWeapon())) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.RANGED_ATTACK);
                             rangedAttackComponent.attack();
                             playerInventory.use(rangedAttackComponent.getWeapon());

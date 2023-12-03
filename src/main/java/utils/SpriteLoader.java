@@ -17,6 +17,8 @@ public class SpriteLoader {
     private SpriteSheet playerWalking;
     private SpriteSheet playerIdle;
     private SpriteSheet playerFighting;
+    private SpriteSheet playerSlingshot;
+    private SpriteSheet playerStun;
     private SpriteSheet monsterIdle;
     private SpriteSheet monsterWalking;
     private SpriteSheet monsterFighting;
@@ -45,6 +47,8 @@ public class SpriteLoader {
             playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_walking.png")), 8, 16);
             playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_idle.png")), 8, 1);
             playerFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_fighting.png")), 8, 6);
+            playerSlingshot = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_slingshot.png")), 8, 1);
+            playerStun = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_stun.png")), 8, 20);
 
             monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_idle.png")), 8, 1);
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
@@ -81,6 +85,15 @@ public class SpriteLoader {
         return null;
     }
 
+    public static SpriteSheet getSpriteSheet(String path, int rows, int cols){
+        try {
+            return new SpriteSheet(ImageIO.read(SpriteLoader.class.getResource(path)), rows, cols);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public SpriteSheet getPathSprite() {
         return pathSprite;
     }
@@ -96,8 +109,15 @@ public class SpriteLoader {
     public SpriteSheet getPlayerIdleSprite() {
         return playerIdle;
     }
+
     public SpriteSheet getPlayerFightingSprite() {
         return playerFighting;
+    }
+    public SpriteSheet getPlayerSlingshotSprite() {
+        return playerSlingshot;
+    }
+    public SpriteSheet getPlayerStunSprite() {
+        return playerStun;
     }
 
     public SpriteSheet getMonsterIdleSprite() {

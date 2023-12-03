@@ -3,10 +3,16 @@ package model.fsm.states.animations;
 import model.components.animation.CharacterAnimationComponent;
 import utils.SpriteSheet;
 
-public class AttackingAnimation extends AnimationState{
+public class MeleeAttackAnimation extends AnimationState{
 
-    public AttackingAnimation(CharacterAnimationComponent controller, SpriteSheet sprite) {
+    public MeleeAttackAnimation(CharacterAnimationComponent controller, SpriteSheet sprite) {
         super(controller, sprite);
+    }
+
+    @Override
+    public void onEnter() {
+
+        super.onEnter();
     }
 
     @Override

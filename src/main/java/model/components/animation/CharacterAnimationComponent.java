@@ -2,45 +2,56 @@ package model.components.animation;
 
 import model.GameObject;
 import model.components.Component;
-import model.components.attacks.AttackComponent;
+import model.components.attacks.MeleeAttackComponent;
+import model.components.attacks.RangedAttackComponent;
+import model.components.attacks.StunComponent;
 import model.components.physics.MovementComponent;
 import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.fsm.ICondition;
 import model.fsm.StateMachine;
-import model.fsm.states.animations.AttackingAnimation;
-import model.fsm.states.animations.IdleAnimation;
-import model.fsm.states.animations.WalkingAnimation;
+import model.fsm.states.animations.*;
 import utils.SpriteSheet;
 
 public class CharacterAnimationComponent extends Component {
 
     private MovementComponent movement;
-    private AttackComponent attack;
+    private MeleeAttackComponent meleeAttack;
+    private RangedAttackComponent rangedAttack;
     private AnimatedSpriteRendererComponent renderer;
     private StateMachine stateMachine;
 
-    public CharacterAnimationComponent(GameObject obj, MovementComponent movement, AttackComponent attack, AnimatedSpriteRendererComponent renderer, SpriteSheet idleSprite, SpriteSheet walkingSprite, SpriteSheet fightingSprite) {
+    public CharacterAnimationComponent(GameObject obj, MovementComponent movement, MeleeAttackComponent meleeAttack, RangedAttackComponent rangedAttack, AnimatedSpriteRendererComponent renderer, SpriteSheet idleSprite, SpriteSheet walkingSprite, SpriteSheet fightingSprite, SpriteSheet slingshotSprite) {
         super(obj);
 
         this.movement = movement;
-        this.attack = attack;
+        this.meleeAttack = meleeAttack;
+        this.rangedAttack = rangedAttack;
         this.renderer = renderer;
         this.stateMachine = new StateMachine();
 
         IdleAnimation idle = new IdleAnimation(this, idleSprite);
         WalkingAnimation walking = new WalkingAnimation(this, walkingSprite);
-        AttackingAnimation attacking = new AttackingAnimation(this, fightingSprite);
+        MeleeAttackAnimation attackingMelee = new MeleeAttackAnimation(this, fightingSprite);
 
         ICondition isWalking = () -> movement.isMoving();
         ICondition isIdle = () -> !(movement.isMoving());
-        ICondition isAttacking = () -> attack.isAttacking();
-        ICondition attackFinished = () -> !(attack.isAttacking());
+        ICondition isAttackingMelee = () -> meleeAttack.isAttacking();
+        ICondition meleeAttackFinished = () -> !(meleeAttack.isAttacking());
 
         stateMachine.addTransition(idle, walking, isWalking);
         stateMachine.addTransition(walking, idle, isIdle);
 
-        stateMachine.addAnyTransition(attacking, isAttacking);
-        stateMachine.addTransition(attacking, idle, attackFinished);
+        stateMachine.addAnyTransition(attackingMelee, isAttackingMelee);
+        stateMachine.addTransition(attackingMelee, idle, meleeAttackFinished);
+
+        if(rangedAttack != null) {
+            RangedAttackAnimation attackingRanged = new RangedAttackAnimation(this, slingshotSprite);
+            ICondition isAttackingRanged = () -> rangedAttack.isAttacking();
+            ICondition rangedAttackFinished = () -> !(rangedAttack.isAttacking());
+            stateMachine.addTransition(idle, attackingRanged, isAttackingRanged);
+            stateMachine.addTransition(walking, attackingRanged, isAttackingRanged);
+            stateMachine.addTransition(attackingRanged, idle, rangedAttackFinished);
+        }
 
         stateMachine.setState(idle);
 
