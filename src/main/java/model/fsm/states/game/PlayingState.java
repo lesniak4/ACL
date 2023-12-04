@@ -31,6 +31,5 @@ public class PlayingState extends GameState {
     @Override
     public void onExit() {
         super.onExit();
-        game.removePlayingViews();
     }
 }

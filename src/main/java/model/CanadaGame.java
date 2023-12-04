@@ -87,6 +87,10 @@ public class CanadaGame implements IGame {
 
 	public void initGame(){
 
+		if(gameObjects != null) {
+			removePlayingViews();
+		}
+
 		this.gameObjects = new ArrayList<>();
 		this.toInstantiate = new ArrayList<>();
 		this.toDestroy = new ArrayList<>();
@@ -254,6 +258,7 @@ public class CanadaGame implements IGame {
 
 		/* on réinitialise les listes d'objets connus */
 		if (!this.gameObjects.isEmpty()) {
+			removePlayingViews();
 			gameObjects.clear();
 		}
 

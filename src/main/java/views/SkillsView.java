@@ -34,7 +34,7 @@ public class SkillsView extends UIView{
 
         GameConfig gc = GameConfig.getInstance();
 
-        int width = (int)(gc.getWinWidth()/4.3);
+        int width = (int)(gc.getWinWidth()/5.2);
         this.setBounds((gc.getWinWidth() - width)/2, 0, width, (int)(gc.getWinHeight()* 0.10));
         this.setBackground(new Color(40,40,40,190));
         this.setAlignmentX(CENTER_ALIGNMENT);
