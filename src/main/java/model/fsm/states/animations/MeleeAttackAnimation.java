@@ -1,6 +1,6 @@
 package model.fsm.states.animations;
 
-import model.components.animation.CharacterAnimationComponent;
+import model.components.characters.CharacterAnimationComponent;
 import utils.SpriteSheet;
 
 public class MeleeAttackAnimation extends AnimationState{

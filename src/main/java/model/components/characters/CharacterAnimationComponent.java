@@ -1,4 +1,4 @@
-package model.components.animation;
+package model.components.characters;
 
 import model.GameObject;
 import model.components.Component;

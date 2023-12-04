@@ -44,13 +44,14 @@ public class Inventory {
 
     public boolean use(WeaponData item){
 
-        ((Weapon)items.get(item)).use();
-        if(items.get(item).shouldBeRemovedFromInventory()){
-            items.remove(item);
+        if(items.containsKey(item)){
+            ((Weapon)items.get(item)).use();
+            if(items.get(item).shouldBeRemovedFromInventory()){
+                items.remove(item);
+            }
             return true;
         }
         return false;
-
     }
 
     public boolean contains(ItemData item){
@@ -61,8 +62,12 @@ public class Inventory {
         return items.containsKey(item) && items.get(item).getCurrentAmount() >= amount;
     }
 
-    public Collection<Item> getItems(){
+    public Collection<Item> getItemsValues(){
         return items.values();
+    }
+
+    public HashMap<ItemData, Item> getItems(){
+        return items;
     }
 
     public void clear(){

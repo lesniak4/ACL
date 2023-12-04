@@ -23,13 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Horatiu Cirstea, Vincent Thomas
- *
- *         Version avec personnage qui peut se deplacer. A completer dans les
- *         versions suivantes.
- * 
- */
 public class CanadaGame implements IGame {
 
 	private CanadaPainter painter;
@@ -72,7 +65,7 @@ public class CanadaGame implements IGame {
 			}
 			helpReader.close();
 		} catch (IOException e) {
-			System.out.println("Help not available");
+			//System.out.println("Help not available");
 		}
 
 		this.painter = painter;

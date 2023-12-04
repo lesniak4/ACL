@@ -1,11 +1,9 @@
 package views;
 
 import model.CanadaGame;
-import model.CanadaPainter;
 import model.items.Inventory;
 import model.items.Item;
 import utils.GameConfig;
-import utils.SpriteLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +37,7 @@ public class InventoryView extends UIView {
     @Override
     public void update() {
 
-        List<Item> items = new ArrayList<>(inventory.getItems());
+        List<Item> items = new ArrayList<>(inventory.getItemsValues());
         if(items.isEmpty() || items.size() != slots.size()){
             this.removeAll();
             slots.clear();

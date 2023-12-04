@@ -2,7 +2,7 @@ package model.items;
 
 import javax.swing.*;
 
-public class Weapon extends Item{
+public class Weapon implements Item{
 
     protected WeaponData data;
     protected int remainingUse;
@@ -16,6 +16,10 @@ public class Weapon extends Item{
 
     public void use(){
         remainingUse--;
+    }
+
+    public int getRemainingUse(){
+        return this.remainingUse;
     }
 
     @Override

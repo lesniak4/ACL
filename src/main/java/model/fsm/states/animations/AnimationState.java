@@ -1,6 +1,6 @@
 package model.fsm.states.animations;
 
-import model.components.animation.CharacterAnimationComponent;
+import model.components.characters.CharacterAnimationComponent;
 import model.fsm.IState;
 import utils.SpriteSheet;
 

@@ -4,14 +4,12 @@ import data.ItemType;
 
 import javax.swing.*;
 
-public class Resource extends Item{
+public class Resource implements Item{
 
     protected ResourceData data;
     protected int currentAmount;
 
     public Resource(ResourceData data, int initialAmount){
-
-        super();
 
         this.data = data;
         this.currentAmount = initialAmount;

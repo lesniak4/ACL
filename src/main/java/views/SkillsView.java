@@ -8,6 +8,7 @@ import utils.SpriteLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class SkillsView extends UIView{
 
@@ -20,13 +21,12 @@ public class SkillsView extends UIView{
     private JLabel damageIcon;
     private JLabel damageLabel;
 
-    private ImageIcon goldImage;
+    private BufferedImage goldImage;
 
 
     public SkillsView(CanadaGame game) {
 
         super(game);
-        this.goldImage = new ImageIcon(SpriteLoader.getSprite("/sprites/ui/coins_small_ui.png"));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SkillsView extends UIView{
 
         GameConfig gc = GameConfig.getInstance();
 
-        int width = (int)(gc.getWinWidth()/5.2);
+        int width = (int)(gc.getWinWidth()/4.3);
         this.setBounds((gc.getWinWidth() - width)/2, 0, width, (int)(gc.getWinHeight()* 0.10));
         this.setBackground(new Color(40,40,40,190));
         this.setAlignmentX(CENTER_ALIGNMENT);
@@ -54,6 +54,7 @@ public class SkillsView extends UIView{
         invisibleLabel.setForeground(Color.WHITE);
         damageLabel.setForeground(Color.WHITE);
 
+        this.goldImage = SpriteLoader.getSprite("/sprites/ui/coins_small_ui.png");
         JPanel speed = skillContainer(speedIcon, speedLabel);
         JPanel invisible = skillContainer(invisibleIcon, invisibleLabel);
         JPanel damage = skillContainer(damageIcon, damageLabel);
@@ -103,7 +104,7 @@ public class SkillsView extends UIView{
 
         icon.setAlignmentX(CENTER_ALIGNMENT);
 
-        JLabel goldIcon = new JLabel(goldImage);
+        JLabel goldIcon = new JLabel(new ImageIcon(goldImage));
 
         JPanel labelPanel = new JPanel();
         labelPanel.setBackground(new Color(0,0,0,0));
