@@ -2,16 +2,18 @@ package model;
 
 import engine.Cmd;
 import model.components.physics.PlayerMovementComponent;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CanadaControllerTest {
 
-    @Test
-    public void deplacement() {
+    @Ignore
+    public void deplacementRight() {
 
-        /*
+    /*
         CanadaPhysics physics = new CanadaPhysics();
         CanadaPainter painter = new CanadaPainter();
         CanadaController controller = new CanadaController();
@@ -70,7 +72,7 @@ public class CanadaControllerTest {
 
         assertTrue(player.getX() >= 0);
         assertTrue(player.getY() >= 0);
-        */
+    */
     }
 
 }
