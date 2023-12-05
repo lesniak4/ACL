@@ -79,7 +79,10 @@ public class AIComponent extends Component {
         stateMachine.addTransition(stateStun, stateMoving, recovered);
 
         // Attack
-        ICondition canAttack = () -> attack.canAttack() && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
+        ICondition canAttack = () -> playerStats != null
+                && !playerStats.isInvisible()
+                && attack.canAttack()
+                && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
         ICondition attackFinished = () -> !attackComponent.isAttacking();
 
         stateMachine.addTransition(stateMoving, stateAttack, canAttack);

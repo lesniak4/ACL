@@ -1,0 +1,37 @@
+@startuml
+hide empty description
+
+state join_moving <<join>>
+state join_chase <<join>>
+state join_stunned <<join>>
+state join_attack <<join>>
+
+StateMoving -> StateIdle : Object is on target
+StateIdle -> StatePatrol
+
+StateIdle ---> join_moving : Object is not on target
+StatePatrol ---> join_moving : Object has target
+StateAttack ---> join_moving : Attack animation finished
+
+StateIdle ---> join_chase
+StateMoving ---> join_chase
+StatePatrol ---> join_chase
+
+StateMoving ---> join_attack
+StateChase ---> join_attack
+
+StateAttack ----> join_stunned
+StateMoving --> join_stunned
+StateChase -> join_stunned
+
+
+join_chase --> StateChase : Object is close to player
+join_stunned --> StateStun : Object got hit
+join_attack --> StateAttack : target visible, object not in cooldown and target reachable
+join_moving --> StateMoving
+
+StateChase --> StateMoving : Player is far enough from object
+
+StateIdle <-- [*]
+
+@enduml
