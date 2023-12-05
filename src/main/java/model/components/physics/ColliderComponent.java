@@ -3,7 +3,10 @@ package model.components.physics;
 import model.CanadaPhysics;
 import model.GameObject;
 import model.components.Component;
-import model.components.player.PlayerInteractionComponent;
+import model.components.attacks.DamageAreaComponent;
+import model.components.attacks.HealthComponent;
+import model.components.attacks.StunComponent;
+import model.components.characters.player.PlayerInteractionComponent;
 
 public class ColliderComponent extends Component {
 
@@ -45,6 +48,11 @@ public class ColliderComponent extends Component {
             if(player != null){
                 player.interactWith(obj);
             }
+        }
+
+        DamageAreaComponent damageArea = obj.getComponent(DamageAreaComponent.class);
+        if(damageArea != null && colliderObj != damageArea.getOwner().getGameObject()){
+            damageArea.hitGameObject(colliderObj);
         }
 
 

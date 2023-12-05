@@ -8,6 +8,7 @@ import utils.SpriteLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class SkillsView extends UIView{
 
@@ -17,8 +18,14 @@ public class SkillsView extends UIView{
     private JLabel invisibleIcon;
     private JLabel invisibleLabel;
 
+    private JLabel damageIcon;
+    private JLabel damageLabel;
+
+    private BufferedImage goldImage;
+
 
     public SkillsView(CanadaGame game) {
+
         super(game);
     }
 
@@ -27,7 +34,7 @@ public class SkillsView extends UIView{
 
         GameConfig gc = GameConfig.getInstance();
 
-        int width = gc.getWinWidth()/6;
+        int width = (int)(gc.getWinWidth()/4.3);
         this.setBounds((gc.getWinWidth() - width)/2, 0, width, (int)(gc.getWinHeight()* 0.10));
         this.setBackground(new Color(40,40,40,190));
         this.setAlignmentX(CENTER_ALIGNMENT);
@@ -35,24 +42,35 @@ public class SkillsView extends UIView{
         SpringLayout layout = new SpringLayout();
         this.setLayout(layout);
 
-        speedIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getSpeedUI()));
-        invisibleIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getInvisibilityUI()));
+        speedIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/speed_ui.png")));
+        invisibleIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/invisible_ui.png")));
+        damageIcon = new JLabel(new ImageIcon(SpriteLoader.getSprite("/sprites/ui/damage_ui.png")));
+
         speedLabel = new JLabel("Speed");
         invisibleLabel = new JLabel("Invisible");
+        damageLabel = new JLabel("Invisible");
+
         speedLabel.setForeground(Color.WHITE);
         invisibleLabel.setForeground(Color.WHITE);
+        damageLabel.setForeground(Color.WHITE);
 
+        this.goldImage = SpriteLoader.getSprite("/sprites/ui/coins_small_ui.png");
         JPanel speed = skillContainer(speedIcon, speedLabel);
         JPanel invisible = skillContainer(invisibleIcon, invisibleLabel);
+        JPanel damage = skillContainer(damageIcon, damageLabel);
 
         this.add(speed);
         this.add(invisible);
+        this.add(damage);
 
         layout.putConstraint(SpringLayout.WEST, speed, 15, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.WEST, invisible, 15, SpringLayout.EAST, speed);
+        layout.putConstraint(SpringLayout.WEST, damage, 15, SpringLayout.EAST, invisible);
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, speed, 0, SpringLayout.VERTICAL_CENTER, this);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, invisible, 0, SpringLayout.VERTICAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, damage, 0, SpringLayout.VERTICAL_CENTER, this);
+
     }
 
     @Override
@@ -60,6 +78,7 @@ public class SkillsView extends UIView{
 
         updateSkillLabel(speedLabel, Cmd.SKILL_1);
         updateSkillLabel(invisibleLabel, Cmd.SKILL_2);
+        updateSkillLabel(damageLabel, Cmd.SKILL_3);
     }
 
     public void updateSkillLabel(JLabel label, Cmd cmd){
@@ -85,7 +104,7 @@ public class SkillsView extends UIView{
 
         icon.setAlignmentX(CENTER_ALIGNMENT);
 
-        JLabel goldIcon = new JLabel(new ImageIcon(SpriteLoader.getInstance().getGoldCoinsSmallUI()));
+        JLabel goldIcon = new JLabel(new ImageIcon(goldImage));
 
         JPanel labelPanel = new JPanel();
         labelPanel.setBackground(new Color(0,0,0,0));

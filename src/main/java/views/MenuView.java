@@ -12,6 +12,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class MenuView extends UIView{
 
@@ -20,9 +21,14 @@ public class MenuView extends UIView{
     private JButton exitButton;
     private JLabel titleLabel;
 
+    private JLabel maxScoreLabel;
+
+    private BufferedImage background;
+
     public MenuView(CanadaGame game){
         super(game);
         controller = new MenuController(game, this);
+        this.background = SpriteLoader.getSprite("/sprites/ui/mainmenu_background.png");
     }
 
     @Override
@@ -34,6 +40,8 @@ public class MenuView extends UIView{
 
         this.setLayout(null);
 
+        // Title
+
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(40,40,40,190));
 
@@ -43,12 +51,30 @@ public class MenuView extends UIView{
         titlePanel.setBorder(new EmptyBorder(20,25,20,25));
         titleLabel = new JLabel("CANADA CAMP");
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setAlignmentY(CENTER_ALIGNMENT);
 
         titlePanel.add(titleLabel);
+
+        // Max Score
+
+        JPanel maxScorePanel = new JPanel();
+        maxScorePanel.setBackground(new Color(40,40,40,190));
+
+        int maxScoreWidth = (int)(gc.getWinWidth() * 0.25);
+        int maxScoreHeight = (int)(gc.getWinHeight() * 0.09);
+        maxScorePanel.setBounds(0 , 0, maxScoreWidth, maxScoreHeight);
+        maxScorePanel.setBorder(new EmptyBorder(8,10,8,10));
+        maxScoreLabel = new JLabel("Max Score : 0");
+        maxScoreLabel.setForeground(Color.WHITE);
+        maxScoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        maxScoreLabel.setAlignmentX(CENTER_ALIGNMENT);
+        maxScoreLabel.setAlignmentY(CENTER_ALIGNMENT);
+
+        maxScorePanel.add(maxScoreLabel);
+
+        // Boutons
 
         JPanel buttonContainer = new JPanel();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.PAGE_AXIS));
@@ -76,6 +102,7 @@ public class MenuView extends UIView{
         buttonContainer.add(exitButton);
 
         this.add(titlePanel);
+        this.add(maxScorePanel);
         this.add(buttonContainer);
 
     }
@@ -83,13 +110,14 @@ public class MenuView extends UIView{
 
     @Override
     public void update() {
+        maxScoreLabel.setText("Max Score : " + game.getMaxScore());
     }
 
     @Override
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        g.drawImage(SpriteLoader.getInstance().getMainMenuBackgroundUI(), 0, 0, null);
+        g.drawImage(background, 0, 0, null);
     }
 
 }

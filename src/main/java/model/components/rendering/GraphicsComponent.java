@@ -107,4 +107,12 @@ public abstract class GraphicsComponent extends Component {
 
     public void setInvisible() { this.defaultOpacity = 0.5f; }
     public void resetInvisibility() { this.defaultOpacity = 1f; }
+
+    public void setVisible(boolean val){
+        this.isVisible = val;
+    }
+
+    public boolean isVisible(){
+        return this.isVisible;
+    }
 }

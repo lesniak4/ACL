@@ -9,27 +9,37 @@ public class GameObject {
 
     private CanadaGame game;
     private Vector2 position;
+    private String name;
 
     private Map<Class<? extends Component>, Component> components;
 
+    private ArrayList<Component> toAdd;
     private ArrayList<Component> toDestroy;
 
     public GameObject(CanadaGame game){
 
-        this(0d, 0d, game);
+        this(0d, 0d, "New GameObject", game);
     }
 
     public GameObject(double x, double y, CanadaGame game){
 
+        this(x, y, "New GameObject", game);
+    }
+
+    public GameObject(double x, double y, String name, CanadaGame game){
+
         this.game = game;
         this.position = new Vector2(x, y);
+        this.name = name;
 
         this.components = new LinkedHashMap<>();
+        this.toAdd = new ArrayList<>();
         this.toDestroy = new ArrayList<>();
     }
 
     public void update(){
 
+        addComponents();
         for(Component c : components.values()){
             c.update();
         }
@@ -40,8 +50,20 @@ public class GameObject {
         this.components.put(component.getClass(), component);
     }
 
+    public void addComponentNextLoop(Component component){
+        toAdd.add(component);
+    }
+
     public void removeComponent(Component component){
         toDestroy.add(component);
+    }
+
+    public void addComponents(){
+
+        for (Component comp : toAdd){
+            this.components.put(comp.getClass(), comp);
+        }
+        toAdd.clear();
     }
 
     public void destroyComponents(){
@@ -88,5 +110,10 @@ public class GameObject {
             c.destroyComponent();
         }
         game.removeGameObject(this);
+    }
+
+    @Override
+    public String toString(){
+        return this.name;
     }
 }

@@ -16,21 +16,17 @@ public class SpriteLoader {
     private SpriteSheet wallSprite;
     private SpriteSheet playerWalking;
     private SpriteSheet playerIdle;
+    private SpriteSheet playerFighting;
+    private SpriteSheet playerSlingshot;
     private SpriteSheet monsterIdle;
     private SpriteSheet monsterWalking;
-    private BufferedImage goldCoinsSprite;
-    private BufferedImage axeSprite;
-    private BufferedImage swordSprite;
+    private SpriteSheet monsterFighting;
+
+    private BufferedImage stoneSprite;
     private BufferedImage exitSprite;
     private BufferedImage mineLeftSprite;
     private BufferedImage mineRightSprite;
 
-    private BufferedImage mainMenuBackgroundUI;
-    private BufferedImage goldCoinsUI;
-    private BufferedImage goldCoinsSmallUI;
-    private BufferedImage axeUI;
-    private BufferedImage speedUI;
-    private BufferedImage invisibilityUI;
 
     private SpriteLoader(){
 
@@ -39,25 +35,30 @@ public class SpriteLoader {
             wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/wall.png")), 1, 16);
             playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_walking.png")), 8, 16);
             playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_idle.png")), 8, 1);
+            playerFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_fighting.png")), 8, 6);
+            playerSlingshot = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_slingshot.png")), 8, 1);
+
             monsterIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_idle.png")), 8, 1);
             monsterWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_walking.png")), 8, 16);
-            goldCoinsSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/coins.png"));
-            axeSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/axe.png"));
-            swordSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/sword.png"));
+            monsterFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_monster_fighting.png")), 8, 6);
+
+            stoneSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/stone.png"));
             exitSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/exit.png"));
             mineLeftSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_left.png"));
             mineRightSprite = ImageIO.read(getClass().getResource("/sprites/gameobjects/mine_right.png"));
 
-            mainMenuBackgroundUI = ImageIO.read(getClass().getResource("/sprites/ui/mainmenu_background.png"));
-            goldCoinsUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_ui.png"));
-            goldCoinsSmallUI = ImageIO.read(getClass().getResource("/sprites/ui/coins_small_ui.png"));
-            axeUI = ImageIO.read(getClass().getResource("/sprites/ui/axe_ui.png"));
-            speedUI = ImageIO.read(getClass().getResource("/sprites/ui/speed_ui.png"));
-            invisibilityUI = ImageIO.read(getClass().getResource("/sprites/ui/invisible_ui.png"));
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static BufferedImage getSprite(String path){
+        try {
+            return ImageIO.read(SpriteLoader.class.getResource(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public SpriteSheet getPathSprite() {
@@ -76,6 +77,13 @@ public class SpriteLoader {
         return playerIdle;
     }
 
+    public SpriteSheet getPlayerFightingSprite() {
+        return playerFighting;
+    }
+    public SpriteSheet getPlayerSlingshotSprite() {
+        return playerSlingshot;
+    }
+
     public SpriteSheet getMonsterIdleSprite() {
         return monsterIdle;
     }
@@ -83,17 +91,12 @@ public class SpriteLoader {
     public SpriteSheet getMonsterWalkingSprite() {
         return monsterWalking;
     }
-
-    public BufferedImage getGoldCoinsSprite() {
-        return goldCoinsSprite;
+    public SpriteSheet getMonsterFightingSprite() {
+        return monsterFighting;
     }
 
-    public BufferedImage getAxeSprite() {
-        return axeSprite;
-    }
-
-    public BufferedImage getSwordSprite() {
-        return swordSprite;
+    public BufferedImage getStoneSprite() {
+        return stoneSprite;
     }
 
     public BufferedImage getExitSprite() {
@@ -106,28 +109,5 @@ public class SpriteLoader {
 
     public BufferedImage getMineRightSprite() {
         return mineRightSprite;
-    }
-
-    public BufferedImage getMainMenuBackgroundUI() {
-        return mainMenuBackgroundUI;
-    }
-
-    public BufferedImage getGoldCoinsUI() {
-        return goldCoinsUI;
-    }
-
-    public BufferedImage getGoldCoinsSmallUI() {
-        return goldCoinsSmallUI;
-    }
-    public BufferedImage getAxeUI() {
-        return axeUI;
-    }
-
-    public BufferedImage getSpeedUI() {
-        return speedUI;
-    }
-
-    public BufferedImage getInvisibilityUI() {
-        return invisibilityUI;
     }
 }

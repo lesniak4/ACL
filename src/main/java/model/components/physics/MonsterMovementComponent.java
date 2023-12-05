@@ -2,10 +2,11 @@ package model.components.physics;
 
 import model.CanadaPhysics;
 import model.GameObject;
-import utils.GameConfig;
-import utils.Vector2;
 import model.components.ai.PathfindingComponent;
 import model.world.Hex;
+import utils.GameConfig;
+import utils.Vector2;
+import views.HealthBarView;
 
 public class MonsterMovementComponent extends MovementComponent{
 
@@ -18,6 +19,7 @@ public class MonsterMovementComponent extends MovementComponent{
 
     @Override
     public void update() {
+
         if(pathfindingComponent.isMoving()){
 
             Vector2 posNextMove;
@@ -30,10 +32,13 @@ public class MonsterMovementComponent extends MovementComponent{
 
             Vector2 pos = this.getGameObject().getPosition();
             Vector2 dir = Vector2.normalize(new Vector2(posNextMove.X() - pos.X(), (posNextMove.Y() - pos.Y())));
+            this.setCurrentFacingDirection(dir);
             this.velocityX = dir.X() * movementSpeed;
             this.velocityY = dir.Y() * movementSpeed;
 
             physics.addToUpdate(this);
+        }else{
+            resetVelocity();
         }
     }
 }

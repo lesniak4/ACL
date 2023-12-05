@@ -1,6 +1,7 @@
 package model;
 
 import engine.IGamePhysics;
+import model.components.attacks.DamageAreaComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
 import utils.Vector2;
@@ -43,10 +44,12 @@ public class CanadaPhysics implements IGamePhysics {
                                     if(firstCol == null) {
                                         newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
                                         gameObject.setPosition(newPos);
-                                        firstCol = c;
                                     }else{
                                         gameObject.setPosition(lastPos);
                                     }
+                                }
+                                if(firstCol == null) {
+                                    firstCol = c;
                                 }
                                 collider.onCollisionEnter(c.getGameObject());
                                 break;

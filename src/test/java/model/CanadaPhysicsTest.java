@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CanadaPhysicsTest {
 
     @Test
-    public void areColliding() {
+    public void areCollidingTrue() {
 
         CanadaPhysics physics = new CanadaPhysics();
         CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController());
@@ -24,14 +24,20 @@ public class CanadaPhysicsTest {
         obj2.addComponent(coll2);
 
         assertTrue(physics.areColliding(coll1, coll2));
+    }
 
+    @Test
+    public void areCollidingFalse() {
 
-        obj1 = new GameObject(0f, 0f, game);
-        coll1 = new ColliderComponent(obj1, physics, 5f, false);
+        CanadaPhysics physics = new CanadaPhysics();
+        CanadaGame game = new CanadaGame("", new CanadaPainter(), physics, new CanadaController());
+
+        GameObject obj1 = new GameObject(0f, 0f, game);
+        ColliderComponent coll1 = new ColliderComponent(obj1, physics, 5f, false);
         obj1.addComponent(coll1);
 
-        obj2 = new GameObject(10f, 10f, game);
-        coll2 = new ColliderComponent(obj2, physics, 5f, false);
+        GameObject obj2 = new GameObject(10f, 10f, game);
+        ColliderComponent coll2 = new ColliderComponent(obj2, physics, 5f, false);
         obj2.addComponent(coll2);
 
         assertFalse(physics.areColliding(coll1, coll2));
