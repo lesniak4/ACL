@@ -2,18 +2,18 @@ package model.fsm.states.game;
 
 import engine.UIPanel;
 import model.CanadaGame;
-import model.fsm.State;
+import model.fsm.IState;
 import views.UIView;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class GameState extends State {
+public abstract class GameState implements IState {
 
     protected CanadaGame game;
     protected UIPanel ui;
-    protected Collection<UIView> views;
+    protected ArrayList<UIView> views;
 
     public GameState(CanadaGame game, UIPanel ui){
 
@@ -44,6 +44,13 @@ public abstract class GameState extends State {
 
         views.add(view);
         ui.addView(view, JLayeredPane.PALETTE_LAYER);
+    }
+
+    public void removeView(UIView view){
+        if(view != null) {
+            views.remove(view);
+            ui.removeView(view);
+        }
     }
 
     public void notifyViews(){

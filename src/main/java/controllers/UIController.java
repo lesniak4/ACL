@@ -6,7 +6,7 @@ import views.UIView;
 public abstract class UIController {
 
     protected CanadaGame game;
-    protected  UIView view;
+    protected UIView view;
 
     public UIController(CanadaGame game, UIView view){
         this.game = game;

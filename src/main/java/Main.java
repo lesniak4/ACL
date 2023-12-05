@@ -4,6 +4,7 @@ import model.CanadaController;
 import model.CanadaGame;
 import model.CanadaPhysics;
 import utils.GameConfig;
+import utils.ScoreSaver;
 
 /**
  * lancement du moteur avec le jeu

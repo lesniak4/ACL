@@ -1,11 +1,14 @@
 package model.world;
 
+import data.ItemDataFactory;
+import data.ItemType;
 import model.*;
 import model.components.ai.PathNodeComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.world.TeleportationTileComponent;
 import model.components.world.TeleportationTileOrientation;
 import model.components.world.WorldSpawnComponent;
+import model.fsm.states.game.PlayingState;
 import utils.GameConfig;
 import utils.Vector2;
 
@@ -91,11 +94,11 @@ public class World {
                                 hexMap.put(hex, 1);
                             }  else if (n == '2') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
-                                tiles.put(hex, GameObjectFactory.getInstance().createCoinsObject(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createResourceObject(game, hex, layout, painter, physics, ItemDataFactory.getResourceData(ItemType.GOLD_COINS), 5));
                                 hexMap.put(hex, 2);
                             } else if(n == '3'){
                                 tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
-                                tiles.put(hex, GameObjectFactory.getInstance().createKeyObject(game, hex, layout, painter, physics));
+                                tiles.put(hex, GameObjectFactory.getInstance().createResourceObject(game, hex, layout, painter, physics, ItemDataFactory.getResourceData(ItemType.AXE), 1));
                                 hexMap.put(hex, 3);
                             } else if(n == '4'){
                                 tiles.put(hex, GameObjectFactory.getInstance().createTeleportationTile(game, hex, layout, painter, physics, TeleportationTileOrientation.LEFT));
@@ -110,9 +113,17 @@ public class World {
                                 hexMap.put(hex, 5);
                                 if(tp1 == null){
                                     tp1 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
-                                }else{
+                                }else {
                                     tp2 = tiles.get(hex).getComponent(TeleportationTileComponent.class);
                                 }
+                            }else if(n == '6'){
+                                tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.put(hex, GameObjectFactory.getInstance().createWeaponObject(game, hex, layout, painter, physics, ItemDataFactory.getWeaponData(ItemType.SWORD)));
+                                hexMap.put(hex, 6);
+                            }else if(n == '7'){
+                                tiles.put(hex, GameObjectFactory.getInstance().createPathTile(game, hex, layout, painter));
+                                tiles.put(hex, GameObjectFactory.getInstance().createWeaponObject(game, hex, layout, painter, physics, ItemDataFactory.getWeaponData(ItemType.SLINGSHOT)));
+                                hexMap.put(hex, 7);
                             }else if (n == '8') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWorldSpawnTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 8);
@@ -189,7 +200,7 @@ public class World {
         return tiles.values();
     }
 
-    public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player){
+    public void createRandomMonsters(int number, List<GameObject> gameObjects, GameObject player, PlayingState playingState){
         Random random = new Random();
 
         ArrayList<GameObject> objs = new ArrayList<>();
@@ -211,7 +222,7 @@ public class World {
 
             objs.add(targetObj);
             objs.add(obj);
-            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, getGraph(), physics, targetObj, player));
+            gameObjects.add(GameObjectFactory.getInstance().createMonsterObject(game, (obj.getX() + randomSlidingX), (obj.getY()  + randomSlidingY), painter, getGraph(), physics, targetObj, player, playingState));
         }
     }
 

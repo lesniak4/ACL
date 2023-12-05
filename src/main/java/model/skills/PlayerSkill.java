@@ -2,8 +2,8 @@ package model.skills;
 
 import engine.Cmd;
 import model.GameObject;
-import model.components.player.PlayerStatsComponent;
-import model.components.player.skills.PlayerStatsModifierComponent;
+import model.components.characters.StatsComponent;
+import model.components.characters.player.skills.PlayerStatsModifierComponent;
 
 public abstract class PlayerSkill {
 
@@ -21,7 +21,7 @@ public abstract class PlayerSkill {
         this.cooldownInMs = cooldownInMs;
     }
 
-    public abstract PlayerStatsModifierComponent getNewModifierComponent(GameObject player, PlayerStatsComponent stats);
+    public abstract PlayerStatsModifierComponent getNewModifierComponent(GameObject player, StatsComponent stats);
 
     public int getCost(){
         return this.cost;

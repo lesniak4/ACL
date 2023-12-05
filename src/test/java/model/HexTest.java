@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HexTest {
 
-    public int EVEN = 1;
+    private int EVEN = 1;
 
     @Test
     public void hexCoordToGrid(){
@@ -31,38 +31,63 @@ public class HexTest {
     }
 
     @Test
-    public void hexOfNeighbor(){
+    public void hexOfNeighborSW(){
         Hex hex = new Hex(2,2);
 
         Hex nHex = Hex.hexOfNeighbor(hex, 0);
         assertNotNull(nHex);
-        assertEquals(hex.getQ() - 1 ,nHex.getQ());
-        assertEquals(hex.getR() + 1, nHex.getR());
+        assertEquals(1 ,nHex.getQ());
+        assertEquals(3, nHex.getR());
+    }
+
+    @Test
+    public void hexOfNeighborSE(){
+        Hex hex = new Hex(2,2);
 
         Hex nHex2 = Hex.hexOfNeighbor(hex, 1);
         assertNotNull(nHex2);
-        assertEquals(hex.getQ(),nHex2.getQ());
-        assertEquals(hex.getR() + 1, nHex2.getR());
+        assertEquals(2,nHex2.getQ());
+        assertEquals(3, nHex2.getR());
+    }
+
+    @Test
+    public void hexOfNeighborE(){
+        Hex hex = new Hex(2,2);
 
         Hex nHex3 = Hex.hexOfNeighbor(hex, 2);
         assertNotNull(nHex3);
-        assertEquals(hex.getQ() + 1 ,nHex3.getQ());
-        assertEquals(hex.getR(), nHex3.getR());
+        assertEquals(3 ,nHex3.getQ());
+        assertEquals(2, nHex3.getR());
+    }
+
+    @Test
+    public void hexOfNeighborNE(){
+        Hex hex = new Hex(2,2);
 
         Hex nHex4 = Hex.hexOfNeighbor(hex, 3);
         assertNotNull(nHex4);
-        assertEquals(hex.getQ() + 1 ,nHex4.getQ());
-        assertEquals(hex.getR() - 1, nHex4.getR());
+        assertEquals(3 ,nHex4.getQ());
+        assertEquals(1, nHex4.getR());
+    }
+
+    @Test
+    public void hexOfNeighborNW(){
+        Hex hex = new Hex(2,2);
 
         Hex nHex5 = Hex.hexOfNeighbor(hex, 4);
         assertNotNull(nHex5);
-        assertEquals(hex.getQ(),nHex5.getQ());
-        assertEquals(hex.getR() - 1, nHex5.getR());
+        assertEquals(2,nHex5.getQ());
+        assertEquals(1, nHex5.getR());
+    }
+
+    @Test
+    public void hexOfNeighborW(){
+        Hex hex = new Hex(2,2);
 
         Hex nHex6 = Hex.hexOfNeighbor(hex, 5);
         assertNotNull(nHex6);
-        assertEquals(hex.getQ() - 1, nHex6.getQ());
-        assertEquals(hex.getR(), nHex6.getR());
+        assertEquals(1, nHex6.getQ());
+        assertEquals(2, nHex6.getR());
     }
 
     @Test

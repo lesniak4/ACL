@@ -11,6 +11,7 @@ import utils.UIStyle;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class EndMenuView extends UIView{
 
@@ -21,9 +22,12 @@ public class EndMenuView extends UIView{
     private JLabel titleLabel;
     private JLabel scoreLabel;
 
+    private BufferedImage background;
+
     public EndMenuView(CanadaGame game){
         super(game);
         controller = new EndMenuController(game, this);
+        this.background = SpriteLoader.getSprite("/sprites/ui/mainmenu_background.png");
     }
 
     @Override
@@ -109,6 +113,6 @@ public class EndMenuView extends UIView{
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        g.drawImage(SpriteLoader.getInstance().getMainMenuBackgroundUI(), 0, 0, null);
+        g.drawImage(background, 0, 0, null);
     }
 }
