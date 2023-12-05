@@ -18,8 +18,7 @@ public class EndMenuState extends GameState{
     public void onEnter() {
         super.onEnter();
 
-        if(game.hasPlayerWon())
-            game.updateMaxScore();
+        game.updateMaxScore();
 
         notifyViews();
     }

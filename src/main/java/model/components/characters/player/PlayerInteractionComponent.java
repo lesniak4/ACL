@@ -40,9 +40,11 @@ public class PlayerInteractionComponent extends Component {
 
         WeaponComponent weapon = colliderObj.getComponent(WeaponComponent.class);
         if(weapon != null){
-            inventory.add(weapon.getData());
-            colliderObj.destroyGameObject();
-            getGameObject().getGame().incrScore(weapon.getData().getScoreValue());
+            if(!inventory.contains(weapon.getData())) {
+                inventory.add(weapon.getData());
+                colliderObj.destroyGameObject();
+                getGameObject().getGame().incrScore(weapon.getData().getScoreValue());
+            }
         }
 
         // Check collision avec une case de téléportation

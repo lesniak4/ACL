@@ -44,8 +44,8 @@ public class CanadaGame implements IGame {
 	private Inventory playerInventory;
 
 	private int niveauActuel;
-	private List<String> completedLevels;
-	private final int maxLevel = 4;
+	private int lastLevel;
+	private final int availableLevels = 4;
 
 	private int score;
 
@@ -91,7 +91,7 @@ public class CanadaGame implements IGame {
 		this.toDestroy = new ArrayList<>();
 
 		this.playerInventory.clear();
-		this.completedLevels = new ArrayList<>();
+		this.lastLevel = 0;
 		this.niveauActuel = 0;
 		this.score = 0;
 
@@ -262,27 +262,25 @@ public class CanadaGame implements IGame {
 
 		this.niveauActuel++;
 
-		if(this.niveauActuel <= maxLevel) {
-			this.playerWin = false;
+		this.playerWin = false;
 
-			int nextLevel = 1;
-			if (this.niveauActuel!=1) {
-				nextLevel = loadRandLevel();
-			}
-			this.completedLevels.add(String.valueOf(nextLevel));
-
-			World world = new World(this, this.painter, this.physics);
-			gameObjects.addAll(world.buildWorld("/maps/map" + nextLevel + ".txt", HexLayout.pointy));	//modif selon rand
-
-			GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState, playerInventory);
-			world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player, playingState);
-			gameObjects.add(player);
-			this.setCameraPosition(player.getPosition());
-
-			this.playerHealth = player.getComponent(HealthComponent.class);
-
-			this.skills = player.getComponent(PlayerSkillsShopComponent.class);
+		int nextLevel = 4;
+		if (this.niveauActuel!=4) {
+			nextLevel = loadRandLevel();
 		}
+		this.lastLevel = nextLevel;
+
+		World world = new World(this, this.painter, this.physics);
+		gameObjects.addAll(world.buildWorld("/maps/map" + nextLevel + ".txt", HexLayout.pointy));	//modif selon rand
+
+		GameObject player = GameObjectFactory.getInstance().createPlayerObject(this, 180, 180, painter, controller, physics, playingState, playerInventory);
+		world.createRandomMonsters(gc.getMonsterNb(), gameObjects, player, playingState);
+		gameObjects.add(player);
+		this.setCameraPosition(player.getPosition());
+
+		this.playerHealth = player.getComponent(HealthComponent.class);
+
+		this.skills = player.getComponent(PlayerSkillsShopComponent.class);
 	}
 
 	/**
@@ -292,9 +290,9 @@ public class CanadaGame implements IGame {
 	public int loadRandLevel() {
 
 		Random rand = new Random();
-		int randomLevel = rand.nextInt(3) + 1;
-		while(completedLevels.contains(String.valueOf(randomLevel))) {
-			randomLevel = rand.nextInt(3) + 1;
+		int randomLevel = rand.nextInt(availableLevels-1) + 1;
+		while(lastLevel == randomLevel) {
+			randomLevel = rand.nextInt(availableLevels-1) + 1;
 		}
 
 		return randomLevel;
@@ -306,7 +304,7 @@ public class CanadaGame implements IGame {
 	@Override
 	public boolean isFinished() {
 
-		return niveauActuel > maxLevel || hasPlayerLost();
+		return hasPlayerLost();
 	}
 
 	public Vector2 getCameraPosition() {
