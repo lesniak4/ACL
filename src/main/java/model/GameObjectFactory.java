@@ -74,6 +74,32 @@ public class GameObjectFactory {
         return pathTile;
     }
 
+    public GameObject createWaterTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject waterTile = new GameObject(pos.X(), pos.Y(), "Water_"+hex.getQ()+"_"+hex.getR(), game);
+        waterTile.addComponent(new BitmaskedSpriteRendererComponent(waterTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getWaterSprite()));
+        waterTile.addComponent(new PathNodeComponent(waterTile));
+        waterTile.addComponent(new WaterComponent(waterTile));
+        waterTile.addComponent(new ColliderComponent(waterTile,  physics, layout.getSize().X(),true));
+        //waterTile.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
+
+        return waterTile;
+    }
+
+    public GameObject createSwimmingLessonTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject swimmingLesson = new GameObject(pos.X(), pos.Y(), "SwimmingLesson_"+hex.getQ()+"_"+hex.getR(), game);
+        swimmingLesson.addComponent(new BitmaskedSpriteRendererComponent(swimmingLesson, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getSwimmingLessonSprite()));
+        swimmingLesson.addComponent(new PathNodeComponent(swimmingLesson));
+        swimmingLesson.addComponent(new SwimmingLessonComponent(swimmingLesson));
+        swimmingLesson.addComponent(new ColliderComponent(swimmingLesson,  physics, layout.getSize().X(),true));
+        //swimmingLesson.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
+
+        return swimmingLesson;
+    }
+
     public GameObject createResourceObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, ResourceData data, int amount){
 
         Vector2 pos = layout.hexToWorldPos(hex);
@@ -110,7 +136,7 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller, inventory);
         StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseMeleeDMG(), gc.getPlayerBaseRangedDMG(), gc.getPlayerMeleeAttackDistance(), gc.getPlayerRangedAttackSpeed());
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats, false);
         MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, gc.getPlayerMeleeAttackRadius(), gc.getPlayerMeleeStunFrameCount(), gc.getPlayerMeleeAttackLifetimeFrameCount(), gc.getPlayerMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, gc.getPlayerRangedAttackRadius(), gc.getPlayerRangedStunFrameCount(),gc.getPlayerRangedAttackFrameCount(), gc.getPlayerRangedAttackLifetimeFrameCount(),gc.getPlayerRangedAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
         playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
@@ -166,7 +192,7 @@ public class GameObjectFactory {
         HealthBarView healthBar = new HealthBarView(game, monster, health);
         playingState.addView(healthBar);
 
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent, true);
         MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, gc.getMonsterMeleeAttackRadius(), gc.getMonsterMeleeStunFrameCount(),gc.getMonsterMeleeAttackLifetimeFrameCount(), gc.getMonsterMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         StunComponent stun = new StunComponent(monster, renderer);
 

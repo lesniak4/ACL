@@ -9,7 +9,7 @@ public class DamageAreaMovementComponent extends MovementComponent{
     private Vector2 direction;
 
     public DamageAreaMovementComponent(GameObject obj, double movementSpeed, Vector2 dir, CanadaPhysics physics) {
-        super(obj, movementSpeed, physics);
+        super(obj, movementSpeed, physics, true);
 
         this.direction = dir;
     }

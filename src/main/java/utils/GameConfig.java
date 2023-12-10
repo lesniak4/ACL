@@ -49,6 +49,10 @@ public class GameConfig {
     public int getPlayerRangedAttackLifetimeFrameCount(){ return 90; }
     public int getPlayerRangedAttackCooldownFrameCount(){ return 130; }
 
+    public long getTimeNeededToLearn(){
+        return 5000;
+    }
+
     // Monster
 
     // Facteur du nombre d'hexagone où le monstre repère le joueur

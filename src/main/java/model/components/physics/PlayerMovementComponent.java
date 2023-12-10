@@ -15,11 +15,15 @@ public class PlayerMovementComponent extends MovementComponent{
     private PlayerInputComponent playerInputComponent;
     private StatsComponent stats;
 
-    public PlayerMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics , PlayerInputComponent playerInputComponent, StatsComponent stats) {
-        super(obj, movementSpeed, physics);
+    public PlayerMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics , PlayerInputComponent playerInputComponent, StatsComponent stats, boolean canSwim) {
+        super(obj, movementSpeed, physics, canSwim);
         this.playerInputComponent = playerInputComponent;
         this.stats = stats;
 
+    }
+
+    public void learnedSwimming(){
+        this.canSwim = true;
     }
 
     @Override

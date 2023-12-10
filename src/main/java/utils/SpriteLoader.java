@@ -33,6 +33,7 @@ public class SpriteLoader {
         try {
             pathSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/path.png")), 1, 16);
             wallSprite = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/wall.png")), 1, 16);
+
             playerWalking = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_walking.png")), 8, 16);
             playerIdle = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_idle.png")), 8, 1);
             playerFighting = new SpriteSheet(ImageIO.read(getClass().getResource("/sprites/gameobjects/spritesheet_player_fighting.png")), 8, 6);
@@ -66,6 +67,14 @@ public class SpriteLoader {
     }
 
     public SpriteSheet getWallSprite() {
+        return wallSprite;
+    }
+
+    public SpriteSheet getWaterSprite() {
+        return wallSprite;
+    }
+
+    public SpriteSheet getSwimmingLessonSprite() {
         return wallSprite;
     }
 

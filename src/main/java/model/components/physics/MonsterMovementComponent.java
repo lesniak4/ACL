@@ -12,8 +12,8 @@ public class MonsterMovementComponent extends MovementComponent{
 
     private PathfindingComponent pathfindingComponent;
 
-    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent) {
-        super(obj, movementSpeed, physics);
+    public MonsterMovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, PathfindingComponent pathfindingComponent, boolean canSwim) {
+        super(obj, movementSpeed, physics, canSwim);
         this.pathfindingComponent = pathfindingComponent;
     }
 

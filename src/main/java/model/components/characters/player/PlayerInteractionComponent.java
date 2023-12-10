@@ -5,14 +5,17 @@ import data.ItemType;
 import model.GameObject;
 import model.components.characters.StatsComponent;
 import model.components.physics.MonsterMovementComponent;
+import model.components.physics.PlayerMovementComponent;
 import model.components.world.*;
 import model.components.Component;
 import model.items.Inventory;
+import utils.GameConfig;
 
 public class PlayerInteractionComponent extends Component {
 
     private StatsComponent stats;
     private Inventory inventory;
+
 
     public PlayerInteractionComponent(GameObject obj, StatsComponent stats, Inventory inventory) {
 
@@ -44,6 +47,22 @@ public class PlayerInteractionComponent extends Component {
                 inventory.add(weapon.getData());
                 colliderObj.destroyGameObject();
                 getGameObject().getGame().incrScore(weapon.getData().getScoreValue());
+            }
+        }
+
+        SwimmingLessonComponent swimmingLessonComponent = colliderObj.getComponent(SwimmingLessonComponent.class);
+        if(swimmingLessonComponent != null){
+            PlayerMovementComponent m = gameObject.getComponent(PlayerMovementComponent.class);
+            if(m != null && !m.canSwim()){
+                if(!swimmingLessonComponent.isCurrentlyLearning()) {
+                    System.out.println("Started Learning");
+                    swimmingLessonComponent.startLearning();
+                } else{
+                    if(swimmingLessonComponent.finishedLearning()) {
+                        m.learnedSwimming();
+                        System.out.println("Finished Learning");
+                    }
+                }
             }
         }
 
