@@ -2,56 +2,47 @@ package model.components.world;
 
 import model.GameObject;
 import model.components.Component;
-import model.components.physics.PlayerMovementComponent;
-import utils.GameConfig;
-
-import java.util.*;
+import model.components.physics.MovementComponent;
 
 public class SwimmingLessonComponent extends Component {
     private boolean currentlyLearning;
     private boolean finishedLearning;
 
-    public SwimmingLessonComponent(GameObject obj) {
+    private int framesBeforeFinishedLearning;
+    private MovementComponent learner;
+
+    public SwimmingLessonComponent(GameObject obj, int learnDurationFrameCount) {
         super(obj);
 
         this.currentlyLearning = false;
         this.finishedLearning = false;
+        this.framesBeforeFinishedLearning = learnDurationFrameCount;
     }
 
-    public void startLearning() {
+    public void startLearning(MovementComponent learner) {
         this.currentlyLearning = true;
-        learningCheck();
+        this.learner = learner;
     }
 
     public void stopLearning() {
         this.currentlyLearning = false;
     }
 
-    public void learningCheck() {
-        Timer lesson = new Timer(false);
-        lesson.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if(isCurrentlyLearning()) {
-                    setFinishedLearning(true);
-                }
-            }
-        }, GameConfig.getInstance().getTimeNeededToLearn());
-    }
-
     public boolean isCurrentlyLearning() {
         return currentlyLearning;
     }
 
-    public void setFinishedLearning(boolean hasLearnt) {
-        this.finishedLearning = hasLearnt;
-    }
-
-    public boolean finishedLearning() {
-        return this.finishedLearning;
-    }
-
     @Override
     public void update() {
+
+        if(this.currentlyLearning){
+            framesBeforeFinishedLearning--;
+            if(framesBeforeFinishedLearning <= 0){
+                this.finishedLearning = true;
+                this.stopLearning();
+                this.learner.setCanSwim(true);
+                System.out.println("Finished learning");
+            }
+        }
     }
 }

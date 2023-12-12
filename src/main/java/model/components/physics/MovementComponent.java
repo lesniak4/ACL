@@ -52,6 +52,10 @@ public abstract class MovementComponent extends Component {
         return canSwim;
     }
 
+    public void setCanSwim(boolean canSwim) {
+        this.canSwim = canSwim;
+    }
+
     public Vector2 getCurrentFacingDirection(){
         return this.currentFacingDirection;
     }

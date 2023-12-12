@@ -56,12 +56,7 @@ public class PlayerInteractionComponent extends Component {
             if(m != null && !m.canSwim()){
                 if(!swimmingLessonComponent.isCurrentlyLearning()) {
                     System.out.println("Started Learning");
-                    swimmingLessonComponent.startLearning();
-                } else{
-                    if(swimmingLessonComponent.finishedLearning()) {
-                        m.learnedSwimming();
-                        System.out.println("Finished Learning");
-                    }
+                    swimmingLessonComponent.startLearning(m);
                 }
             }
         }
@@ -70,6 +65,20 @@ public class PlayerInteractionComponent extends Component {
         TeleportationTileComponent tpTile = colliderObj.getComponent(TeleportationTileComponent.class);
         if (tpTile != null) {
             this.getGameObject().setPosition(tpTile.getLinkedTile().getTeleportationPos());
+        }
+    }
+
+    public void endInteractionWith(GameObject colliderObj){
+
+        SwimmingLessonComponent swimmingLessonComponent = colliderObj.getComponent(SwimmingLessonComponent.class);
+        if(swimmingLessonComponent != null) {
+            PlayerMovementComponent m = gameObject.getComponent(PlayerMovementComponent.class);
+            if (m != null && !m.canSwim()) {
+                if (swimmingLessonComponent.isCurrentlyLearning()) {
+                    System.out.println("Stop Learning");
+                    swimmingLessonComponent.stopLearning();
+                }
+            }
         }
     }
 

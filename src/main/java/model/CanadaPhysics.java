@@ -38,6 +38,7 @@ public class CanadaPhysics implements IGamePhysics {
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
             if(collider != null){
                 ColliderComponent firstCol = null;
+                boolean collide = false;
                 for(int i = 0; i < 2; i++) {
                     for (ColliderComponent c : colliders) {
                         if (c != collider && c != firstCol) {
@@ -54,10 +55,14 @@ public class CanadaPhysics implements IGamePhysics {
                                     firstCol = c;
                                 }
                                 collider.onCollisionEnter(c.getGameObject());
+                                collide = true;
                                 break;
                             }
                         }
                     }
+                }
+                if(!collide){
+                    collider.clearCollision();
                 }
             }
             m.resetVelocity();

@@ -13,6 +13,7 @@ public class ColliderComponent extends Component {
     private CanadaPhysics physics;
     private double radius;
     private boolean isTrigger;
+    private GameObject lastCollidedObj;
 
     public ColliderComponent(GameObject obj, CanadaPhysics physics, double radius, boolean isTrigger) {
         super(obj);
@@ -55,7 +56,29 @@ public class ColliderComponent extends Component {
             damageArea.hitGameObject(colliderObj);
         }
 
+    }
 
+    public void onCollisionExit(GameObject colliderObj){
+
+        GameObject obj = getGameObject();
+        PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
+
+        if(player != null){
+            player.endInteractionWith(colliderObj);
+        }else{
+            player = colliderObj.getComponent(PlayerInteractionComponent.class);
+            if(player != null){
+                player.endInteractionWith(obj);
+            }
+        }
+    }
+
+    public void clearCollision(){
+
+        if(lastCollidedObj != null){
+            onCollisionExit(lastCollidedObj);
+            lastCollidedObj = null;
+        }
     }
 
     @Override

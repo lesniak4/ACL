@@ -93,7 +93,7 @@ public class GameObjectFactory {
         GameObject swimmingLesson = new GameObject(pos.X(), pos.Y(), "SwimmingLesson_"+hex.getQ()+"_"+hex.getR(), game);
         swimmingLesson.addComponent(new BitmaskedSpriteRendererComponent(swimmingLesson, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getSwimmingLessonSprite()));
         swimmingLesson.addComponent(new PathNodeComponent(swimmingLesson));
-        swimmingLesson.addComponent(new SwimmingLessonComponent(swimmingLesson));
+        swimmingLesson.addComponent(new SwimmingLessonComponent(swimmingLesson, GameConfig.getInstance().getFrameCountToLearnSwimming()));
         swimmingLesson.addComponent(new ColliderComponent(swimmingLesson,  physics, layout.getSize().X(),true));
         //swimmingLesson.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
 
