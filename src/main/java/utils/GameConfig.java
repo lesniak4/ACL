@@ -27,7 +27,7 @@ public class GameConfig {
     public int getPlayerBaseRangedDMG(){ return 1; }
 
     public int getPlayerBaseHealth(){
-        return 20;
+        return 30;
     }
 
     public double getPlayerMeleeAttackDistance(){
@@ -69,7 +69,7 @@ public class GameConfig {
     public int getMonsterBaseRangedDMG(){ return 1; }
 
     public int getMonsterBaseHealth(){
-        return 10;
+        return 15;
     }
 
     public double getMonsterMeleeAttackDistance(){

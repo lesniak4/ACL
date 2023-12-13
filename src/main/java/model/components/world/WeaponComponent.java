@@ -30,9 +30,11 @@ public class WeaponComponent extends ItemComponent implements ICollidable {
     public void onCollisionEnter(GameObject colliderObj) {
 
         if(colliderObj.getComponent(PlayerMovementComponent.class) != null) {
-            gameObject.getGame().getPlayerInventory().add(getData());
-            gameObject.getGame().incrScore(getData().getScoreValue());
-            gameObject.destroyGameObject();
+            if(!gameObject.getGame().getPlayerInventory().contains(getData())) {
+                gameObject.getGame().getPlayerInventory().add(getData());
+                gameObject.getGame().incrScore(getData().getScoreValue());
+                gameObject.destroyGameObject();
+            }
         }
     }
 
