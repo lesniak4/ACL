@@ -1,0 +1,59 @@
+@startuml
+
+class Inventory{
+void add(ResourceData item, int amount)
+void add(WeaponData item)
+boolean remove(ResourceData item, int amount)
+boolean use(WeaponData item)
+}
+
+interface Item{
+    String getName()
+    ImageIcon getIcon()
+    int getCurrentAmount()
+    String getUILabelContent()
+    boolean shouldBeRemovedFromInventory()
+}
+
+abstract class ItemData{
+int getScoreValue()
+double getColliderRadius()
+}
+
+
+class Weapon{
+void use()
+int getRemainingUse()
+}
+
+
+class WeaponData{
+int getMaxUse()
+}
+
+class Resource{
+void add(int amount)
+boolean remove(int amount)
+}
+
+
+class ResourceData{
+
+}
+
+
+Inventory --"*" ItemData
+Item "*"-- Inventory
+
+WeaponData "1"-- Weapon
+ResourceData "1"-- Resource
+
+ItemData  <|- WeaponData
+ItemData  <|- ResourceData
+
+Item <. Resource
+Item <. Weapon
+
+
+
+@enduml

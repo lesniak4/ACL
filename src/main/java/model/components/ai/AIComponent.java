@@ -5,6 +5,7 @@ import model.components.Component;
 import model.components.attacks.AttackComponent;
 import model.components.attacks.StunComponent;
 import model.components.characters.StatsComponent;
+import model.components.characters.SwimComponent;
 import model.fsm.ICondition;
 import model.fsm.IState;
 import model.fsm.StateMachine;
@@ -21,6 +22,7 @@ public class AIComponent extends Component {
     private GameObject player;
     private StatsComponent playerStats;
     private StunComponent stunComponent;
+    private SwimComponent swimComponent;
     private AttackComponent attackComponent;
     private IState stateIdle;
     private IState stateMoving;
@@ -29,7 +31,7 @@ public class AIComponent extends Component {
     private Vector2 savedTarget;
     private Vector2 initialPos;
 
-    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player, StunComponent stun, AttackComponent attack) {
+    public AIComponent(GameObject obj, PathfindingComponent pathfindingComponent, GameObject player, StunComponent stun, AttackComponent attack, SwimComponent swim) {
         super(obj);
         this.player = player;
         this.pathfindingComponent = pathfindingComponent;
@@ -37,6 +39,7 @@ public class AIComponent extends Component {
         this.playerStats = player.getComponent(StatsComponent.class);
         this.stunComponent = stun;
         this.attackComponent = attack;
+        this.swimComponent = swim;
 
         GameConfig gc = GameConfig.getInstance();
 
@@ -79,7 +82,11 @@ public class AIComponent extends Component {
         stateMachine.addTransition(stateStun, stateMoving, recovered);
 
         // Attack
-        ICondition canAttack = () -> attack.canAttack() && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
+        ICondition canAttack = () -> playerStats != null
+                && !playerStats.isInvisible()
+                && attack.canAttack()
+                && !swim.isSwimming()
+                && Vector2.distance(player.getPosition(), this.getGameObject().getPosition()) < gc.getMonsterMeleeAttackDistance();
         ICondition attackFinished = () -> !attackComponent.isAttacking();
 
         stateMachine.addTransition(stateMoving, stateAttack, canAttack);

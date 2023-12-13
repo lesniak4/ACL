@@ -7,6 +7,7 @@ import model.components.ai.PathNodeComponent;
 import model.components.rendering.BitmaskedSpriteRendererComponent;
 import model.components.world.TeleportationTileComponent;
 import model.components.world.TeleportationTileOrientation;
+import model.components.world.WaterComponent;
 import model.components.world.WorldSpawnComponent;
 import model.fsm.states.game.PlayingState;
 import utils.GameConfig;
@@ -130,6 +131,12 @@ public class World {
                             }else if (n == '9') {
                                 tiles.put(hex, GameObjectFactory.getInstance().createWorldExitTile(game, hex, layout, painter, physics));
                                 hexMap.put(hex, 9);
+                            } else if (n == 'S') {
+                                tiles.put(hex, GameObjectFactory.getInstance().createSwimmingLessonTile(game, hex, layout, painter, physics));
+                                hexMap.put(hex, 10);
+                            } else if (n == 'W') {
+                                tiles.put(hex, GameObjectFactory.getInstance().createWaterTile(game, hex, layout, painter, physics));
+                                hexMap.put(hex, 11);
                             }
                             col++;
                         }
@@ -208,12 +215,19 @@ public class World {
         for(int i = 0 ; i < number; i++) {
 
             GameObject obj = null;
-            while (obj == null || obj.getComponent(PathNodeComponent.class) == null || obj.getComponent(WorldSpawnComponent.class) != null) {
+            while (obj == null || obj.getComponent(PathNodeComponent.class) == null
+                    || obj.getComponent(WorldSpawnComponent.class) != null
+                    || obj.getComponent(WaterComponent.class) != null
+            ) {
                 obj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
             GameObject targetObj = null;
-            while (targetObj == null || targetObj.getComponent(PathNodeComponent.class) == null || obj.getComponent(WorldSpawnComponent.class) != null || obj == targetObj || objs.contains(targetObj)) {
+            while (targetObj == null || targetObj.getComponent(PathNodeComponent.class) == null ||
+                    obj.getComponent(WorldSpawnComponent.class) != null
+                    || obj == targetObj || objs.contains(targetObj)
+                    || obj.getComponent(WaterComponent.class) != null
+            ) {
                 targetObj = gameObjects.get(random.nextInt(gameObjects.size()));
             }
 
@@ -233,11 +247,11 @@ public class World {
         }
 
         for (Hex hex : hexMap.keySet()){
-            if(hexMap.containsKey(hex) && !isWall(hex)){
+            if(hexMap.containsKey(hex) && !isForbidden(hex)){
                 for(int i = 0; i < 6; i++){ // On parcours les six voisins
                     Hex neighbor = Hex.hexOfNeighbor( hex, i);
 
-                    if(neighbor != null && hexMap.containsKey(neighbor) && !isWall(neighbor)){
+                    if(neighbor != null && hexMap.containsKey(neighbor) && !isForbidden(neighbor)){
                         Node edge = (Node)graph.getSingularVertex(new Node(neighbor));
                         Node src = (Node)graph.getSingularVertex(new Node(hex));
 
@@ -249,7 +263,7 @@ public class World {
 
     }
 
-    private boolean isWall(Hex hex){
+    private boolean isForbidden(Hex hex){
         return hexMap.get(hex) == 1 || hexMap.get(hex) == 4 || hexMap.get(hex) == 5;
     }
     private boolean isForest(Hex hex) { return hexMap.get(hex) == 1; };

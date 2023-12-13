@@ -1,9 +1,10 @@
 package model;
 
 import engine.IGamePhysics;
-import model.components.attacks.DamageAreaComponent;
+import model.components.characters.SwimComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
+import model.components.world.WaterComponent;
 import utils.Vector2;
 
 import java.util.*;
@@ -36,15 +37,17 @@ public class CanadaPhysics implements IGamePhysics {
             ColliderComponent collider = gameObject.getComponent(ColliderComponent.class);
             if(collider != null){
                 ColliderComponent firstCol = null;
+                boolean collide = false;
                 for(int i = 0; i < 2; i++) {
                     for (ColliderComponent c : colliders) {
                         if (c != collider && c != firstCol) {
                             if (areColliding(collider, c)) {
-                                if (!c.isTrigger()) {
+                                SwimComponent swim = m.getGameObject().getComponent(SwimComponent.class);
+                                if (!c.isTrigger() || ((swim == null || !swim.canSwim()) && c.getGameObject().getComponent(WaterComponent.class) != null)) {
                                     if(firstCol == null) {
                                         newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
                                         gameObject.setPosition(newPos);
-                                    }else{
+                                    }else  {
                                         gameObject.setPosition(lastPos);
                                     }
                                 }
@@ -52,10 +55,15 @@ public class CanadaPhysics implements IGamePhysics {
                                     firstCol = c;
                                 }
                                 collider.onCollisionEnter(c.getGameObject());
+                                c.onCollisionEnter(collider.getGameObject());
+                                collide = true;
                                 break;
                             }
                         }
                     }
+                }
+                if(!collide){
+                    collider.clearCollision();
                 }
             }
             m.resetVelocity();
