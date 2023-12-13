@@ -1,10 +1,9 @@
 package model;
 
 import engine.IGamePhysics;
-import model.components.attacks.DamageAreaComponent;
+import model.components.characters.SwimComponent;
 import model.components.physics.ColliderComponent;
 import model.components.physics.MovementComponent;
-import model.components.world.SwimmingLessonComponent;
 import model.components.world.WaterComponent;
 import utils.Vector2;
 
@@ -43,7 +42,8 @@ public class CanadaPhysics implements IGamePhysics {
                     for (ColliderComponent c : colliders) {
                         if (c != collider && c != firstCol) {
                             if (areColliding(collider, c)) {
-                                if (!c.isTrigger() || !m.canSwim() && c.getGameObject().getComponent(WaterComponent.class) != null) {
+                                SwimComponent swim = m.getGameObject().getComponent(SwimComponent.class);
+                                if (!c.isTrigger() || ((swim == null || !swim.canSwim()) && c.getGameObject().getComponent(WaterComponent.class) != null)) {
                                     if(firstCol == null) {
                                         newPos = positionAfterCollision(gameObject, c.getGameObject(), lastPos, velocity, dt);
                                         gameObject.setPosition(newPos);

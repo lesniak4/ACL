@@ -14,14 +14,11 @@ public abstract class MovementComponent extends Component {
     protected double velocityY;
     protected Vector2 currentFacingDirection;
 
-    protected boolean canSwim;
-
-    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics, boolean canSwim) {
+    public MovementComponent(GameObject obj, double movementSpeed, CanadaPhysics physics) {
         super(obj);
         this.physics = physics;
         this.movementSpeed = movementSpeed;
         this.currentFacingDirection = new Vector2(0,0);
-        this.canSwim = canSwim;
     }
     public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
@@ -46,14 +43,6 @@ public abstract class MovementComponent extends Component {
 
     public boolean isMoving(){
         return this.velocityX != 0 || this.velocityY != 0;
-    }
-
-    public boolean canSwim() {
-        return canSwim;
-    }
-
-    public void setCanSwim(boolean canSwim) {
-        this.canSwim = canSwim;
     }
 
     public Vector2 getCurrentFacingDirection(){

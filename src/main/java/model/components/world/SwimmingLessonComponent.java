@@ -2,14 +2,14 @@ package model.components.world;
 
 import model.GameObject;
 import model.components.Component;
-import model.components.physics.MovementComponent;
+import model.components.characters.SwimComponent;
 
 public class SwimmingLessonComponent extends Component {
     private boolean currentlyLearning;
     private boolean finishedLearning;
 
     private int framesBeforeFinishedLearning;
-    private MovementComponent learner;
+    private SwimComponent learner;
 
     public SwimmingLessonComponent(GameObject obj, int learnDurationFrameCount) {
         super(obj);
@@ -19,13 +19,18 @@ public class SwimmingLessonComponent extends Component {
         this.framesBeforeFinishedLearning = learnDurationFrameCount;
     }
 
-    public void startLearning(MovementComponent learner) {
+    public void startLearning(SwimComponent learner) {
         this.currentlyLearning = true;
         this.learner = learner;
+        this.learner.startLearning();
     }
 
     public void stopLearning() {
+
         this.currentlyLearning = false;
+        if(learner != null) {
+            this.learner.stopLearning();
+        }
     }
 
     public boolean isCurrentlyLearning() {
@@ -41,7 +46,6 @@ public class SwimmingLessonComponent extends Component {
                 this.finishedLearning = true;
                 this.stopLearning();
                 this.learner.setCanSwim(true);
-                System.out.println("Finished learning");
             }
         }
     }

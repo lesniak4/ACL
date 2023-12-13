@@ -39,6 +39,11 @@ public class ColliderComponent extends Component {
 
     public void onCollisionEnter(GameObject colliderObj){
 
+        if(this.lastCollidedObj != colliderObj){
+            clearCollision();
+        }
+        this.lastCollidedObj = colliderObj;
+
         GameObject obj = getGameObject();
         PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
 

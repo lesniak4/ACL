@@ -8,6 +8,7 @@ import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
 import model.components.characters.CharacterAnimationComponent;
 import model.components.attacks.*;
+import model.components.characters.SwimComponent;
 import model.items.Inventory;
 import model.components.physics.*;
 import model.components.characters.player.PlayerInputComponent;
@@ -78,10 +79,10 @@ public class GameObjectFactory {
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject waterTile = new GameObject(pos.X(), pos.Y(), "Water_"+hex.getQ()+"_"+hex.getR(), game);
-        waterTile.addComponent(new BitmaskedSpriteRendererComponent(waterTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getWaterSprite()));
+        waterTile.addComponent(new SpriteRendererComponent(waterTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getWaterSprite()));
         waterTile.addComponent(new PathNodeComponent(waterTile));
         waterTile.addComponent(new WaterComponent(waterTile));
-        waterTile.addComponent(new ColliderComponent(waterTile,  physics, layout.getSize().X(),true));
+        waterTile.addComponent(new ColliderComponent(waterTile,  physics, layout.getSize().X()*0.9d,true));
         //waterTile.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
 
         return waterTile;
@@ -91,7 +92,7 @@ public class GameObjectFactory {
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject swimmingLesson = new GameObject(pos.X(), pos.Y(), "SwimmingLesson_"+hex.getQ()+"_"+hex.getR(), game);
-        swimmingLesson.addComponent(new BitmaskedSpriteRendererComponent(swimmingLesson, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getSwimmingLessonSprite()));
+        swimmingLesson.addComponent(new SpriteRendererComponent(swimmingLesson, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getSwimmingLessonSprite()));
         swimmingLesson.addComponent(new PathNodeComponent(swimmingLesson));
         swimmingLesson.addComponent(new SwimmingLessonComponent(swimmingLesson, GameConfig.getInstance().getFrameCountToLearnSwimming()));
         swimmingLesson.addComponent(new ColliderComponent(swimmingLesson,  physics, layout.getSize().X(),true));
@@ -136,7 +137,7 @@ public class GameObjectFactory {
 
         PlayerInputComponent playerInputComponent = new PlayerInputComponent(player, controller, inventory);
         StatsComponent stats = new StatsComponent(player, gc.getPlayerBaseMS(), gc.getPlayerBaseMeleeDMG(), gc.getPlayerBaseRangedDMG(), gc.getPlayerMeleeAttackDistance(), gc.getPlayerRangedAttackSpeed());
-        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats, false);
+        PlayerMovementComponent movement = new PlayerMovementComponent(player, gc.getPlayerBaseMS(), physics, playerInputComponent, stats);
         MeleeAttackComponent meleeAttackComponent = new MeleeAttackComponent(player, stats, movement, physics, gc.getPlayerMeleeAttackRadius(), gc.getPlayerMeleeStunFrameCount(), gc.getPlayerMeleeAttackLifetimeFrameCount(), gc.getPlayerMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         RangedAttackComponent rangedAttackComponent = new RangedAttackComponent(player, stats, movement, physics, gc.getPlayerRangedAttackRadius(), gc.getPlayerRangedStunFrameCount(),gc.getPlayerRangedAttackFrameCount(), gc.getPlayerRangedAttackLifetimeFrameCount(),gc.getPlayerRangedAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SLINGSHOT));
         playerInputComponent.setMeleeAttackComponent(meleeAttackComponent);
@@ -159,7 +160,11 @@ public class GameObjectFactory {
         playingState.addView(healthBar);
 
         player.addComponent(movement);
-        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, rangedAttackComponent, renderer, sl.getPlayerIdleSprite(), sl.getPlayerWalkingSprite(), sl.getPlayerFightingSprite(), sl.getPlayerSlingshotSprite()));
+
+        SwimComponent swim = new SwimComponent(player, false);
+        player.addComponent(swim);
+
+        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, rangedAttackComponent, swim, renderer, sl.getPlayerIdleSprite(), sl.getPlayerWalkingSprite(), sl.getPlayerFightingSprite(), sl.getPlayerSlingshotSprite(), sl.getPlayerLearningSwimSprite(), sl.getPlayerSwimmingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
         player.addComponent(new PlayerInteractionComponent(player, stats, game.getPlayerInventory()));
 
@@ -192,7 +197,7 @@ public class GameObjectFactory {
         HealthBarView healthBar = new HealthBarView(game, monster, health);
         playingState.addView(healthBar);
 
-        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent, true);
+        MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
         MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, gc.getMonsterMeleeAttackRadius(), gc.getMonsterMeleeStunFrameCount(),gc.getMonsterMeleeAttackLifetimeFrameCount(), gc.getMonsterMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         StunComponent stun = new StunComponent(monster, renderer);
 
@@ -202,7 +207,10 @@ public class GameObjectFactory {
         monster.addComponent(meleeAttack);
         monster.addComponent(stun);
 
-        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, null, renderer, sl.getMonsterIdleSprite(), sl.getMonsterWalkingSprite(), sl.getMonsterFightingSprite(), null));
+        SwimComponent swim = new SwimComponent(monster, true);
+        monster.addComponent(swim);
+
+        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, null, swim, renderer, sl.getMonsterIdleSprite(), sl.getMonsterWalkingSprite(), sl.getMonsterFightingSprite(), null, null, sl.getMonsterSwimmingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8d, true));
 
         return monster;
