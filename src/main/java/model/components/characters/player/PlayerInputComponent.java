@@ -10,6 +10,7 @@ import model.components.Component;
 import model.components.attacks.MeleeAttackComponent;
 import model.components.attacks.RangedAttackComponent;
 import model.components.attacks.StunComponent;
+import model.components.characters.SwimComponent;
 import model.items.Inventory;
 
 import java.util.HashSet;
@@ -24,6 +25,7 @@ public class PlayerInputComponent extends Component {
     private MeleeAttackComponent meleeAttackComponent;
     private RangedAttackComponent rangedAttackComponent;
     private StunComponent stunComponent;
+    private SwimComponent swimComponent;
 
     private Set<Cmd> processedCmd;
 
@@ -53,14 +55,14 @@ public class PlayerInputComponent extends Component {
             if(!commands.isEmpty()) {
                 for (Cmd command : commands) {
                     if (command == Cmd.MELEE_ATTACK && meleeAttackComponent != null && !processedCmd.contains(Cmd.MELEE_ATTACK)) {
-                        if(meleeAttackComponent.canAttack() && playerInventory.contains(meleeAttackComponent.getWeapon())) {
+                        if(meleeAttackComponent.canAttack() && playerInventory.contains(meleeAttackComponent.getWeapon()) && !swimComponent.isSwimming() && !swimComponent.isLearningSwim()) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.MELEE_ATTACK);
                             meleeAttackComponent.attack();
                             playerInventory.use(meleeAttackComponent.getWeapon());
                         }
                     }
                     if (command == Cmd.RANGED_ATTACK && rangedAttackComponent != null && !processedCmd.contains(Cmd.RANGED_ATTACK)) {
-                        if(rangedAttackComponent.canAttack() && playerInventory.contains(rangedAttackComponent.getWeapon())) {
+                        if(rangedAttackComponent.canAttack() && playerInventory.contains(rangedAttackComponent.getWeapon()) && !swimComponent.isSwimming() && !swimComponent.isLearningSwim()) {
                             this.getGameObject().getGame().setLastKeyPressed(Cmd.RANGED_ATTACK);
                             rangedAttackComponent.attack();
                             playerInventory.use(rangedAttackComponent.getWeapon());
@@ -83,5 +85,8 @@ public class PlayerInputComponent extends Component {
 
     public void setStunComponent(StunComponent stunComponent){
         this.stunComponent = stunComponent;
+    }
+    public void setSwimComponent(SwimComponent swimComponent){
+        this.swimComponent = swimComponent;
     }
 }

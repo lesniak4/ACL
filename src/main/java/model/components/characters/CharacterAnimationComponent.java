@@ -4,7 +4,6 @@ import model.GameObject;
 import model.components.Component;
 import model.components.attacks.MeleeAttackComponent;
 import model.components.attacks.RangedAttackComponent;
-import model.components.attacks.StunComponent;
 import model.components.physics.MovementComponent;
 import model.components.rendering.AnimatedSpriteRendererComponent;
 import model.fsm.ICondition;
@@ -17,15 +16,17 @@ public class CharacterAnimationComponent extends Component {
     private MovementComponent movement;
     private MeleeAttackComponent meleeAttack;
     private RangedAttackComponent rangedAttack;
+    private SwimComponent swim;
     private AnimatedSpriteRendererComponent renderer;
     private StateMachine stateMachine;
 
-    public CharacterAnimationComponent(GameObject obj, MovementComponent movement, MeleeAttackComponent meleeAttack, RangedAttackComponent rangedAttack, AnimatedSpriteRendererComponent renderer, SpriteSheet idleSprite, SpriteSheet walkingSprite, SpriteSheet fightingSprite, SpriteSheet slingshotSprite) {
+    public CharacterAnimationComponent(GameObject obj, MovementComponent movement, MeleeAttackComponent meleeAttack, RangedAttackComponent rangedAttack, SwimComponent swim, AnimatedSpriteRendererComponent renderer, SpriteSheet idleSprite, SpriteSheet walkingSprite, SpriteSheet fightingSprite, SpriteSheet slingshotSprite, SpriteSheet learningSwimSprite, SpriteSheet swimmingSprite) {
         super(obj);
 
         this.movement = movement;
         this.meleeAttack = meleeAttack;
         this.rangedAttack = rangedAttack;
+        this.swim = swim;
         this.renderer = renderer;
         this.stateMachine = new StateMachine();
 
@@ -51,6 +52,23 @@ public class CharacterAnimationComponent extends Component {
             stateMachine.addTransition(idle, attackingRanged, isAttackingRanged);
             stateMachine.addTransition(walking, attackingRanged, isAttackingRanged);
             stateMachine.addTransition(attackingRanged, idle, rangedAttackFinished);
+        }
+
+        if(swim != null) {
+            if(learningSwimSprite != null) {
+                LearningSwimAnimation learningSwim = new LearningSwimAnimation(this, learningSwimSprite);
+                ICondition isLearningSwim = () -> swim.isLearningSwim();
+                ICondition learningSwimFinished = () -> !(swim.isLearningSwim());
+                stateMachine.addTransition(idle, learningSwim, isLearningSwim);
+                stateMachine.addTransition(walking, learningSwim, isLearningSwim);
+                stateMachine.addTransition(learningSwim, idle, learningSwimFinished);
+            }
+            SwimmingAnimation swimming = new SwimmingAnimation(this, swimmingSprite);
+            ICondition isSwimming = () -> swim.isSwimming();
+            ICondition stopSwimming = () -> !(swim.isSwimming());
+            stateMachine.addTransition(idle, swimming, isSwimming);
+            stateMachine.addTransition(walking, swimming, isSwimming);
+            stateMachine.addTransition(swimming, idle, stopSwimming);
         }
 
         stateMachine.setState(idle);

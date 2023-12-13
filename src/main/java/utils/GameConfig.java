@@ -27,7 +27,7 @@ public class GameConfig {
     public int getPlayerBaseRangedDMG(){ return 1; }
 
     public int getPlayerBaseHealth(){
-        return 20;
+        return 30;
     }
 
     public double getPlayerMeleeAttackDistance(){
@@ -49,6 +49,10 @@ public class GameConfig {
     public int getPlayerRangedAttackLifetimeFrameCount(){ return 90; }
     public int getPlayerRangedAttackCooldownFrameCount(){ return 130; }
 
+    public int getFrameCountToLearnSwimming(){
+        return 300;
+    }
+
     // Monster
 
     // Facteur du nombre d'hexagone où le monstre repère le joueur
@@ -65,7 +69,7 @@ public class GameConfig {
     public int getMonsterBaseRangedDMG(){ return 1; }
 
     public int getMonsterBaseHealth(){
-        return 10;
+        return 15;
     }
 
     public double getMonsterMeleeAttackDistance(){

@@ -6,18 +6,24 @@ import engine.IGameController;
 import model.components.ai.AIComponent;
 import model.components.ai.PathNodeComponent;
 import model.components.ai.PathfindingComponent;
-import model.components.characters.CharacterAnimationComponent;
 import model.components.attacks.*;
-import model.items.Inventory;
-import model.components.physics.*;
-import model.components.characters.player.PlayerInputComponent;
-import model.components.characters.player.PlayerInteractionComponent;
-import model.components.characters.player.PlayerPauseComponent;
+import model.components.characters.CharacterAnimationComponent;
 import model.components.characters.StatsComponent;
+import model.components.characters.SwimComponent;
+import model.components.characters.player.PlayerInputComponent;
+import model.components.characters.player.PlayerPauseComponent;
 import model.components.characters.player.skills.PlayerSkillsShopComponent;
-import model.components.rendering.*;
+import model.components.physics.ColliderComponent;
+import model.components.physics.DamageAreaMovementComponent;
+import model.components.physics.MonsterMovementComponent;
+import model.components.physics.PlayerMovementComponent;
+import model.components.rendering.AnimatedSpriteRendererComponent;
+import model.components.rendering.BitmaskedSpriteRendererComponent;
+import model.components.rendering.CameraComponent;
+import model.components.rendering.SpriteRendererComponent;
 import model.components.world.*;
 import model.fsm.states.game.PlayingState;
+import model.items.Inventory;
 import model.items.ResourceData;
 import model.items.WeaponData;
 import model.world.Hex;
@@ -74,13 +80,54 @@ public class GameObjectFactory {
         return pathTile;
     }
 
+    public GameObject createWaterTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject waterTile = new GameObject(pos.X(), pos.Y(), "Water_"+hex.getQ()+"_"+hex.getR(), game);
+        waterTile.addComponent(new SpriteRendererComponent(waterTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getWaterSprite()));
+        waterTile.addComponent(new PathNodeComponent(waterTile));
+
+        ColliderComponent collider = new ColliderComponent(waterTile,  physics, layout.getSize().X(),true);
+        waterTile.addComponent(collider);
+
+        WaterComponent water = new WaterComponent(waterTile);
+        water.subscribeToCollider(collider);
+        waterTile.addComponent(water);
+
+        //waterTile.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
+
+        return waterTile;
+    }
+
+    public GameObject createSwimmingLessonTile(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics){
+
+        Vector2 pos = layout.hexToWorldPos(hex);
+        GameObject swimmingLesson = new GameObject(pos.X(), pos.Y(), "SwimmingLesson_"+hex.getQ()+"_"+hex.getR(), game);
+        swimmingLesson.addComponent(new SpriteRendererComponent(swimmingLesson, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getSwimmingLessonSprite()));
+        swimmingLesson.addComponent(new PathNodeComponent(swimmingLesson));
+
+        ColliderComponent collider = new ColliderComponent(swimmingLesson,  physics, layout.getSize().X(),true);
+        swimmingLesson.addComponent(collider);
+
+        SwimmingLessonComponent lesson = new SwimmingLessonComponent(swimmingLesson, GameConfig.getInstance().getFrameCountToLearnSwimming());
+        lesson.subscribeToCollider(collider);
+        swimmingLesson.addComponent(lesson);
+
+        //swimmingLesson.addComponent(new HexRendererComponent(pathTile, painter, Color.WHITE, hex, layout, true));
+
+        return swimmingLesson;
+    }
+
     public GameObject createResourceObject(CanadaGame game, Hex hex, HexLayout layout, CanadaPainter painter, CanadaPhysics physics, ResourceData data, int amount){
 
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject resourceObj = new GameObject(pos.X(), pos.Y(), data.toString()+"_"+hex.getQ()+"_"+hex.getR(), game);
         resourceObj.addComponent(new SpriteRendererComponent(resourceObj, painter, Color.ORANGE, 1, false, data.getSprite()));
-        resourceObj.addComponent(new ColliderComponent(resourceObj,  physics, data.getColliderRadius(),true));
-        resourceObj.addComponent(new ResourceComponent(resourceObj, data, amount));
+        ColliderComponent collider = new ColliderComponent(resourceObj,  physics, data.getColliderRadius(),true);
+        resourceObj.addComponent(collider);
+        ResourceComponent resource = new ResourceComponent(resourceObj, data, amount);
+        resource.subscribeToCollider(collider);
+        resourceObj.addComponent(resource);
 
         return resourceObj;
     }
@@ -90,8 +137,11 @@ public class GameObjectFactory {
         Vector2 pos = layout.hexToWorldPos(hex);
         GameObject weaponObj = new GameObject(pos.X(), pos.Y(), data.toString()+"_"+hex.getQ()+"_"+hex.getR(), game);
         weaponObj.addComponent(new SpriteRendererComponent(weaponObj, painter, Color.ORANGE, 1, false, data.getSprite()));
-        weaponObj.addComponent(new ColliderComponent(weaponObj,  physics, data.getColliderRadius(),true));
-        weaponObj.addComponent(new WeaponComponent(weaponObj, data));
+        ColliderComponent collider = new ColliderComponent(weaponObj,  physics, data.getColliderRadius(),true);
+        weaponObj.addComponent(collider);
+        WeaponComponent weapon = new WeaponComponent(weaponObj, data);
+        weapon.subscribeToCollider(collider);
+        weaponObj.addComponent(weapon);
 
         return weaponObj;
     }
@@ -133,9 +183,13 @@ public class GameObjectFactory {
         playingState.addView(healthBar);
 
         player.addComponent(movement);
-        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, rangedAttackComponent, renderer, sl.getPlayerIdleSprite(), sl.getPlayerWalkingSprite(), sl.getPlayerFightingSprite(), sl.getPlayerSlingshotSprite()));
+
+        SwimComponent swim = new SwimComponent(player, false);
+        playerInputComponent.setSwimComponent(swim);
+        player.addComponent(swim);
+
+        player.addComponent(new CharacterAnimationComponent(player, movement, meleeAttackComponent, rangedAttackComponent, swim, renderer, sl.getPlayerIdleSprite(), sl.getPlayerWalkingSprite(), sl.getPlayerFightingSprite(), sl.getPlayerSlingshotSprite(), sl.getPlayerLearningSwimSprite(), sl.getPlayerSwimmingSprite()));
         player.addComponent(new ColliderComponent(player, physics, 12.45d, false));
-        player.addComponent(new PlayerInteractionComponent(player, stats, game.getPlayerInventory()));
 
         player.addComponent(new PlayerSkillsShopComponent(player, playerInputComponent, stats, inventory, ItemDataFactory.getResourceData(ItemType.GOLD_COINS)));
         player.addComponent(meleeAttackComponent);
@@ -169,14 +223,16 @@ public class GameObjectFactory {
         MonsterMovementComponent movement = new MonsterMovementComponent(monster, gc.getMonsterBaseMS(), physics, pathfindingComponent);
         MeleeAttackComponent meleeAttack = new MeleeAttackComponent(monster, stats, movement, physics, gc.getMonsterMeleeAttackRadius(), gc.getMonsterMeleeStunFrameCount(),gc.getMonsterMeleeAttackLifetimeFrameCount(), gc.getMonsterMeleeAttackCooldownFrameCount(), ItemDataFactory.getWeaponData(ItemType.SWORD));
         StunComponent stun = new StunComponent(monster, renderer);
+        SwimComponent swim = new SwimComponent(monster, true);
 
-        monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun, meleeAttack));
+        monster.addComponent(new AIComponent(monster,pathfindingComponent, player, stun, meleeAttack, swim));
 
         monster.addComponent(movement);
         monster.addComponent(meleeAttack);
         monster.addComponent(stun);
+        monster.addComponent(swim);
 
-        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, null, renderer, sl.getMonsterIdleSprite(), sl.getMonsterWalkingSprite(), sl.getMonsterFightingSprite(), null));
+        monster.addComponent(new CharacterAnimationComponent(monster, movement, meleeAttack, null, swim, renderer, sl.getMonsterIdleSprite(), sl.getMonsterWalkingSprite(), sl.getMonsterFightingSprite(), null, null, sl.getMonsterSwimmingSprite()));
         monster.addComponent(new ColliderComponent(monster, physics, 8d, true));
 
         return monster;
@@ -199,8 +255,13 @@ public class GameObjectFactory {
         GameObject exitTile = new GameObject(pos.X(), pos.Y(), "WorldExit", game);
         exitTile.addComponent(new BitmaskedSpriteRendererComponent(exitTile, painter, Color.WHITE, 0, false, SpriteLoader.getInstance().getPathSprite()));
         exitTile.addComponent(new SpriteRendererComponent(exitTile, painter, Color.ORANGE, 1, false, SpriteLoader.getInstance().getExitSprite()));
-        exitTile.addComponent(new ColliderComponent(exitTile, physics, layout.getSize().X(), false));
-        exitTile.addComponent(new WorldExitComponent(exitTile));
+
+        ColliderComponent collider = new ColliderComponent(exitTile, physics, layout.getSize().X(), false);
+        exitTile.addComponent(collider);
+
+        WorldExitComponent exit = new WorldExitComponent(exitTile);
+        exit.subscribeToCollider(collider);
+        exitTile.addComponent(exit);
 
         return exitTile;
     }
@@ -211,8 +272,12 @@ public class GameObjectFactory {
         GameObject tpTile = new GameObject(pos.X(), pos.Y(), "Mine_"+hex.getQ()+"_"+hex.getR(), game);
         tpTile.addComponent(new SpriteRendererComponent(tpTile, painter, Color.WHITE, 1, false, orientation == TeleportationTileOrientation.LEFT ? SpriteLoader.getInstance().getMineLeftSprite() : SpriteLoader.getInstance().getMineRightSprite()));
 
-        tpTile.addComponent(new ColliderComponent(tpTile, physics, layout.getSize().X(), true));
-        tpTile.addComponent(new TeleportationTileComponent(tpTile, orientation));
+        ColliderComponent collider = new ColliderComponent(tpTile, physics, layout.getSize().X(), true);
+        tpTile.addComponent(collider);
+
+        TeleportationTileComponent tp = new TeleportationTileComponent(tpTile, orientation);
+        tp.subscribeToCollider(collider);
+        tpTile.addComponent(tp);
 
         return tpTile;
     }
@@ -221,8 +286,13 @@ public class GameObjectFactory {
 
         GameObject damageArea = new GameObject(position.X(), position.Y(), "DamageArea_"+owner.getGameObject().toString(), game);
         damageArea.addComponent(new DamageAreaMovementComponent(damageArea, 0, new Vector2(0,0), physics));
-        damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
-        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit));
+
+        ColliderComponent collider = new ColliderComponent(damageArea, physics, radius, true);
+        damageArea.addComponent(collider);
+
+        DamageAreaComponent area = new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit);
+        area.subscribeToCollider(collider);
+        damageArea.addComponent(area);
 
         return damageArea;
     }
@@ -232,8 +302,13 @@ public class GameObjectFactory {
         GameObject damageArea = new GameObject(position.X(), position.Y(), "DamageArea_"+owner.getGameObject().toString(), game);
         damageArea.addComponent(new SpriteRendererComponent(damageArea, game.getPainter(), Color.ORANGE, 1, false, SpriteLoader.getInstance().getStoneSprite()));
         damageArea.addComponent(new DamageAreaMovementComponent(damageArea, movementSpeed, direction, physics));
-        damageArea.addComponent(new ColliderComponent(damageArea, physics, radius, true));
-        damageArea.addComponent(new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit));
+
+        ColliderComponent collider = new ColliderComponent(damageArea, physics, radius, true);
+        damageArea.addComponent(collider);
+
+        DamageAreaComponent area = new DamageAreaComponent(damageArea, damage, stunDuration, lifetime, owner, destroyOnHit);
+        area.subscribeToCollider(collider);
+        damageArea.addComponent(area);
 
         return damageArea;
     }

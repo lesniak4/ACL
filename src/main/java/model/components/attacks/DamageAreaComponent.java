@@ -3,8 +3,9 @@ package model.components.attacks;
 import model.GameObject;
 import model.components.Component;
 import model.components.physics.ColliderComponent;
+import model.components.physics.ICollidable;
 
-public class DamageAreaComponent extends Component {
+public class DamageAreaComponent extends Component implements ICollidable {
 
     private int damage;
     private int stunDuration;
@@ -67,5 +68,24 @@ public class DamageAreaComponent extends Component {
 
     public int getFrameBeforeDestroy(){
         return frameBeforeDestroy;
+    }
+
+    @Override
+    public void subscribeToCollider(ColliderComponent collider) {
+
+        collider.addCollidableComponent(this);
+    }
+
+    @Override
+    public void onCollisionEnter(GameObject colliderObj) {
+
+        if(colliderObj != getOwner().getGameObject()){
+            hitGameObject(colliderObj);
+        }
+    }
+
+    @Override
+    public void onCollisionExit(GameObject colliderObj) {
+
     }
 }

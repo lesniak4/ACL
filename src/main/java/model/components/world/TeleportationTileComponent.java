@@ -2,10 +2,13 @@ package model.components.world;
 
 import model.GameObject;
 import model.components.Component;
+import model.components.physics.ColliderComponent;
+import model.components.physics.ICollidable;
+import model.components.physics.PlayerMovementComponent;
 import utils.GameConfig;
 import utils.Vector2;
 
-public class TeleportationTileComponent extends Component {
+public class TeleportationTileComponent extends Component implements ICollidable {
 
     private TeleportationTileComponent linkedTile;
     private Vector2 teleportationPos;
@@ -40,5 +43,24 @@ public class TeleportationTileComponent extends Component {
 
     public TeleportationTileComponent getLinkedTile() {
         return linkedTile;
+    }
+
+    @Override
+    public void subscribeToCollider(ColliderComponent collider) {
+
+        collider.addCollidableComponent(this);
+    }
+
+    @Override
+    public void onCollisionEnter(GameObject colliderObj) {
+
+        if(colliderObj.getComponent(PlayerMovementComponent.class) != null) {
+            colliderObj.setPosition(getLinkedTile().getTeleportationPos());
+        }
+    }
+
+    @Override
+    public void onCollisionExit(GameObject colliderObj) {
+
     }
 }

@@ -1,4 +1,4 @@
-# Sprint 4 - Backlog
+# Sprint 4 - Review
 
 ## Fonctionnalités :
 
@@ -26,5 +26,4 @@
 - [x] On ne peut avoir qu'une arme à la fois
 - [x] Succession de niveaux infinie en en choisissant un aléatoirement parmi un ensemble de niveau pré-construits (de tailles différentes)
 - [x] Cours de natation
-
 
