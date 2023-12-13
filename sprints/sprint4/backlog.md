@@ -18,11 +18,13 @@
 - [x] Affichage des barres de vie au-dessus des monstres
 - [x] Ajout d'une compétence qui augmente les dégâts pendant un temps limité.
 - [x] Sauvegarde du meilleur score obtenu
+- [x] Nage et cases d'eau
 
 ### Arnaud
 
 - [x] Armes à récupérer
 - [x] On ne peut avoir qu'une arme à la fois
 - [x] Succession de niveaux infinie en en choisissant un aléatoirement parmi un ensemble de niveau pré-construits (de tailles différentes)
+- [x] Cours de natation
 
 
