@@ -60,25 +60,6 @@ public class ColliderComponent extends Component {
         for(ICollidable c : collidableComponents){
             c.onCollisionEnter(colliderObj);
         }
-
-        /*
-        GameObject obj = getGameObject();
-        PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
-
-        if(player != null){
-            player.interactWith(colliderObj);
-        }else{
-            player = colliderObj.getComponent(PlayerInteractionComponent.class);
-            if(player != null){
-                player.interactWith(obj);
-            }
-        }
-
-        DamageAreaComponent damageArea = obj.getComponent(DamageAreaComponent.class);
-        if(damageArea != null && colliderObj != damageArea.getOwner().getGameObject()){
-            damageArea.hitGameObject(colliderObj);
-        }
-        */
     }
 
     public void onCollisionExit(GameObject colliderObj){
@@ -86,20 +67,6 @@ public class ColliderComponent extends Component {
         for(ICollidable c : collidableComponents){
             c.onCollisionExit(colliderObj);
         }
-
-        /*
-        GameObject obj = getGameObject();
-        PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
-
-        if(player != null){
-            player.endInteractionWith(colliderObj);
-        }else{
-            player = colliderObj.getComponent(PlayerInteractionComponent.class);
-            if(player != null){
-                player.endInteractionWith(obj);
-            }
-        }
-         */
     }
 
     public void clearCollision(){
