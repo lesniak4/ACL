@@ -1,0 +1,129 @@
+@startuml
+title "Diagramme de classes global (simplifié)"
+
+class GameEngineGraphical {
+void run()
+}
+
+class CanadaGame {
+void evolve()
+void loadNextLevel()
+boolean isFinished()
+}
+
+class CanadaPainter {
+void draw(BufferedImage image)
+void addToDrawQueue(GraphicsComponent graphics)
+void clearDrawQueue()
+}
+
+class CanadaPhysics {
+void updatePhysics(double dt)
+void addCollider(ColliderComponent collider)
+void addToUpdate(MovementComponent movementComponent)
+boolean areColliding(ColliderComponent c1, ColliderComponent c2)
+}
+
+class CanadaController{
+Cmd getCommand()
+}
+
+class World {
+ArrayList<GameObject> buildWorld(String source)
+}
+
+class GameObject {
+Vector2 position
+void update()
+void addComponent(Component component)
+}
+
+abstract class Component{
+void update()
+}
+
+package input{
+
+class PlayerInputComponent{
+void update()
+}
+
+}
+
+package physics{
+
+
+abstract class MovementComponent{
+Vector2 velocity
+void update()
+}
+
+class PlayerMovementComponent{
+void update()
+}
+
+class MonsterMovementComponent{
+void update()
+}
+
+class ColliderComponent{
+void update()
+}
+
+}
+
+package ai{
+
+class AIComponent{
+void update()
+}
+}
+
+package rendering {
+abstract class GraphicsComponent{
+void update()
+}
+
+class SpriteRendererComponent{
+BufferedImage sprite
+void update()
+}
+}
+
+package fsm{
+class StateMachine{
+void tick()
+}
+}
+
+GameEngineGraphical -- "1"CanadaGame
+GameEngineGraphical -- "1"CanadaPainter
+GameEngineGraphical -- "1"CanadaController
+
+CanadaGame "1"--"*"GameObject
+CanadaGame --"1" CanadaPainter
+CanadaGame --"1" CanadaPhysics
+World --"1" CanadaPainter
+
+GameObject "1"--"*"Component
+
+Component <|-- GraphicsComponent
+Component <|-- PlayerInputComponent
+Component <|-- MovementComponent
+Component <|-- ColliderComponent
+Component <|-- AIComponent
+
+GraphicsComponent <|-- SpriteRendererComponent
+
+MovementComponent <|-- PlayerMovementComponent
+MovementComponent <|-- MonsterMovementComponent
+
+PlayerInputComponent "1"- PlayerMovementComponent
+AIComponent --"1" StateMachine
+
+CanadaController "1"-- PlayerInputComponent
+CanadaPainter "1"--"*" GraphicsComponent
+CanadaPhysics "1"--"*" ColliderComponent
+CanadaPhysics "1"--"*" MovementComponent
+
+@enduml

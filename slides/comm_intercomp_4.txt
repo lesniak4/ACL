@@ -1,0 +1,52 @@
+@startuml
+
+class GameObject{
+Vector2 position
+void update()
+}
+
+abstract class Component{
+void update()
+}
+
+class ColliderComponent extends Component{
+void update()
+void onCollisionEnter(GameObject obj)
+void onCollisionExit(GameObject obj)
+}
+
+interface ICollidable {
+void subscribeToCollider(ColliderComponent coll)
+void onCollisionEnter(GameObject obj)
+void onCollisionExit(GameObject obj)
+}
+
+class WeaponComponent extends Component{
+void update()
+void onCollisionEnter(GameObject obj)
+void onCollisionExit(GameObject obj)
+void subscribeToCollider(ColliderComponent coll)
+}
+
+class WaterComponent extends Component{
+void update()
+void onCollisionEnter(GameObject obj)
+void onCollisionExit(GameObject obj)
+void subscribeToCollider(ColliderComponent coll)
+}
+
+class DamageAreaComponent extends Component{
+void update()
+void onCollisionEnter(GameObject obj)
+void onCollisionExit(GameObject obj)
+void subscribeToCollider(ColliderComponent coll)
+}
+
+GameObject "1"--"*" Component
+
+ColliderComponent --"*" ICollidable
+WeaponComponent ..|> ICollidable
+DamageAreaComponent ..|> ICollidable
+WaterComponent ..|> ICollidable
+
+@enduml

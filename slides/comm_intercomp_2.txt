@@ -1,0 +1,31 @@
+@startuml
+
+class GameObject{
+Vector2 position
+void update()
+Vector2 getPosition()
+}
+
+abstract class Component{
+void update()
+}
+
+class MovementComponent extends Component{
+void update()
+}
+
+class ColliderComponent extends Component{
+void update()
+}
+
+class RendererComponent extends Component{
+void update()
+}
+
+class AIComponent extends Component{
+void update()
+}
+
+GameObject "1"--"*" Component
+
+@enduml

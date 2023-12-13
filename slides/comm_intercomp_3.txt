@@ -1,0 +1,39 @@
+@startuml
+
+class GameObject{
+Vector2 position
+void update()
+}
+
+abstract class Component{
+void update()
+}
+
+abstract class MovementComponent extends Component{
+void update()
+}
+
+class PlayerMovementComponent extends MovementComponent{
+void update()
+}
+
+class StatsComponent extends Component{
+double speed
+int damage
+void update()
+double getSpeed()
+int getDamage()
+}
+
+class PlayerInputComponent extends Component{
+void update()
+Set<Cmd> getCommands()
+}
+
+
+GameObject "1"--"*" Component
+
+PlayerInputComponent "1"- PlayerMovementComponent
+MovementComponent -"1" StatsComponent
+
+@enduml

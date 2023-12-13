@@ -1,0 +1,91 @@
+@startuml
+title "Diagramme de classes IA Monstres"
+
+package ai{
+class PathfindingComponent{
+void update()
+}
+
+class AIComponent{
+void update()
+}
+}
+
+package fsm{
+class StateMachine{
+void tick()
+void addTransition(IState from, IState to, ICondition condition)
+}
+
+interface IState {
+void tick()
+void onEnter()
+void onExit()
+}
+
+class Transition{
+
+}
+
+interface ICondition {
+boolean condition()
+}
+
+
+abstract class AIState implements IState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+class StateChase extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+class StateIdle extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+class StateMoving extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+class StatePatrol extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+
+class StateAttack extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+
+class StateStun extends AIState{
+void tick()
+void onEnter()
+void onExit()
+}
+
+}
+
+AIComponent -"1" PathfindingComponent
+AIComponent --"1" StateMachine
+
+IState "*"- StateMachine
+IState "-current 1"- StateMachine
+Transition "*"- StateMachine
+Transition --"-to 1" IState
+ICondition "1"- Transition
+AIComponent "1"-- AIState
+
+@enduml
