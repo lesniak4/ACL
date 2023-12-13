@@ -265,10 +265,10 @@ public class CanadaGame implements IGame {
 		this.playerWin = false;
 
 		int nextLevel = 4;
-		/*if (this.niveauActuel!=4) {
+		if (this.niveauActuel!=4) {
 			nextLevel = loadRandLevel();
 		}
-		this.lastLevel = nextLevel;*/
+		this.lastLevel = nextLevel;
 
 		World world = new World(this, this.painter, this.physics);
 		gameObjects.addAll(world.buildWorld("/maps/map" + nextLevel + ".txt", HexLayout.pointy));	//modif selon rand

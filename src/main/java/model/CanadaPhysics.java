@@ -55,6 +55,7 @@ public class CanadaPhysics implements IGamePhysics {
                                     firstCol = c;
                                 }
                                 collider.onCollisionEnter(c.getGameObject());
+                                c.onCollisionEnter(collider.getGameObject());
                                 collide = true;
                                 break;
                             }

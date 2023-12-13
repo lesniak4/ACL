@@ -6,7 +6,8 @@ import model.components.Component;
 import model.components.attacks.DamageAreaComponent;
 import model.components.attacks.HealthComponent;
 import model.components.attacks.StunComponent;
-import model.components.characters.player.PlayerInteractionComponent;
+
+import java.util.ArrayList;
 
 public class ColliderComponent extends Component {
 
@@ -15,11 +16,15 @@ public class ColliderComponent extends Component {
     private boolean isTrigger;
     private GameObject lastCollidedObj;
 
+    private ArrayList<ICollidable> collidableComponents;
+
     public ColliderComponent(GameObject obj, CanadaPhysics physics, double radius, boolean isTrigger) {
         super(obj);
         this.physics = physics;
         this.radius = radius;
         this.isTrigger = isTrigger;
+
+        collidableComponents = new ArrayList<>();
 
         this.physics.addCollider(this);
     }
@@ -33,6 +38,14 @@ public class ColliderComponent extends Component {
 
     }
 
+    public void addCollidableComponent(ICollidable coll){
+        this.collidableComponents.add(coll);
+    }
+
+    public void removeCollidableComponent(ICollidable coll){
+        this.collidableComponents.remove(coll);
+    }
+
     public boolean isTrigger() {
         return isTrigger;
     }
@@ -44,6 +57,11 @@ public class ColliderComponent extends Component {
         }
         this.lastCollidedObj = colliderObj;
 
+        for(ICollidable c : collidableComponents){
+            c.onCollisionEnter(colliderObj);
+        }
+
+        /*
         GameObject obj = getGameObject();
         PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
 
@@ -60,11 +78,16 @@ public class ColliderComponent extends Component {
         if(damageArea != null && colliderObj != damageArea.getOwner().getGameObject()){
             damageArea.hitGameObject(colliderObj);
         }
-
+        */
     }
 
     public void onCollisionExit(GameObject colliderObj){
 
+        for(ICollidable c : collidableComponents){
+            c.onCollisionExit(colliderObj);
+        }
+
+        /*
         GameObject obj = getGameObject();
         PlayerInteractionComponent player = obj.getComponent(PlayerInteractionComponent.class);
 
@@ -76,12 +99,14 @@ public class ColliderComponent extends Component {
                 player.endInteractionWith(obj);
             }
         }
+         */
     }
 
     public void clearCollision(){
 
         if(lastCollidedObj != null){
             onCollisionExit(lastCollidedObj);
+            lastCollidedObj.getComponent(ColliderComponent.class).onCollisionExit(gameObject);
             lastCollidedObj = null;
         }
     }
